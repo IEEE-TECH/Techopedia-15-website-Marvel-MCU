@@ -88,7 +88,9 @@ const CHAPTERS: Panel[] = [
   },
   {
     n: "06",
-    img: "/story/panel-6.jpg",
+    // ?v=2 busts any cached copy of the old low-res image so the new HD asset
+    // is guaranteed to load (the file itself was replaced in place).
+    img: "/story/panel-6.jpg?v=2",
     kicker: "Marvel's First Family",
     title: ["Fantastic", "Four"],
     desc: "Four heroes, one family — stepping into a new universe against impossible odds.",
