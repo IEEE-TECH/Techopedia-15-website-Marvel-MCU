@@ -1,0 +1,328 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  background: #0d0f14;
+  border: 1px solid rgba(237, 29, 36, 0.45);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 820px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 50px rgba(237, 29, 36, 0.35), 0 20px 40px rgba(0, 0, 0, 0.95);
+  overflow: hidden;
+  position: relative;
+  font-family: var(--font-ui);
+}
+
+.header {
+  padding: 1.75rem 2rem 1.25rem;
+  background: linear-gradient(180deg, rgba(237, 29, 36, 0.15) 0%, rgba(13, 15, 20, 0.5) 100%);
+  border-bottom: 1px solid rgba(237, 29, 36, 0.3);
+  position: relative;
+}
+
+.headerBadgeRow {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.mcuBadge {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: #ed1d24;
+  background: rgba(237, 29, 36, 0.18);
+  border: 1px solid rgba(237, 29, 36, 0.45);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.prizeBadge {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: #ffd700;
+  background: rgba(255, 215, 0, 0.14);
+  border: 1px solid rgba(255, 215, 0, 0.45);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.title {
+  font-family: var(--font-avengers), var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  margin: 0;
+  text-shadow: 0 0 24px rgba(237, 29, 36, 0.6);
+  text-transform: uppercase;
+}
+
+.tagline {
+  font-size: 0.95rem;
+  color: #ffd700;
+  margin-top: 0.35rem;
+  margin-bottom: 0;
+  opacity: 0.95;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  transition: all 0.2s ease;
+}
+
+.closeBtn:hover {
+  background: rgba(237, 29, 36, 0.25);
+  border-color: #ed1d24;
+  color: #ffffff;
+}
+
+.statsStrip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid rgba(237, 29, 36, 0.2);
+}
+
+@media (max-width: 640px) {
+  .statsStrip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.statItem {
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  border-right: 1px solid rgba(237, 29, 36, 0.15);
+}
+
+.statItem:last-child {
+  border-right: none;
+}
+
+.statLabel {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.statValue {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.body {
+  padding: 1.75rem 2rem;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sectionHeading {
+  font-family: var(--font-orbitron), var(--font-ui);
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  color: #ed1d24;
+  text-transform: uppercase;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sectionHeading::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(237, 29, 36, 0.25);
+}
+
+.descText {
+  color: #cbd5e1;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.roundsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.roundCard {
+  background: rgba(18, 20, 26, 0.85);
+  border: 1px solid rgba(237, 29, 36, 0.25);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.roundHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.roundNum {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  background: rgba(237, 29, 36, 0.2);
+  color: #ffd700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.roundTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  flex: 1;
+}
+
+.roundDuration {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.roundDesc {
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.rulesList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ruleItem {
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  line-height: 1.5;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ruleItem::before {
+  content: "▸";
+  color: #ed1d24;
+}
+
+.leadsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.leadCard {
+  background: rgba(18, 20, 26, 0.6);
+  border: 1px solid rgba(237, 29, 36, 0.2);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.leadName {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.leadRole {
+  font-size: 0.7rem;
+  color: #ffd700;
+}
+
+.leadContact {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.footer {
+  padding: 1.25rem 2rem;
+  background: rgba(13, 15, 20, 0.8);
+  border-top: 1px solid rgba(237, 29, 36, 0.25);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.registerActionBtn {
+  cursor: pointer;
+  background: linear-gradient(135deg, #ed1d24, #b31016);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  color: #ffffff;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.75rem 1.6rem;
+  border-radius: 4px;
+  box-shadow: 0 0 20px rgba(237, 29, 36, 0.5);
+  transition: all 0.2s ease;
+}
+
+.registerActionBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 30px rgba(237, 29, 36, 0.8);
+}

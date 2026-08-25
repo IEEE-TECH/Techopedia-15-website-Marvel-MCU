@@ -6,28 +6,32 @@
  * a single scrubbed GSAP/ScrollTrigger master. Tuning lives here.
  */
 
-/** Cinematic palette — pure black voids, toxic Doom greens, metallic highlights. */
+/** Cinematic palette — Marvel MCU Red, Crimson, Stark Gold, Arc Cyan. */
 export const COLORS = {
   black: "#000000",
-  graphite: "#07090b",
-  ink: "#04140f",
-  green: "#00ff9c",
-  greenDeep: "#00b473",
-  greenDark: "#083b2a",
-  emerald: "#12855b",
-  mint: "#9dffd6",
-  core: "#e6fff4",
-  white: "#eafff6",
-  silver: "#aebbb5",
+  graphite: "#0b0d11",
+  ink: "#12141a",
+  green: "#ed1d24",
+  greenDeep: "#b31016",
+  greenDark: "#3a0507",
+  emerald: "#8b0000",
+  mint: "#ffd700",
+  core: "#ffffff",
+  white: "#ffffff",
+  silver: "#cbd5e1",
+  gold: "#ffd700",
+  cyan: "#00e5ff",
 } as const;
 
 export const HEX = {
-  green: 0x00ff9c,
-  greenDeep: 0x00b473,
-  greenDark: 0x083b2a,
-  emerald: 0x12855b,
-  mint: 0x9dffd6,
-  core: 0xe6fff4,
+  green: 0xed1d24,
+  greenDeep: 0xb31016,
+  greenDark: 0x3a0507,
+  emerald: 0x8b0000,
+  mint: 0xffd700,
+  core: 0xffffff,
+  gold: 0xffd700,
+  cyan: 0x00e5ff,
 } as const;
 
 /** Asset locations (served from /public). Videos are all-intra for scrubbing. */
@@ -75,12 +79,11 @@ export const SCROLL = {
   storyStack: 660, // 6 fullscreen panels rise + stack sequentially (pinned)
   // ── Phase 4 · Section 4 (horizontal cinematic timeline) ──
   reelStrip: 680, // pinned; vertical scroll drives the strip right→left
-  // ── Phase 5 · Section 5 (scroll-scrubbed battle: Thor → Doom → Cap) ──
-  finaleScrub: 760, // the battle video scrubs frame-by-frame with scroll
-  // ── Ending · Section 6 (MCU timeline artwork) + 7 (title reveal) + footer ──
-  mcuPan: 560, // the tall MCU timeline pans vertically with scroll
-  titleHold: 300, // the AVENGERS DOOMSDAY title reveal autoplays/holds
-  footerReveal: 150, // the minimal footer rises at the very end
+  // ── Ending · Outro ──
+  // A short settle on the reel's last frame before the page scrolls on into the
+  // in-flow Team / Sponsors / footer content. (Was 150vh back when the footer
+  // was a fixed overlay that needed a reveal runway here.)
+  footerReveal: 60,
 } as const;
 
 /**

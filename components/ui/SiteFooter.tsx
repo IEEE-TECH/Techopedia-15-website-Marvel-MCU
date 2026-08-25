@@ -1,86 +1,107 @@
 "use client";
 
+import Link from "next/link";
 import { useRef } from "react";
-import { signals } from "@/lib/signals";
-import { useRaf } from "@/lib/useRaf";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import styles from "./footer.module.css";
 
 /**
- * The closing footer — rises from the bottom after the title reveal, driven by
- * `signals.footer`. Minimal + elegant, in the same dark-green cinematic language.
- * Links are placeholders for now.
+ * The closing footer — a real, in-flow footer at the very bottom of the page
+ * (it used to be a fixed overlay driven by the scroll scrub, which put it above
+ * the Team/Sponsors sections). Reveals on scroll-into-view instead, and carries
+ * a 3D receding floor grid + an extruded wordmark that parallaxes to the cursor.
  */
-const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
-const smoothstep = (a: number, b: number, x: number) => {
-  const t = clamp01((x - a) / (b - a));
-  return t * t * (3 - 2 * t);
-};
+const NAV = [
+  { label: "Schedule", href: "/schedule" },
+  { label: "Team", href: "/team" },
+  { label: "Sponsors", href: "/sponsors" },
+];
+const SOCIAL = ["Instagram", "LinkedIn", "X (Twitter)", "YouTube"];
 
-const NAV = ["Overview", "Characters", "Story", "Timeline"];
-const SOCIAL = ["Instagram", "X", "YouTube"];
+const SPRING = { stiffness: 120, damping: 20, mass: 0.5 };
 
 export default function SiteFooter() {
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const footRef = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLElement>(null);
 
-  useRaf(() => {
-    const foot = signals.footer;
-    const wrap = wrapRef.current;
-    if (!wrap) return;
-    if (foot <= 0.0006) {
-      if (wrap.style.visibility !== "hidden") wrap.style.visibility = "hidden";
-      return;
-    }
-    wrap.style.visibility = "visible";
-    if (footRef.current) {
-      footRef.current.style.transform = `translateY(${((1 - foot) * 100).toFixed(2)}%)`;
-      footRef.current.style.opacity = smoothstep(0, 0.25, foot).toFixed(3);
-    }
-  });
+  // cursor parallax — drives the wordmark tilt and the grid's vanishing point
+  const mx = useMotionValue(0.5);
+  const my = useMotionValue(0.5);
+  const rotX = useSpring(useTransform(my, [0, 1], [8, -8]), SPRING);
+  const rotY = useSpring(useTransform(mx, [0, 1], [-10, 10]), SPRING);
+  const gridShift = useSpring(useTransform(mx, [0, 1], ["-4%", "4%"]), SPRING);
+
+  function onMove(e: React.MouseEvent<HTMLElement>) {
+    const r = ref.current?.getBoundingClientRect();
+    if (!r) return;
+    mx.set((e.clientX - r.left) / r.width);
+    my.set((e.clientY - r.top) / r.height);
+  }
+  function onLeave() {
+    mx.set(0.5);
+    my.set(0.5);
+  }
 
   const noop = (e: React.MouseEvent) => e.preventDefault();
 
   return (
-    <div className={styles.wrap} ref={wrapRef} style={{ visibility: "hidden" }}>
-      <footer className={styles.footer} ref={footRef} style={{ opacity: 0 }}>
-        <span className={styles.glow} />
-        <div className={styles.inner}>
-          <div className={styles.brand}>
-            <span className={styles.mark}>
-              Doomsday<span>.</span>
-            </span>
-            <span className={styles.tag}>A scroll-driven cinematic concept experience.</span>
-          </div>
+    <motion.footer
+      ref={ref}
+      className={styles.footer}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      initial={{ opacity: 0, y: 60 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] as const }}
+    >
+      {/* 3D receding floor grid — the horizon this whole thing sits on */}
+      <div className={styles.gridScene} aria-hidden>
+        <motion.div className={styles.gridPlane} style={{ x: gridShift }} />
+      </div>
+      <span className={styles.horizon} aria-hidden />
+      <span className={styles.glow} aria-hidden />
 
-          <nav>
-            <div className={styles.colHead}>Explore</div>
-            <div className={styles.links}>
-              {NAV.map((l) => (
-                <a key={l} href="#" onClick={noop}>
-                  {l}
-                </a>
-              ))}
-            </div>
-          </nav>
-
-          <div>
-            <div className={styles.colHead}>Follow</div>
-            <div className={styles.social}>
-              {SOCIAL.map((l) => (
-                <a key={l} href="#" onClick={noop}>
-                  {l}
-                </a>
-              ))}
-            </div>
-          </div>
+      <div className={styles.inner}>
+        <div className={styles.brand}>
+          <motion.span
+            className={styles.mark}
+            style={{ rotateX: rotX, rotateY: rotY, transformPerspective: 700 }}
+          >
+            Techopedia XV<span>.</span>
+          </motion.span>
+          <span className={styles.tag}>
+            Annual National Technical Symposium · IEEE Student Branch
+          </span>
         </div>
 
-        <div className={styles.rule} />
-        <div className={styles.base}>
-          <span>© 2026 · Placeholder — fan concept, not affiliated with Marvel.</span>
-          <span>Built as a cinematic web experience.</span>
+        <nav className={styles.panel}>
+          <div className={styles.colHead}>Explore</div>
+          <div className={styles.links}>
+            {NAV.map((l) => (
+              <Link key={l.href} href={l.href}>
+                {l.label}
+              </Link>
+            ))}
+          </div>
+        </nav>
+
+        <div className={styles.panel}>
+          <div className={styles.colHead}>Connect</div>
+          <div className={styles.social}>
+            {SOCIAL.map((l) => (
+              <a key={l} href="#" onClick={noop}>
+                {l}
+              </a>
+            ))}
+          </div>
         </div>
-      </footer>
-    </div>
+      </div>
+
+      <div className={styles.rule} />
+      <div className={styles.base}>
+        <span>© 2026 Techopedia Level 15. All Rights Reserved.</span>
+        <span>Organized by IEEE Student Branch.</span>
+      </div>
+    </motion.footer>
   );
 }

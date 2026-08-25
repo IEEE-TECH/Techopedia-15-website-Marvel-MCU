@@ -1,0 +1,222 @@
+.section {
+  padding: 5rem 1.5rem;
+  background: rgba(11, 13, 17, 0.95);
+  border-top: 1px solid rgba(237, 29, 36, 0.25);
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.kicker {
+  font-family: var(--font-chakra), sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.25em;
+  color: #ffd700;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  font-family: var(--font-avengers), var(--font-anton), sans-serif;
+  font-size: 2.8rem;
+  margin: 0 0 0.75rem 0;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  text-transform: uppercase;
+  text-shadow: 0 0 24px rgba(237, 29, 36, 0.6);
+}
+
+.subtitle {
+  font-family: var(--font-chakra), sans-serif;
+  font-size: 1rem;
+  color: #cbd5e1;
+  margin: 0;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+  background: rgba(18, 20, 26, 0.75);
+  border: 1px solid rgba(237, 29, 36, 0.3);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.statVal {
+  font-family: var(--font-avengers), var(--font-anton), sans-serif;
+  font-size: 2.5rem;
+  color: #ffd700;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+  text-shadow: 0 0 16px rgba(255, 215, 0, 0.4);
+}
+
+.statLbl {
+  font-family: var(--font-chakra), sans-serif;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tiers {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.tierGroup {
+  text-align: center;
+}
+
+.tierName {
+  font-family: var(--font-chakra), sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  color: #ffd700;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 1.5rem;
+  perspective: 1200px;
+}
+
+/* 3D floating glass pedestal */
+.slot {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(160deg, rgba(24, 27, 36, 0.75), rgba(11, 13, 17, 0.85));
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border: 1px solid rgba(237, 29, 36, 0.3);
+  border-radius: 10px;
+  padding: 1.25rem 2rem;
+  min-width: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 22px 40px -26px rgba(0, 0, 0, 0.9);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.slot:hover {
+  border-color: #ed1d24;
+  box-shadow: 0 0 30px rgba(237, 29, 36, 0.45), 0 26px 48px -26px rgba(0, 0, 0, 0.95);
+}
+
+.pedestalBeam {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 70%;
+  height: 130%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at 50% 100%, rgba(237, 29, 36, 0.35), transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  z-index: 0;
+}
+.slot:hover .pedestalBeam {
+  opacity: 1;
+}
+
+.wordmark {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-chakra), sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+}
+
+.logo {
+  position: relative;
+  z-index: 1;
+  max-height: 40px;
+  object-fit: contain;
+  filter: grayscale(1);
+  transition: filter 0.3s;
+}
+
+.slot:hover .logo {
+  filter: grayscale(0);
+}
+
+.tierHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  margin-bottom: 1.5rem;
+}
+
+.tierCodename {
+  font-family: var(--font-chakra), sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  color: #ed1d24;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.tierBlurb {
+  font-family: var(--font-chakra), sans-serif;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  max-width: 500px;
+  margin: 0;
+}
+
+.sponsorCardContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  text-align: center;
+}
+
+.sponsorRole {
+  font-size: 0.72rem;
+  color: #ffd700;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.tierPerks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+  margin-top: 0.8rem;
+}
+
+.perkPill {
+  font-size: 0.65rem;
+  color: #ffffff;
+  background: rgba(237, 29, 36, 0.2);
+  border: 1px solid rgba(237, 29, 36, 0.4);
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+}

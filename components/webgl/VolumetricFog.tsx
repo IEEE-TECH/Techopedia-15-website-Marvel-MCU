@@ -20,11 +20,10 @@ type LayerCfg = {
 };
 
 const LAYERS: LayerCfg[] = [
-  // All additive green haze — the canvas is transparent over the video, so a
-  // dark (normal-blend) layer would obscure the footage. Additive only adds glow.
-  { z: -7, w: 46, h: 28, scale: 2.1, speed: 0.5, opacity: 0.18, additive: true, color: "#063a27", color2: "#0e6b47", seed: 0.0 },
-  { z: -4, w: 38, h: 24, scale: 2.6, speed: 0.85, opacity: 0.15, additive: true, color: "#0a5236", color2: "#18a06e", seed: 3.1 },
-  { z: -1.5, w: 30, h: 19, scale: 3.2, speed: 1.2, opacity: 0.12, additive: true, color: "#0a6b45", color2: "#2bd694", seed: 6.2 },
+  // Additive Marvel Crimson & Gold haze for volumetric cosmic lighting
+  { z: -7, w: 46, h: 28, scale: 2.1, speed: 0.5, opacity: 0.2, additive: true, color: "#3a0507", color2: "#8b0000", seed: 0.0 },
+  { z: -4, w: 38, h: 24, scale: 2.6, speed: 0.85, opacity: 0.16, additive: true, color: "#6b0a0e", color2: "#ed1d24", seed: 3.1 },
+  { z: -1.5, w: 30, h: 19, scale: 3.2, speed: 1.2, opacity: 0.13, additive: true, color: "#8b0a10", color2: "#f5a623", seed: 6.2 },
 ];
 
 /**

@@ -187,3 +187,58 @@
     font-size: clamp(2.4rem, 13vw, 4rem);
   }
 }
+
+.metaRow {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.6rem;
+}
+
+.prizeTag {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #ffd700;
+  background: rgba(255, 215, 0, 0.12);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.teamTag {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #ffd700;
+  background: rgba(255, 215, 0, 0.12);
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.exploreBtn {
+  cursor: pointer;
+  margin-top: 1.25rem;
+  background: linear-gradient(135deg, #ed1d24, #b31016);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  color: #ffffff;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.4rem;
+  border-radius: 4px;
+  box-shadow: 0 0 20px rgba(237, 29, 36, 0.5);
+  transition: all 0.25s ease;
+}
+
+.exploreBtn:hover {
+  background: #ed1d24;
+  color: #ffffff;
+  box-shadow: 0 0 32px rgba(237, 29, 36, 0.85);
+  transform: translateY(-2px);
+}
+

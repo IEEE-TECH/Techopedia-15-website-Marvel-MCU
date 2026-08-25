@@ -1,0 +1,144 @@
+.dockWrap {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  pointer-events: auto;
+  max-width: 95vw;
+  width: max-content;
+}
+
+.dockBar {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: rgba(14, 17, 24, 0.92);
+  border: 1px solid rgba(237, 29, 36, 0.45);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), 0 0 25px rgba(237, 29, 36, 0.25);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  font-family: var(--font-ui);
+}
+
+.telemetryTag {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  color: #ffd700;
+  font-weight: 700;
+  padding: 0 0.5rem;
+  border-right: 1px solid rgba(237, 29, 36, 0.3);
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ed1d24;
+  box-shadow: 0 0 8px #ed1d24;
+  animation: pulseDot 1.5s infinite alternate;
+}
+
+@keyframes pulseDot {
+  0% { opacity: 0.5; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1.15); }
+}
+
+.sectionBtns {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.secBtn {
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid transparent;
+  color: rgba(241, 245, 249, 0.7);
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+}
+
+.secBtn:hover {
+  color: #ffffff;
+  background: rgba(237, 29, 36, 0.15);
+  border-color: rgba(237, 29, 36, 0.4);
+}
+
+.secBtnActive {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #ed1d24, #b31016) !important;
+  font-weight: 700;
+  box-shadow: 0 0 16px rgba(237, 29, 36, 0.6);
+  border-color: rgba(255, 215, 0, 0.4) !important;
+}
+
+.actionBtns {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-left: 0.5rem;
+  border-left: 1px solid rgba(237, 29, 36, 0.3);
+}
+
+.arcadeBtn {
+  cursor: pointer;
+  background: rgba(237, 29, 36, 0.15);
+  border: 1px solid rgba(237, 29, 36, 0.5);
+  color: #ffd700;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.arcadeBtn:hover {
+  background: #ed1d24;
+  color: #ffffff;
+  box-shadow: 0 0 18px rgba(237, 29, 36, 0.7);
+  transform: translateY(-1px);
+}
+
+.registerBtn {
+  cursor: pointer;
+  background: linear-gradient(135deg, #ffd700, #ff9900);
+  border: none;
+  color: #0b0d11;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  box-shadow: 0 0 14px rgba(255, 215, 0, 0.45);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.registerBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 22px rgba(255, 215, 0, 0.8);
+}
+
+@media (max-width: 860px) {
+  .sectionBtns {
+    display: none;
+  }
+  .telemetryTag {
+    border-right: none;
+  }
+}

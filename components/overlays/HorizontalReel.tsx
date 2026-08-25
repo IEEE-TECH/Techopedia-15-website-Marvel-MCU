@@ -1,42 +1,76 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import { signals } from "@/lib/signals";
 import { useRaf } from "@/lib/useRaf";
 import styles from "./reel.module.css";
 
-/**
- * Section 4 — the Horizontal Cinematic Timeline.
- *
- * The fixed .stage is the pin; vertical scroll scrubs `signals.reel` 0→1 and the
- * strip travels right→left, so the viewer feels like they're moving through a
- * sequence of scenes rather than scrolling a page. Each frame comes into focus
- * as it passes screen-centre (scale + opacity + a slight turn), with a subtle
- * parallax on its inner content. Placeholder video frames only — real clips drop
- * into `.screen` later without touching the motion.
- *
- * reel 0.00–0.08  intro  — fades/scales in as the story stack recedes
- * reel 0.08–0.90  travel — the strip slides through all four scenes
- * reel 0.90–1.00  outro  — pushes back + fades as the finale rises
- *
- * Each scene is one of the uploaded character clips (real <video>: autoplay ·
- * loop · muted · playsInline · no controls · object-fit cover). Playback is
- * gated to the section — the videos play while the reel is on-screen and pause
- * when it isn't, so they never restart or flicker while the strip travels.
- */
 interface Scene {
   n: string;
-  slug: string; // /videos/char-<slug>.mp4
+  slug: string;
+  day: string;
   timecode: string;
+  title: string;
+  venue: string;
   accent: string;
 }
 
-// first four uploaded videos, in the Section-2 character order
 const SCENES: Scene[] = [
-  { n: "01", slug: "doom", timecode: "00:01:12:04", accent: "#00ff9c" },
-  { n: "02", slug: "blackpanther", timecode: "00:04:38:21", accent: "#38ffb2" },
-  { n: "03", slug: "cyclops", timecode: "00:07:55:09", accent: "#00d884" },
-  { n: "04", slug: "mystique", timecode: "00:11:20:16", accent: "#9dffd6" },
+  {
+    n: "01",
+    slug: "doom",
+    day: "DAY 01",
+    timecode: "11:30 AM",
+    title: "Code Conquest Hackathon Kickoff",
+    venue: "Main Computing Hub / Lab Alpha",
+    accent: "#ed1d24",
+  },
+  {
+    n: "02",
+    slug: "blackpanther",
+    day: "DAY 01",
+    timecode: "12:00 PM",
+    title: "Cyber Realm CTF Gates Open",
+    venue: "Cyber Defense Arena / Hall B",
+    accent: "#ff4d4d",
+  },
+  {
+    n: "03",
+    slug: "cyclops",
+    day: "DAY 01 & 02",
+    timecode: "02:00 PM",
+    title: "Robo Blitz Combat Arena Trials",
+    venue: "Robotics Amphitheater",
+    accent: "#ffd700",
+  },
+  {
+    n: "04",
+    slug: "mystique",
+    day: "DAY 02",
+    timecode: "10:30 AM",
+    title: "Pixel Craft Spatial UI Sprint",
+    venue: "Design Lab 3 / VR Studio",
+    accent: "#00e5ff",
+  },
+  {
+    n: "05",
+    slug: "gambit",
+    day: "DAY 02",
+    timecode: "01:30 PM",
+    title: "National Paper & Project Symposium",
+    venue: "Auditorium / Tech Showcase",
+    accent: "#ff9900",
+  },
+  {
+    n: "06",
+    slug: "namor",
+    day: "DAY 02",
+    timecode: "04:30 PM",
+    title: "Grand Finale & Prize Distribution",
+    venue: "Central Auditorium",
+    accent: "#ed1d24",
+  },
 ];
 
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
@@ -54,7 +88,6 @@ export default function HorizontalReel() {
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const progressRef = useRef<HTMLSpanElement>(null);
 
-  // guarantee muted inline playback so programmatic play() is never blocked
   useEffect(() => {
     videoRefs.current.forEach((v) => {
       if (!v) return;
@@ -69,10 +102,8 @@ export default function HorizontalReel() {
     const layer = layerRef.current;
     if (!layer) return;
 
-    // only live during Section 4
     if (reel <= 0.0008 || reel >= 0.9992) {
       if (layer.style.visibility !== "hidden") layer.style.visibility = "hidden";
-      // pause when the section is off-screen (resumes later — never restarts)
       for (const v of videoRefs.current) if (v && !v.paused) v.pause();
       return;
     }
@@ -82,7 +113,6 @@ export default function HorizontalReel() {
     const outro = smoothstep(0.9, 1.0, reel);
     layer.style.opacity = (intro * (1 - outro)).toFixed(3);
 
-    // camera settle in / push back out
     const stage = stageRef.current;
     if (stage) {
       const sc = (0.92 + 0.08 * intro) * (1 - 0.05 * outro);
@@ -101,10 +131,8 @@ export default function HorizontalReel() {
       progressRef.current.style.transform = `scaleX(${travel.toFixed(4)})`;
     }
 
-    // per-frame focus + parallax (centres are transform-stable → read rect directly)
     const cx = vw / 2;
     for (let i = 0; i < SCENES.length; i++) {
-      // the section is visible → keep every clip playing (looped, muted)
       const v = videoRefs.current[i];
       if (v && v.paused) v.play().catch(() => {});
 
@@ -115,7 +143,7 @@ export default function HorizontalReel() {
       const off = fc - cx;
       const close = 1 - clamp01(Math.abs(off) / (vw * 0.62));
       const scl = 0.82 + close * 0.2;
-      const rot = clamp01((off / vw + 1) / 2) * 2 - 1; // -1..1
+      const rot = clamp01((off / vw + 1) / 2) * 2 - 1;
       f.style.transform = `perspective(1600px) rotateY(${(-rot * 7).toFixed(2)}deg) scale(${scl.toFixed(3)})`;
       f.style.opacity = (0.34 + close * 0.66).toFixed(3);
       f.style.zIndex = String(100 + Math.round(close * 100));
@@ -168,9 +196,15 @@ export default function HorizontalReel() {
                   <span className={`${styles.bracket} ${styles.br}`} />
                   <div className={styles.status}>
                     <span className={styles.dot} />
-                    <span>Scene {s.n}</span>
+                    <span>{s.day} · {s.timecode}</span>
                   </div>
-                  <div className={styles.timecode}>{s.timecode}</div>
+                  <div className={styles.timecode}>{s.venue}</div>
+
+                  <div className={styles.caption}>
+                    <div className={styles.watermark}>TECHOPEDIA 15 ROADMAP</div>
+                    <h3 className={styles.title}>{s.title}</h3>
+                    <div className={styles.sub}>{s.venue}</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -179,9 +213,13 @@ export default function HorizontalReel() {
       </div>
 
       <div className={styles.label}>
-        <div className={styles.labelKicker}>Section 04</div>
-        <div className={styles.labelTitle}>The Cinematic Timeline</div>
+        <div className={styles.labelKicker}>EVENT ROADMAP &amp; SCHEDULE</div>
+        <div className={styles.labelTitle}>The 48-Hour Quantum Timeline</div>
+        <Link href="/schedule" className={styles.scheduleLink}>
+          ▸ View Complete 2-Day Agenda &amp; Filters →
+        </Link>
       </div>
+
       <div className={styles.progress}>
         <span className={styles.progressFill} ref={progressRef} />
       </div>

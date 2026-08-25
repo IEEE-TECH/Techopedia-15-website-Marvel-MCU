@@ -59,6 +59,21 @@ export default function VideoLayer() {
 
   return (
     <div className="video-layer" aria-hidden>
+      {/* Faded Marvel Cinematic Multiverse Backdrop */}
+      <div
+        className="marvel-bg-backdrop"
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: "radial-gradient(circle at center, rgba(237, 29, 36, 0.18) 0%, rgba(11, 13, 17, 0.82) 65%, #07080a 100%), url(/marvel-bg.jpg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center 20%",
+          opacity: 0.35,
+          mixBlendMode: "screen",
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      />
       <video
         ref={marvelRef}
         className="cover-video"
@@ -67,7 +82,7 @@ export default function VideoLayer() {
         preload="auto"
         muted
         playsInline
-        style={{ opacity: 0 }}
+        style={{ opacity: 0, zIndex: 1 }}
       />
       <video
         ref={heroRef}
@@ -77,7 +92,7 @@ export default function VideoLayer() {
         preload="auto"
         muted
         playsInline
-        style={{ opacity: 0 }}
+        style={{ opacity: 0, zIndex: 1 }}
       />
       <video
         ref={finaleRef}
@@ -87,7 +102,7 @@ export default function VideoLayer() {
         preload="auto"
         muted
         playsInline
-        style={{ opacity: 0 }}
+        style={{ opacity: 0, zIndex: 1 }}
       />
     </div>
   );

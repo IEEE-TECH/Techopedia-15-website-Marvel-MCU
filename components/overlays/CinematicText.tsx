@@ -6,43 +6,81 @@ import { TIMELINE_UNITS } from "@/lib/constants";
 import { useRaf } from "@/lib/useRaf";
 import styles from "./cinematic.module.css";
 
-type Variant = "rise" | "chroma" | "loom" | "metallic";
+type Variant = "rise" | "chroma" | "loom" | "metallic" | "avengers";
 interface Beat {
   id: string;
   lines: string[];
-  // Timeline UNIT window (100vh = 1 unit) — NOT a raw scroll fraction. Converted
-  // to a scroll fraction via TIMELINE_UNITS at runtime so each beat stays pinned
-  // to its exact moment no matter how the overall scroll length changes.
   startU: number;
   endU: number;
   variant: Variant;
   kicker?: string;
+  subtitle?: string;
 }
 
 /**
- * Cinematic storytelling copy, scrubbed by scroll. Each beat owns a timeline
- * window and animates in → holds → out as the user scrolls through it (and
- * reverses when scrolling back). A storm opener + a portal line ride Section 1;
- * four story beats form the Hero text sequence before the Doom trailer; a closing
- * line punctuates the trailer; and three beats narrate the Section 5 ending
- * (Thor → Doom → Captain America). Original, movie-style copy. (The reserved
- * AVENGERS: DOOMSDAY title is deliberately NOT here.)
+ * Cinematic storytelling copy, scrubbed by scroll.
+ * Opens IMMEDIATELY with TECHOPEDIA 15 in grand Avengers font!
  */
 const BEATS: Beat[] = [
-  // ── Section 1 · storm + portal ──
-  { id: "unravel", lines: ["REALITY IS UNRAVELING"], startU: 0.35, endU: 1.2, variant: "rise" },
-  { id: "rift", lines: ["THE RIFT OPENS"], startU: 3.95, endU: 4.6, variant: "chroma" },
-  // ── Hero · text sequence before the Doom trailer ──
-  { id: "threat", lines: ["A NEW THREAT"], startU: 5.35, endU: 6.0, variant: "rise", kicker: "I" },
-  { id: "multiverse", lines: ["THE MULTIVERSE", "IS BREAKING"], startU: 6.05, endU: 6.7, variant: "chroma", kicker: "II" },
-  { id: "coming", lines: ["THEY ARE COMING"], startU: 6.75, endU: 7.25, variant: "loom", kicker: "III" },
-  { id: "legends", lines: ["ONLY LEGENDS REMAIN"], startU: 7.3, endU: 7.75, variant: "metallic", kicker: "IV" },
-  // ── Hero · trailer climax ──
-  { id: "end", lines: ["THE END BEGINS"], startU: 10.6, endU: 11.15, variant: "rise" },
-  // ── Section 5 · the battle (Thor → Doom → Captain America) ──
-  { id: "thor", lines: ["THOR ENTERS", "THE FRAY"], startU: 31.95, endU: 33.3, variant: "loom" },
-  { id: "thunder", lines: ["THE GOD OF THUNDER"], startU: 35.8, endU: 36.8, variant: "metallic" },
-  { id: "cap", lines: ["THE FIRST", "AVENGER RETURNS"], startU: 37.5, endU: 38.35, variant: "rise" },
+  // ── Section 1 · Grand Opening: Techopedia 15 in Avengers style right as site opens! ──
+  {
+    id: "hero-opening",
+    lines: ["TECHOPEDIA 15"],
+    startU: 0.0,
+    endU: 1.8,
+    variant: "avengers",
+    kicker: "IEEE STUDENT BRANCH PRESENTS",
+    subtitle: "ANNUAL NATIONAL TECHNICAL SYMPOSIUM · THE MULTIVERSE OF INNOVATION"
+  },
+  {
+    id: "rift",
+    lines: ["LEVEL 15 UNLOCKED"],
+    startU: 3.9,
+    endU: 4.6,
+    variant: "chroma",
+    kicker: "SECURITY BREACH DETECTED"
+  },
+  // ── Hero · text sequence ──
+  {
+    id: "domains",
+    lines: ["6 HEROIC DOMAINS", "₹2,50,000+ PRIZE POOL"],
+    startU: 5.35,
+    endU: 6.0,
+    variant: "rise",
+    kicker: "MISSION DIRECTIVE 01"
+  },
+  {
+    id: "multiverse",
+    lines: ["WHERE TITANS OF", "CODE & ROBOTICS COLLIDE"],
+    startU: 6.05,
+    endU: 6.7,
+    variant: "chroma",
+    kicker: "MISSION DIRECTIVE 02"
+  },
+  {
+    id: "coming",
+    lines: ["CODE. CREATE. CONQUER."],
+    startU: 6.75,
+    endU: 7.25,
+    variant: "loom",
+    kicker: "MISSION DIRECTIVE 03"
+  },
+  {
+    id: "legends",
+    lines: ["ASSEMBLE YOUR SQUAD"],
+    startU: 7.3,
+    endU: 7.75,
+    variant: "metallic",
+    kicker: "MISSION DIRECTIVE 04"
+  },
+  // ── Hero climax ──
+  {
+    id: "end",
+    lines: ["ENTER THE MULTIVERSE"],
+    startU: 10.6,
+    endU: 11.15,
+    variant: "avengers"
+  },
 ];
 
 const smoothstep = (a: number, b: number, x: number) => {
@@ -61,7 +99,7 @@ export default function CinematicText() {
       const b = BEATS[i];
       const start = b.startU / TIMELINE_UNITS;
       const end = b.endU / TIMELINE_UNITS;
-      if (s < start - 0.02 || s > end + 0.02) {
+      if (s < (b.id === "hero-opening" ? 0 : start - 0.02) || s > end + 0.02) {
         if (el.style.visibility !== "hidden") {
           el.style.opacity = "0";
           el.style.visibility = "hidden";
@@ -69,11 +107,11 @@ export default function CinematicText() {
         continue;
       }
       const t = Math.max(0, Math.min(1, (s - start) / (end - start)));
-      const enter = smoothstep(0, 0.2, t);
-      const leave = smoothstep(0.72, 1, t);
+      const enter = b.id === "hero-opening" ? 1 : smoothstep(0, 0.2, t);
+      const leave = smoothstep(0.65, 1, t);
       const opacity = enter * (1 - leave);
-      const y = (1 - enter) * 38 + leave * -32;
-      const blur = (1 - enter) * 11 + leave * 9;
+      const y = b.id === "hero-opening" ? leave * -32 : (1 - enter) * 38 + leave * -32;
+      const blur = b.id === "hero-opening" ? leave * 9 : (1 - enter) * 11 + leave * 9;
       const scale = b.variant === "loom" ? 1.35 - 0.35 * enter : 1;
 
       el.style.visibility = opacity < 0.01 ? "hidden" : "visible";
@@ -98,6 +136,16 @@ export default function CinematicText() {
           >
             {b.kicker && <span className={styles.kicker}>{b.kicker}</span>}
             {b.lines.map((line, li) => {
+              if (b.variant === "avengers") {
+                return (
+                  <span
+                    key={li}
+                    className={`${styles.line} ${styles.avengersLine} ${small ? styles.small : ""}`}
+                  >
+                    {line}
+                  </span>
+                );
+              }
               if (b.variant === "chroma") {
                 return (
                   <span
@@ -120,6 +168,7 @@ export default function CinematicText() {
                 </span>
               );
             })}
+            {b.subtitle && <span className={styles.subtitle}>{b.subtitle}</span>}
           </div>
         );
       })}

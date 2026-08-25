@@ -23,9 +23,9 @@ export default function Portal() {
         uTime: { value: 0 },
         uOpen: { value: 0 },
         uDive: { value: 0 },
-        uColorDeep: { value: new THREE.Color("#06120d") },
-        uColorMid: { value: new THREE.Color("#0aa76a") },
-        uColorBright: { value: new THREE.Color("#7dffc4") },
+        uColorDeep: { value: new THREE.Color("#1f0305") },
+        uColorMid: { value: new THREE.Color("#ed1d24") },
+        uColorBright: { value: new THREE.Color("#ffd700") },
       },
       vertexShader: /* glsl */ `
         varying vec2 vUv;

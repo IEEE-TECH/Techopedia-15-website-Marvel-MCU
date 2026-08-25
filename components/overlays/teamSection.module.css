@@ -1,0 +1,227 @@
+.section {
+  padding: 5rem 1.5rem;
+  background: rgba(11, 13, 17, 0.85);
+  border-top: 1px solid rgba(237, 29, 36, 0.25);
+  border-bottom: 1px solid rgba(237, 29, 36, 0.25);
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.kicker {
+  font-family: var(--font-chakra), sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.25em;
+  color: #ffd700;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  font-family: var(--font-avengers), var(--font-anton), sans-serif;
+  font-size: 2.8rem;
+  margin: 0 0 0.75rem 0;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  text-transform: uppercase;
+  text-shadow: 0 0 24px rgba(237, 29, 36, 0.6);
+}
+
+.subtitle {
+  font-family: var(--font-chakra), sans-serif;
+  font-size: 1rem;
+  color: #cbd5e1;
+  margin: 0;
+}
+
+/* department filter tabs */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2.75rem;
+}
+.tab {
+  position: relative;
+  cursor: pointer;
+  font-family: var(--font-chakra), sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(241, 245, 249, 0.7);
+  background: rgba(18, 20, 26, 0.6);
+  border: 1px solid rgba(237, 29, 36, 0.25);
+  border-radius: 999px;
+  padding: 0.55rem 1.1rem;
+  overflow: hidden;
+  transition: color 0.25s ease;
+}
+.tab:hover {
+  color: #ffffff;
+}
+.tabPill {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(120deg, #ed1d24, #b31016);
+  box-shadow: 0 0 18px rgba(237, 29, 36, 0.6);
+}
+.tabLabel {
+  position: relative;
+  z-index: 1;
+}
+.tab:has(.tabPill) {
+  color: #ffffff;
+  font-weight: 700;
+  border-color: rgba(255, 215, 0, 0.4);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  perspective: 1200px;
+}
+
+.card {
+  background: rgba(18, 20, 26, 0.75);
+  border: 1px solid rgba(237, 29, 36, 0.25);
+  border-radius: 12px;
+  padding: 1.75rem 1.25rem;
+  text-align: center;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  border-color: #ed1d24;
+  box-shadow: 0 10px 30px rgba(237, 29, 36, 0.35);
+}
+
+.avatar {
+  position: relative;
+  z-index: 1;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 0 auto 1.25rem auto;
+  background: #0b0d11;
+  border: 2px solid #ed1d24;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radarRing {
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  border: 1px dashed rgba(237, 29, 36, 0.5);
+  pointer-events: none;
+  animation: radarSpin 7s linear infinite;
+}
+.radarRing::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, rgba(237, 29, 36, 0.6), transparent 32%);
+  mix-blend-mode: screen;
+  opacity: 0.55;
+}
+.radarRing2 {
+  position: absolute;
+  inset: -24px;
+  border-radius: 50%;
+  border: 1px solid rgba(237, 29, 36, 0.2);
+  pointer-events: none;
+  animation: radarPulse 3.2s ease-in-out infinite;
+}
+@keyframes radarSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes radarPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0;
+  }
+}
+
+.initials {
+  font-family: var(--font-avengers), var(--font-anton), sans-serif;
+  font-size: 1.8rem;
+  color: #ffd700;
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.name {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-chakra), sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #ffffff;
+  margin: 0 0 0.35rem 0;
+}
+
+.role {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-chakra), sans-serif;
+  font-size: 0.85rem;
+  color: #ffd700;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.detail {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-chakra), sans-serif;
+  font-size: 0.75rem;
+  color: #cbd5e1;
+  margin-bottom: 1rem;
+}
+
+.social {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  font-family: var(--font-chakra), sans-serif;
+  font-size: 0.75rem;
+  color: #ffffff;
+  background: rgba(237, 29, 36, 0.2);
+  border: 1px solid rgba(237, 29, 36, 0.4);
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.social:hover {
+  background: #ed1d24;
+  color: #ffffff;
+  border-color: #ed1d24;
+  box-shadow: 0 0 12px rgba(237, 29, 36, 0.6);
+}

@@ -3,42 +3,30 @@
 import { useRef } from "react";
 import { signals } from "@/lib/signals";
 import { useRaf } from "@/lib/useRaf";
+import { DOMAINS, EventDomain } from "@/lib/eventData";
 import styles from "./story.module.css";
 
-/**
- * Section 3 — the Cinematic Story Stack.
- *
- * One pinned sequence (the fixed .stage is the pin) containing six fullscreen
- * poster panels. As `signals.story` scrubs 0→1, each panel rises from the bottom,
- * eases to a settle with a slight scale, and stacks OVER the previous one —
- * casting a soft shadow and pushing the earlier chapter back into shadow.
- * Everything is scroll-driven; the shared green atmosphere (WebGL, z-index 3)
- * washes over every panel so the background stays consistent throughout.
- *
- * Each panel is one uploaded artwork (object-fit: cover, full viewport) with a
- * bottom-right title + description themed by a per-panel accent — so the subject
- * of the poster stays clear while the text stays readable. The reveal/stack
- * animation is unchanged.
- */
 interface Panel {
   n: string;
   img: string;
+  domainId: string;
   kicker: string;
   title: string[];
   desc: string;
-  accent: string; // primary accent (glow, kicker, edge, counter)
-  accent2?: string; // secondary accent (divider gradient) — for dual-tone themes
-  titleColor: string; // title text colour (kept light for contrast)
-  pos?: string; // object-position for the cover crop
+  accent: string;
+  accent2?: string;
+  titleColor: string;
+  pos?: string;
 }
 
 const CHAPTERS: Panel[] = [
   {
     n: "01",
     img: "/story/panel-1.jpg",
-    kicker: "Lord of Latveria",
-    title: ["Doctor", "Doom"],
-    desc: "Victor von Doom bends science, sorcery, and fate to a single will — and the multiverse will kneel.",
+    domainId: "code-conquest",
+    kicker: "Flagship Hackathon · Project Doomsday",
+    title: ["Code", "Conquest"],
+    desc: "24-Hour Hackathon & Algorithmic Duel. Build futuristic AI apps, smart software, and web3 innovations.",
     accent: "#00ff9c",
     titleColor: "#e9fff5",
     pos: "center",
@@ -46,9 +34,10 @@ const CHAPTERS: Panel[] = [
   {
     n: "02",
     img: "/story/panel-2.jpg",
-    kicker: "God of Thunder",
-    title: ["Thor"],
-    desc: "Storm-forged and unbroken, the God of Thunder rises to answer the end of everything.",
+    domainId: "cyber-realm",
+    kicker: "Offensive Cyber Siege · Wakanda Firewall",
+    title: ["Cyber Realm", "& CTF"],
+    desc: "Test your ethical hacking in web security, reverse engineering, cryptography, and network defense.",
     accent: "#ff5a3c",
     accent2: "#ffd15a",
     titleColor: "#fff3e4",
@@ -57,45 +46,47 @@ const CHAPTERS: Panel[] = [
   {
     n: "03",
     img: "/story/panel-3.jpg",
-    kicker: "God of Stories",
-    title: ["Loki"],
-    desc: "At the heart of time, the God of Stories holds every fracturing world together.",
-    accent: "#19d98a",
-    accent2: "#ffd76a",
+    domainId: "robo-blitz",
+    kicker: "Hardware Colosseum · Stark Bot Wars",
+    title: ["Robo", "Blitz"],
+    desc: "High-voltage combat bot deathmatches, autonomous line followers, and precision drone obstacle race.",
+    accent: "#ffd700",
+    accent2: "#ff9a3c",
     titleColor: "#eafff4",
     pos: "center",
   },
   {
     n: "04",
     img: "/story/panel-4.jpg",
-    kicker: "Leader of the X-Men",
-    title: ["Cyclops"],
-    desc: "Field leader of the X-Men, unleashing an unstoppable optic storm against the coming dark.",
-    accent: "#ffffff",
+    domainId: "pixel-craft",
+    kicker: "Spatial UI/UX · Quantum Reality",
+    title: ["Pixel", "Craft"],
+    desc: "Futuristic interface design jam & live interactive 3D WebGL development sprint.",
+    accent: "#00e5ff",
     titleColor: "#ffffff",
     pos: "center",
   },
   {
     n: "05",
     img: "/story/panel-5.jpg",
-    kicker: "Master of the Ten Rings",
-    title: ["Shang-Chi"],
-    desc: "Wielding the ancient power of the Ten Rings, he stands unshaken before the storm.",
-    accent: "#ff4d4d",
+    domainId: "paper-expo",
+    kicker: "Research Symposium · Pym Tech Expo",
+    title: ["Paper &", "Project Expo"],
+    desc: "National technical research symposium & hardware invention exhibition showcasing real-world breakthroughs.",
+    accent: "#ff3366",
     accent2: "#ff9a3c",
     titleColor: "#fff0ec",
     pos: "center",
   },
   {
     n: "06",
-    // ?v=2 busts any cached copy of the old low-res image so the new HD asset
-    // is guaranteed to load (the file itself was replaced in place).
     img: "/story/panel-6.jpg?v=2",
-    kicker: "Marvel's First Family",
-    title: ["Fantastic", "Four"],
-    desc: "Four heroes, one family — stepping into a new universe against impossible odds.",
+    domainId: "esports-arena",
+    kicker: "Tactical Arena · Multiverse Battlegrounds",
+    title: ["E-Sports", "Arena"],
+    desc: "Valorant & BGMI tournament with custom LAN setups, live casting, and championship glory.",
     accent: "#4da6ff",
-    accent2: "#bfe3ff",
+    accent2: "#9dffd6",
     titleColor: "#eaf5ff",
     pos: "center",
   },
@@ -118,15 +109,17 @@ const cssVars = (c: Panel) =>
     "--pos": c.pos ?? "center",
   }) as React.CSSProperties;
 
-export default function StoryStack() {
+interface StoryStackProps {
+  onSelectEvent?: (event: EventDomain) => void;
+}
+
+export default function StoryStack({ onSelectEvent }: StoryStackProps) {
   const layerRef = useRef<HTMLDivElement>(null);
   const panelRefs = useRef<(HTMLElement | null)[]>([]);
   const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
   const dimRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   useRaf(() => {
-    // hand the stage over to the horizontal reel: the whole stack fades out as
-    // Section 4 begins, so Section 3 → 4 is a cross-push, not a cut.
     const layer = layerRef.current;
     if (layer) {
       const fade = smoothstep(0, 0.09, signals.reel);
@@ -146,12 +139,9 @@ export default function StoryStack() {
       const panel = panelRefs.current[i];
       if (!panel) continue;
 
-      // this panel's own rise (0 before its turn, 1 once fully up)
       const r = clamp01((s - i * step) / step);
-      // how far the NEXT panel has risen over this one (0..1)
       const cov = i < N - 1 ? clamp01((s - (i + 1) * step) / step) : 0;
 
-      // fully below the fold, or fully hidden behind the next panel → don't paint
       if (r <= 0.0006 || cov >= 0.9994) {
         if (panel.style.visibility !== "hidden") panel.style.visibility = "hidden";
         continue;
@@ -160,78 +150,94 @@ export default function StoryStack() {
       const re = easeOutCubic(r);
       const cove = easeInOutCubic(cov);
 
-      // rise from 100% below to 0, with a slight settle-scale (always ≥1 → no edge gap)
       const ty = (1 - re) * 100;
       const scale = 1.08 - 0.08 * re;
       panel.style.visibility = "visible";
       panel.style.zIndex = String(i + 1);
       panel.style.transform = `translate3d(0, ${ty.toFixed(3)}%, 0) scale(${scale.toFixed(4)})`;
 
-      // recede into shadow as the next chapter covers it
       const dim = dimRefs.current[i];
       if (dim) dim.style.opacity = (cove * 0.5).toFixed(3);
 
-      // content reveals after the panel is mostly up, then fades as it's covered
       const content = contentRefs.current[i];
       if (content) {
         const appear = smoothstep(0.32, 0.98, r);
         content.style.opacity = (appear * (1 - cove * 0.9)).toFixed(3);
         const cy = (1 - appear) * 42 - cove * 26;
         content.style.transform = `translate3d(0, ${cy.toFixed(2)}px, 0)`;
+        content.style.pointerEvents = appear > 0.6 && cov < 0.3 ? "auto" : "none";
       }
     }
   });
 
   return (
     <div className="story-layer" ref={layerRef} aria-hidden>
-      {CHAPTERS.map((c, i) => (
-        <article
-          key={c.n}
-          ref={(el) => {
-            panelRefs.current[i] = el;
-          }}
-          className={styles.panel}
-          style={{
-            ...cssVars(c),
-            transform: "translate3d(0, 100%, 0)",
-            visibility: "hidden",
-          }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className={styles.bg} src={c.img} alt="" draggable={false} />
-          <span className={styles.scrim} />
-          <span className={styles.glow} />
-          <span className={styles.vignette} />
-          <span className={styles.edge} />
-          <span className={styles.counter}>{c.n} / 06</span>
+      {CHAPTERS.map((c, i) => {
+        const matchedDomain = DOMAINS.find((d) => d.id === c.domainId) || DOMAINS[i];
 
-          <div
-            className={styles.content}
+        return (
+          <article
+            key={c.n}
             ref={(el) => {
-              contentRefs.current[i] = el;
+              panelRefs.current[i] = el;
             }}
-            style={{ opacity: 0 }}
+            className={styles.panel}
+            style={{
+              ...cssVars(c),
+              transform: "translate3d(0, 100%, 0)",
+              visibility: "hidden",
+            }}
           >
-            <span className={styles.kicker}>{c.kicker}</span>
-            <h2 className={styles.title}>
-              {c.title.map((line, li) => (
-                <span key={li} className={styles.titleLine}>
-                  {line}
-                </span>
-              ))}
-            </h2>
-            <span className={styles.rule} />
-            <p className={styles.desc}>{c.desc}</p>
-          </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className={styles.bg} src={c.img} alt="" draggable={false} />
+            <span className={styles.scrim} />
+            <span className={styles.glow} />
+            <span className={styles.vignette} />
+            <span className={styles.edge} />
+            <span className={styles.counter}>{c.n} / 06</span>
 
-          <span
-            className={styles.dim}
-            ref={(el) => {
-              dimRefs.current[i] = el;
-            }}
-          />
-        </article>
-      ))}
+            <div
+              className={styles.content}
+              ref={(el) => {
+                contentRefs.current[i] = el;
+              }}
+              style={{ opacity: 0 }}
+            >
+              <span className={styles.kicker}>{c.kicker}</span>
+              <h2 className={styles.title}>
+                {c.title.map((line, li) => (
+                  <span key={li} className={styles.titleLine}>
+                    {line}
+                  </span>
+                ))}
+              </h2>
+
+              <div className={styles.metaRow}>
+                <span className={styles.prizeTag}>PRIZE // {matchedDomain.prizePool}</span>
+                <span className={styles.teamTag}>TEAM // {matchedDomain.teamSize}</span>
+              </div>
+
+              <span className={styles.rule} />
+              <p className={styles.desc}>{c.desc}</p>
+
+              <button
+                className={styles.exploreBtn}
+                type="button"
+                onClick={() => onSelectEvent?.(matchedDomain)}
+              >
+                ▸ Inspect Mission Dossier &amp; Rules
+              </button>
+            </div>
+
+            <span
+              className={styles.dim}
+              ref={(el) => {
+                dimRefs.current[i] = el;
+              }}
+            />
+          </article>
+        );
+      })}
     </div>
   );
 }

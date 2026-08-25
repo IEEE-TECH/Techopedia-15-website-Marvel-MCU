@@ -41,8 +41,8 @@ export default function Sparks() {
       blending: THREE.AdditiveBlending,
       uniforms: {
         uPixelRatio: { value: 1 },
-        uColorHot: { value: new THREE.Color("#eafff2") },
-        uColorCool: { value: new THREE.Color("#00ff9c") },
+        uColorHot: { value: new THREE.Color("#ffffff") },
+        uColorCool: { value: new THREE.Color("#ed1d24") },
       },
       vertexShader: /* glsl */ `
         attribute float aLife;

@@ -1,21 +1,26 @@
-/* ============================================================
-   AVENGERS: DOOMSDAY — global cinematic base
-   ============================================================ */
-
 :root {
   --black: #000000;
-  --graphite: #07090b;
-  --ink: #04140f;
-  --green: #00ff9c;
-  --green-deep: #00b473;
-  --green-dark: #083b2a;
-  --mint: #9dffd6;
-  --core: #e6fff4;
-  --white: #eafff6;
-  --silver: #aebbb5;
+  --graphite: #0b0d11;
+  --ink: #12141a;
+  --marvel-red: #ed1d24;
+  --marvel-crimson: #b31016;
+  --marvel-dark: #3a0507;
+  --marvel-gold: #f5a623;
+  --green: #ed1d24;
+  --green-deep: #b31016;
+  --green-dark: #290406;
+  --mint: #ff9da1;
+  --core: #ffffff;
+  --white: #ffffff;
+  --silver: #cbd5e1;
+  --gold: #ffd700;
+  --cyan: #00e5ff;
+  --scarlet: #ff2a44;
 
   --font-display: var(--font-anton), "Arial Narrow", sans-serif;
   --font-ui: var(--font-chakra), ui-monospace, monospace;
+  --font-avengers: var(--font-avengeance), var(--font-bebas), var(--font-anton), Impact, sans-serif;
+  --font-orbitron: var(--font-orbitron), sans-serif;
 
   color-scheme: dark;
 }
@@ -40,11 +45,9 @@ body {
 }
 
 body {
-  /* The experience is scroll-driven from load — the page always scrolls. */
   cursor: default;
 }
 
-/* Hide the scrollbar — the scroll is a camera move, not a document. */
 html {
   scrollbar-width: none;
 }
@@ -59,9 +62,6 @@ a {
   text-decoration: none;
 }
 
-/* The full-viewport stage that holds the canvas + every overlay.
-   `inset: 0` (not 100vw/100dvh) fills the viewport exactly and excludes the
-   scrollbar, so there is never an edge gap. */
 .stage {
   position: fixed;
   inset: 0;
@@ -70,7 +70,6 @@ a {
   z-index: 0;
 }
 
-/* Any layer that must truly fill the viewport. */
 .layer {
   position: absolute;
   inset: 0;
@@ -78,7 +77,6 @@ a {
   height: 100%;
 }
 
-/* The DOM trailers live here, behind the transparent atmosphere canvas. */
 .video-layer {
   position: absolute;
   inset: 0;
@@ -87,9 +85,6 @@ a {
   background: #000;
 }
 
-/* Video assets: true fullscreen, cover, no letterboxing. Sized by width/height
-   100% (replaced elements need explicit sizing) + inset:0, so they always fill
-   the .video-layer exactly with no offset. */
 .cover-video {
   position: absolute;
   inset: 0;
@@ -102,9 +97,6 @@ a {
   will-change: opacity;
 }
 
-/* The Hero (portrait) trailer: shown WHOLE (object-fit: contain), centered, at
-   full height — the green atmosphere fills the sides instead of black bars.
-   A gentle cinematic grade keeps the dark footage rich rather than flat black. */
 .hero-video {
   position: absolute;
   inset: 0;
@@ -116,12 +108,9 @@ a {
   background: transparent;
   will-change: opacity;
   filter: brightness(1.12) contrast(1.06) saturate(1.08)
-    drop-shadow(0 0 60px rgba(0, 255, 156, 0.25));
+    drop-shadow(0 0 60px rgba(237, 29, 36, 0.35));
 }
 
-/* Sections 3–5 all live between the video (z1) and the atmosphere (z3), so the
-   shared green particles/fog wash over every one consistently. Only one is ever
-   on screen at a time (each gated + faded by its own signal). */
 .story-layer,
 .reel-layer,
 .mcu-layer,
@@ -133,14 +122,12 @@ a {
   pointer-events: none;
 }
 
-/* Transparent WebGL atmosphere sits ABOVE the video + story panels. */
 .canvas-layer {
   position: absolute;
   inset: 0;
   z-index: 3;
 }
 
-/* Overlays that sit above the WebGL canvas. */
 .overlay {
   position: absolute;
   inset: 0;
@@ -158,7 +145,6 @@ a {
   50% { opacity: 0.82; }
 }
 
-/* Reduced-motion: keep it watchable but calmer. */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.001ms !important;
@@ -166,8 +152,6 @@ a {
   }
 }
 
-/* The invisible scroll track — its height is the distance the scrub spans.
-   The fixed .stage renders on top; scrolling this drives every cinematic value. */
 .scroll-track {
   position: relative;
   width: 100%;
@@ -177,3 +161,61 @@ a {
 .scroll-track section {
   width: 100%;
 }
+
+/* ============================================================
+   AVENGERS / TECHOPEDIA HEROIC TYPOGRAPHY & HUD UTILITIES
+   ============================================================ */
+.avengers-text {
+  font-family: var(--font-avengers);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: linear-gradient(180deg, #ffffff 0%, #ffe4e6 25%, #ed1d24 70%, #990000 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 24px rgba(237, 29, 36, 0.6)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.9));
+  transform: skewX(-5deg);
+}
+
+.avengers-text-gold {
+  font-family: var(--font-avengers);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: linear-gradient(180deg, #ffffff 0%, #fff2b2 35%, #ffd700 75%, #b38600 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 24px rgba(255, 215, 0, 0.55)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.9));
+  transform: skewX(-5deg);
+}
+
+.hud-panel {
+  background: rgba(18, 20, 26, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(237, 29, 36, 0.35);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7), inset 0 0 16px rgba(237, 29, 36, 0.08);
+  position: relative;
+}
+
+.hud-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid var(--marvel-red);
+  border-left: 2px solid var(--marvel-red);
+}
+
+.hud-panel::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  border-bottom: 2px solid var(--marvel-red);
+  border-right: 2px solid var(--marvel-red);
+}
+
+

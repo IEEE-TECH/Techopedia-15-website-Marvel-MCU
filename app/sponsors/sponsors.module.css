@@ -1,0 +1,257 @@
+/* ============================================================
+   Sponsors — tiered logo walls + the partnership pitch.
+   ============================================================ */
+
+/* headline stats */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1px;
+  background: rgba(237, 29, 36, 0.25);
+  border: 1px solid rgba(237, 29, 36, 0.3);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: clamp(3rem, 8vh, 5rem);
+}
+.stat {
+  background: linear-gradient(160deg, rgba(24, 27, 36, 0.9), rgba(11, 13, 17, 0.95));
+  padding: clamp(1.4rem, 3vw, 2.2rem) 1rem;
+  text-align: center;
+}
+.statValue {
+  font-family: var(--font-bebas), var(--font-anton), sans-serif;
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  letter-spacing: 0.05em;
+  background: linear-gradient(180deg, #ffffff, #ffd700 140%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.4));
+}
+.statLabel {
+  margin-top: 0.5rem;
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+/* tier blocks */
+.tierBlock {
+  margin-bottom: clamp(2.6rem, 7vh, 4.2rem);
+}
+.tierHead {
+  text-align: center;
+  margin-bottom: 1.8rem;
+}
+.tierName {
+  font-family: var(--font-anton), var(--font-chakra), sans-serif;
+  font-size: clamp(1.4rem, 3.2vw, 2.2rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffd700;
+  text-shadow: 0 0 22px rgba(255, 215, 0, 0.4);
+}
+.tierBlurb {
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: #cbd5e1;
+}
+
+.logoGrid {
+  display: grid;
+  gap: clamp(0.9rem, 2vw, 1.4rem);
+  justify-content: center;
+  perspective: 1300px;
+}
+/* tier scale drives both column count and slot height */
+.xl {
+  grid-template-columns: minmax(0, 620px);
+  justify-content: center;
+}
+.xl .slot {
+  min-height: clamp(140px, 20vw, 200px);
+}
+.lg {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.lg .slot {
+  min-height: clamp(110px, 14vw, 150px);
+}
+.md {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+.md .slot {
+  min-height: clamp(90px, 11vw, 120px);
+}
+.sm {
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+}
+.sm .slot {
+  min-height: clamp(74px, 9vw, 96px);
+}
+
+.slot {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: linear-gradient(135deg, rgba(24, 27, 36, 0.65), rgba(11, 13, 17, 0.85));
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border: 1px solid rgba(237, 29, 36, 0.25);
+  border-radius: 10px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 20px 40px -24px rgba(0, 0, 0, 0.9);
+  transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+}
+.slot:hover {
+  border-color: #ed1d24;
+  box-shadow: 0 0 30px rgba(237, 29, 36, 0.35), 0 24px 46px -24px rgba(0, 0, 0, 0.95);
+}
+.slotLink {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
+.pedestalBeam {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 70%;
+  height: 130%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at 50% 100%, rgba(237, 29, 36, 0.3), transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  z-index: 0;
+}
+.slot:hover .pedestalBeam {
+  opacity: 1;
+}
+.logo {
+  position: relative;
+  z-index: 1;
+  max-width: 100%;
+  max-height: 72%;
+  object-fit: contain;
+  filter: grayscale(1) brightness(1.6);
+  opacity: 0.82;
+  transition: filter 0.3s, opacity 0.3s;
+}
+.slot:hover .logo {
+  filter: grayscale(0) brightness(1);
+  opacity: 1;
+}
+.wordmark {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: clamp(0.9rem, 1.6vw, 1.3rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(241, 245, 249, 0.6);
+  text-align: center;
+}
+.xl .wordmark {
+  font-size: clamp(1.5rem, 3.4vw, 2.6rem);
+  color: #ffffff;
+}
+
+/* why partner */
+.benefits {
+  margin: clamp(3rem, 8vh, 5rem) 0;
+  padding-top: clamp(2.4rem, 6vh, 3.6rem);
+  border-top: 1px solid rgba(237, 29, 36, 0.25);
+}
+.benefitsTitle {
+  font-family: var(--font-avengers), var(--font-display);
+  font-size: clamp(1.5rem, 3.4vw, 2.3rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 2.2rem;
+  text-shadow: 0 0 20px rgba(237, 29, 36, 0.5);
+}
+.benefitGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: clamp(1rem, 2.2vw, 1.5rem);
+}
+.benefit {
+  padding: 1.6rem 1.4rem;
+  background: linear-gradient(135deg, rgba(24, 27, 36, 0.75), rgba(11, 13, 17, 0.9));
+  border: 1px solid rgba(237, 29, 36, 0.2);
+  border-left: 3px solid #ed1d24;
+  border-radius: 8px;
+  transition: transform 0.3s, border-color 0.3s;
+}
+.benefit:hover {
+  transform: translateY(-4px);
+  border-color: rgba(237, 29, 36, 0.5);
+  border-left-color: #ffd700;
+}
+.benefitName {
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+.benefitDesc {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+/* cta */
+.ctaBox {
+  text-align: center;
+  padding: clamp(2rem, 5vw, 3.5rem) 1.5rem;
+  background: radial-gradient(120% 120% at 50% 0%, rgba(237, 29, 36, 0.18), transparent 70%),
+    linear-gradient(160deg, rgba(24, 27, 36, 0.8), rgba(11, 13, 17, 0.95));
+  border: 1px solid rgba(237, 29, 36, 0.35);
+  border-radius: 12px;
+  box-shadow: 0 0 35px rgba(237, 29, 36, 0.2);
+}
+.ctaTitle {
+  font-family: var(--font-avengers), var(--font-display);
+  font-size: clamp(1.4rem, 3.2vw, 2.2rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-bottom: 0.8rem;
+}
+.ctaText {
+  max-width: 520px;
+  margin: 0 auto 1.8rem;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: #cbd5e1;
+}
+.ctaBtn {
+  cursor: pointer;
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-size: 0.76rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: linear-gradient(120deg, #ed1d24, #b31016);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  padding: 0.85rem 2rem;
+  border-radius: 4px;
+  font-weight: 700;
+  box-shadow: 0 0 24px rgba(237, 29, 36, 0.5);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.ctaBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 36px rgba(237, 29, 36, 0.85);
+}

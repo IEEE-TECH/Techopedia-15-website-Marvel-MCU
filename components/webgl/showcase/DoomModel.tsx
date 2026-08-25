@@ -40,8 +40,8 @@ export default function DoomModel() {
       side: THREE.DoubleSide,
     });
     const greenEmis = new THREE.MeshStandardMaterial({
-      color: 0x06251a,
-      emissive: new THREE.Color(0x00ff9c),
+      color: 0x250608,
+      emissive: new THREE.Color(0xed1d24),
       emissiveIntensity: 2.2,
       metalness: 0.3,
       roughness: 0.5,
@@ -142,7 +142,7 @@ export default function DoomModel() {
 
     // ── Energy base disc (additive glow the figure stands on) ─────
     const baseMat = new THREE.MeshBasicMaterial({
-      color: 0x00ff9c,
+      color: 0xed1d24,
       transparent: true,
       opacity: 0.5,
       blending: THREE.AdditiveBlending,

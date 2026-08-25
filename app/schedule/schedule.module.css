@@ -1,0 +1,225 @@
+/* ============================================================
+   Schedule — filterable two-day agenda timeline.
+   ============================================================ */
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-bottom: clamp(2.5rem, 6vh, 4rem);
+}
+.chip {
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(241, 245, 249, 0.7);
+  background: rgba(18, 20, 26, 0.6);
+  border: 1px solid rgba(237, 29, 36, 0.25);
+  border-radius: 4px;
+  padding: 0.55rem 1rem;
+  transition: color 0.25s, border-color 0.25s, background 0.25s;
+}
+.chip:hover {
+  color: #ffffff;
+  border-color: rgba(237, 29, 36, 0.6);
+}
+.chipOn {
+  color: #ffffff;
+  font-weight: 700;
+  background: linear-gradient(120deg, #ed1d24, #b31016);
+  border-color: rgba(255, 215, 0, 0.4);
+  box-shadow: 0 0 18px rgba(237, 29, 36, 0.5);
+}
+
+/* day block */
+.day {
+  margin-bottom: clamp(3rem, 8vh, 5rem);
+}
+.dayHead {
+  display: flex;
+  align-items: baseline;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(237, 29, 36, 0.25);
+  margin-bottom: 2.4rem;
+}
+.dayName {
+  font-family: var(--font-avengers), var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(237, 29, 36, 0.5);
+}
+.dayDate {
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #ffd700;
+  font-weight: 700;
+}
+.dayCount {
+  margin-left: auto;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+/* timeline */
+.timeline {
+  list-style: none;
+  position: relative;
+  padding-left: 0;
+  perspective: 1400px;
+}
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: clamp(56px, 8vw, 92px);
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(237, 29, 36, 0.4) 12%,
+    rgba(237, 29, 36, 0.4) 88%,
+    transparent
+  );
+}
+.row {
+  position: relative;
+  display: grid;
+  grid-template-columns: clamp(56px, 8vw, 92px) 24px 1fr;
+  align-items: start;
+  gap: 0;
+  margin-bottom: 1.1rem;
+}
+.time {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
+  letter-spacing: 0.06em;
+  color: #ffd700;
+  padding-top: 0.85rem;
+  text-align: right;
+  padding-right: 0.9rem;
+}
+.dot {
+  position: relative;
+  height: 100%;
+}
+.dot::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 1.15rem;
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  border-radius: 50%;
+  background: #ed1d24;
+  box-shadow: 0 0 12px rgba(237, 29, 36, 0.9);
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(24, 27, 36, 0.7), rgba(11, 13, 17, 0.85));
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid rgba(237, 29, 36, 0.25);
+  border-radius: 12px;
+  padding: 1.1rem 1.35rem;
+  margin-left: 0.6rem;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 18px 40px -26px rgba(0, 0, 0, 0.9);
+  transform-style: preserve-3d;
+  transition: border-color 0.25s, transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  border-color: rgba(237, 29, 36, 0.65);
+  transform: translateX(4px) translateY(-3px) rotateX(3deg);
+  box-shadow: 0 0 32px rgba(237, 29, 36, 0.3), 0 22px 46px -26px rgba(0, 0, 0, 0.95);
+}
+.cardGlow {
+  position: absolute;
+  inset: -40% 40% auto -20%;
+  height: 70%;
+  background: radial-gradient(circle, rgba(237, 29, 36, 0.25), transparent 70%);
+  filter: blur(20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+.card:hover .cardGlow {
+  opacity: 1;
+}
+.cardTop {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.itemTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+}
+.track {
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #ffd700;
+  background: rgba(237, 29, 36, 0.2);
+  border: 1px solid rgba(237, 29, 36, 0.4);
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+  white-space: nowrap;
+  box-shadow: 0 0 12px rgba(237, 29, 36, 0.35);
+}
+.detail {
+  position: relative;
+  z-index: 1;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+.empty {
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: #94a3b8;
+  padding: 1.5rem 0;
+}
+
+.note {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 0.76rem;
+  line-height: 1.8;
+  letter-spacing: 0.06em;
+  color: #94a3b8;
+}
+
+@media (max-width: 620px) {
+  .row {
+    grid-template-columns: 52px 20px 1fr;
+  }
+  .timeline::before {
+    left: 52px;
+  }
+  .dayCount {
+    margin-left: 0;
+    width: 100%;
+  }
+}

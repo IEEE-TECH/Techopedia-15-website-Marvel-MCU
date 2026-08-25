@@ -29,7 +29,7 @@ export default function CinematicCanvas() {
         premultipliedAlpha: true,
         powerPreference: "high-performance",
       }}
-      dpr={[1, 1.5]}
+      dpr={[1, 2]}
       camera={{ position: [0, 0, 6], fov: 45, near: 0.1, far: 120 }}
       onCreated={({ gl, scene }) => {
         gl.setClearColor(0x000000, 0); // fully transparent so the video shows
@@ -39,12 +39,12 @@ export default function CinematicCanvas() {
       <SceneDriver />
       <CameraRig />
 
-      {/* deep void dust */}
+      {/* Marvel Multiverse Crimson & Gold dust */}
       <ParticleField
         mode="dust"
         count={7000}
-        colorA="#00ff9c"
-        colorB="#9dffd6"
+        colorA="#ed1d24"
+        colorB="#ffd700"
         size={4.6}
         spread={[38, 22, 18]}
         drift={1}
@@ -53,12 +53,12 @@ export default function CinematicCanvas() {
 
       <VolumetricFog />
 
-      {/* embers drifting in front — atmosphere over the footage */}
+      {/* Stark Arc embers drifting in front */}
       <ParticleField
         mode="ember"
         count={1600}
-        colorA="#12b877"
-        colorB="#d7ffef"
+        colorA="#e62429"
+        colorB="#f5a623"
         size={6}
         spread={[26, 20, 9]}
         rise={1.5}

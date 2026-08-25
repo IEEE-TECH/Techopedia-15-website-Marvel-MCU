@@ -107,7 +107,7 @@ export default function Lightning() {
         blending: THREE.AdditiveBlending,
         uniforms: {
           uOpacity: { value: 0 },
-          uColor: { value: new THREE.Color("#a8ffcf") },
+          uColor: { value: new THREE.Color("#ff2233") },
         },
         vertexShader: /* glsl */ `
           void main(){ gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }

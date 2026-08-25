@@ -19,13 +19,14 @@
 .kicker {
   display: block;
   font-family: var(--font-ui);
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.6em;
   text-indent: 0.6em;
   font-size: clamp(0.6rem, 1.4vw, 0.95rem);
-  color: var(--mint);
-  opacity: 0.85;
+  color: #ffd700;
+  opacity: 0.95;
   margin-bottom: clamp(0.6rem, 1.6vw, 1.3rem);
+  text-shadow: 0 0 16px rgba(255, 215, 0, 0.5);
 }
 
 .line {
@@ -35,7 +36,7 @@
   line-height: 0.92;
   letter-spacing: 0.035em;
   font-size: clamp(2.4rem, 8.5vw, 8.4rem);
-  color: #eafff6;
+  color: #ffffff;
   margin: 0;
 }
 .small {
@@ -44,39 +45,39 @@
 
 .glow {
   text-shadow:
-    0 0 12px rgba(0, 255, 156, 0.55),
-    0 0 42px rgba(0, 255, 156, 0.35),
-    0 0 90px rgba(0, 200, 130, 0.25);
+    0 0 12px rgba(237, 29, 36, 0.75),
+    0 0 42px rgba(237, 29, 36, 0.55),
+    0 0 90px rgba(179, 16, 22, 0.45);
 }
 
-/* metallic sheen — "ONLY LEGENDS REMAIN" */
+/* Marvel metallic sheen */
 .metallic {
   background: linear-gradient(
     100deg,
-    #4f6b60 0%,
-    #eafff6 18%,
-    #9dffd6 34%,
-    #2a3d36 52%,
-    #eafff6 70%,
-    #00ff9c 86%,
-    #6f8a80 100%
+    #7a1014 0%,
+    #ffffff 18%,
+    #ffd700 34%,
+    #3d080a 52%,
+    #ffffff 70%,
+    #ed1d24 86%,
+    #990000 100%
   );
   background-size: 220% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   animation: sheen 3.2s linear infinite;
-  filter: drop-shadow(0 0 22px rgba(0, 255, 156, 0.35));
+  filter: drop-shadow(0 0 22px rgba(237, 29, 36, 0.55));
 }
 @keyframes sheen {
   0% { background-position: 120% 0; }
   100% { background-position: -120% 0; }
 }
 
-/* chromatic split — "THE MULTIVERSE IS BREAKING" / "THE RIFT OPENS" */
+/* chromatic split */
 .chroma {
   position: relative;
-  color: #eafff6;
+  color: #ffffff;
 }
 .chroma::before,
 .chroma::after {
@@ -87,15 +88,15 @@
   pointer-events: none;
 }
 .chroma::before {
-  color: #ff2d55;
+  color: #ed1d24;
   transform: translate(-3px, 0);
-  opacity: 0.6;
+  opacity: 0.7;
   animation: chromaA 1.6s steps(2) infinite;
 }
 .chroma::after {
-  color: #00fff2;
+  color: #00e5ff;
   transform: translate(3px, 0);
-  opacity: 0.6;
+  opacity: 0.7;
   animation: chromaB 1.9s steps(2) infinite;
 }
 @keyframes chromaA {
@@ -105,4 +106,43 @@
 @keyframes chromaB {
   0%, 100% { transform: translate(3px, 0); }
   50% { transform: translate(6px, -1px); }
+}
+
+/* Grand Marvel MCU Avengers Title Typography */
+.avengersLine {
+  display: inline-block;
+  font-family: var(--font-avengers);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: clamp(2.4rem, 7.2vw, 6.5rem);
+  line-height: 1.05;
+  white-space: nowrap;
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #ffe8e8 25%,
+    #ed1d24 65%,
+    #b31016 85%,
+    #4a0508 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transform: skewX(-4deg);
+  filter: drop-shadow(0 0 40px rgba(237, 29, 36, 0.8))
+    drop-shadow(0 10px 30px rgba(0, 0, 0, 0.95));
+  margin: 0 auto;
+  padding: 0 0.1em;
+}
+
+.subtitle {
+  display: block;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  font-size: clamp(0.65rem, 1.1vw, 0.88rem);
+  color: #ffd700;
+  opacity: 0.95;
+  margin-top: clamp(0.8rem, 2vw, 1.4rem);
+  text-shadow: 0 0 16px rgba(255, 215, 0, 0.5);
 }

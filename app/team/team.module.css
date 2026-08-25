@@ -1,0 +1,250 @@
+/* ============================================================
+   Team — departmental gallery of the organizing committee.
+   ============================================================ */
+
+/* department filter tabs */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: clamp(2.5rem, 6vh, 4rem);
+}
+.tab {
+  position: relative;
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(241, 245, 249, 0.7);
+  background: rgba(18, 20, 26, 0.6);
+  border: 1px solid rgba(237, 29, 36, 0.25);
+  border-radius: 999px;
+  padding: 0.55rem 1.1rem;
+  overflow: hidden;
+  transition: color 0.25s ease;
+}
+.tab:hover {
+  color: var(--white);
+}
+.tabPill {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(120deg, #ed1d24, #b31016);
+  box-shadow: 0 0 18px rgba(237, 29, 36, 0.6);
+}
+.tabLabel {
+  position: relative;
+  z-index: 1;
+}
+.tab:has(.tabPill) {
+  color: #ffffff;
+  font-weight: 700;
+  border-color: rgba(255, 215, 0, 0.4);
+}
+
+.group {
+  margin-bottom: clamp(3rem, 8vh, 5rem);
+}
+.groupHead {
+  display: flex;
+  align-items: baseline;
+  gap: 1.4rem;
+  flex-wrap: wrap;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(237, 29, 36, 0.25);
+  margin-bottom: 2.4rem;
+}
+.dept {
+  font-family: var(--font-avengers), var(--font-display);
+  font-size: clamp(1.5rem, 3.4vw, 2.3rem);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--white);
+  white-space: nowrap;
+  text-shadow: 0 0 18px rgba(237, 29, 36, 0.5);
+}
+.blurb {
+  font-size: 0.82rem;
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+  color: #cbd5e1;
+  flex: 1;
+  min-width: 240px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: clamp(1rem, 2.2vw, 1.6rem);
+  perspective: 1200px;
+}
+
+.card {
+  position: relative;
+  text-align: center;
+  padding: 2rem 1.2rem 1.6rem;
+  background: linear-gradient(135deg, rgba(24, 27, 36, 0.75), rgba(11, 13, 17, 0.88));
+  border: 1px solid rgba(237, 29, 36, 0.25);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+.card::before {
+  content: "";
+  position: absolute;
+  inset: -40% 50% auto -40%;
+  height: 60%;
+  background: radial-gradient(circle, rgba(237, 29, 36, 0.2), transparent 70%);
+  filter: blur(24px);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.card:hover {
+  border-color: rgba(237, 29, 36, 0.65);
+  box-shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.9), 0 0 26px rgba(237, 29, 36, 0.25);
+}
+.card:hover::before {
+  opacity: 1;
+}
+
+/* portrait */
+.photoWrap {
+  position: relative;
+  z-index: 1;
+  width: clamp(84px, 9vw, 104px);
+  height: clamp(84px, 9vw, 104px);
+  margin: 0 auto 1.2rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(140deg, rgba(237, 29, 36, 0.2), rgba(11, 13, 17, 0.95));
+}
+
+/* rotating neon radar rings */
+.radarRing {
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  border: 1px dashed rgba(237, 29, 36, 0.5);
+  pointer-events: none;
+  animation: radarSpin 7s linear infinite;
+}
+.radarRing::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, rgba(237, 29, 36, 0.6), transparent 32%);
+  mix-blend-mode: screen;
+  opacity: 0.55;
+}
+.radarRing2 {
+  position: absolute;
+  inset: -26px;
+  border-radius: 50%;
+  border: 1px solid rgba(237, 29, 36, 0.2);
+  pointer-events: none;
+  animation: radarPulse 3.2s ease-in-out infinite;
+}
+@keyframes radarSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes radarPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0;
+  }
+}
+.photo {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  filter: grayscale(0.2) contrast(1.05);
+  transition: filter 0.35s ease;
+}
+.card:hover .photo {
+  filter: grayscale(0) contrast(1.1);
+}
+.initials {
+  font-family: var(--font-avengers), var(--font-display);
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  letter-spacing: 0.06em;
+  color: #ffd700;
+  text-shadow: 0 0 18px rgba(255, 215, 0, 0.5);
+}
+.ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid rgba(237, 29, 36, 0.4);
+  transition: transform 0.35s ease, border-color 0.35s ease;
+}
+.card:hover .ring {
+  transform: scale(1.07);
+  border-color: #ed1d24;
+}
+
+/* text */
+.name {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-chakra), sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #ffffff;
+  margin: 0 0 0.35rem 0;
+}
+
+.role {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-chakra), sans-serif;
+  font-size: 0.85rem;
+  color: #ffd700;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.detail {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-chakra), sans-serif;
+  font-size: 0.75rem;
+  color: #cbd5e1;
+  margin-bottom: 1rem;
+}
+
+.social {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  font-family: var(--font-chakra), sans-serif;
+  font-size: 0.75rem;
+  color: #ffffff;
+  background: rgba(237, 29, 36, 0.2);
+  border: 1px solid rgba(237, 29, 36, 0.4);
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.social:hover {
+  background: #ed1d24;
+  color: #ffffff;
+  border-color: #ed1d24;
+  box-shadow: 0 0 12px rgba(237, 29, 36, 0.6);
+}
