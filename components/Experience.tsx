@@ -8,6 +8,7 @@ import { signals } from "@/lib/signals";
 import { getVideoEl, scrubEl } from "@/lib/videos";
 import { VIDEO, SCROLL, TIMELINE_UNITS } from "@/lib/constants";
 import { EventDomain } from "@/lib/eventData";
+import { sound } from "@/lib/audio";
 
 import CinematicCanvas from "@/components/webgl/CinematicCanvas";
 import VideoLayer from "@/components/overlays/VideoLayer";
@@ -72,6 +73,7 @@ export default function Experience() {
       if (started) return;
       started = true;
       useExperience.getState().start();
+      sound.playMarvelFanfare();
     };
     const evs = ["pointerdown", "keydown", "touchstart", "wheel", "scroll"] as const;
     evs.forEach((e) => window.addEventListener(e, onGesture, { passive: true }));

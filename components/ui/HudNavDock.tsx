@@ -74,6 +74,14 @@ export default function HudNavDock({ onRegisterClick, onMiniGamesClick }: HudNav
         <div className={styles.actionBtns}>
           <button
             type="button"
+            className={styles.secBtn}
+            onClick={() => sound.playMarvelFanfare(true)}
+            title="Play Marvel Iconic Intro Fanfare"
+          >
+            🔊 FANFARE
+          </button>
+          <button
+            type="button"
             className={styles.arcadeBtn}
             onClick={() => {
               sound.playSuccess();
