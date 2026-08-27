@@ -13,8 +13,6 @@ import styles from "./footer.module.css";
  */
 const NAV = [
   { label: "Schedule", href: "/schedule" },
-  { label: "Team", href: "/team" },
-  { label: "Sponsors", href: "/sponsors" },
 ];
 const SOCIAL = ["Instagram", "LinkedIn", "X (Twitter)", "YouTube"];
 

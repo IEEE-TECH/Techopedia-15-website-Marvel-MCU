@@ -13,10 +13,9 @@ interface HudNavDockProps {
 
 const SECTIONS = [
   { id: "intro", label: "01 · INTRO", targetRatio: 0.05 },
-  { id: "domains", label: "02 · 6 DOMAINS", targetRatio: 0.45 },
+  { id: "domains", label: "02 · 4 DOMAINS", targetRatio: 0.45 },
   { id: "story", label: "03 · DOSSIERS", targetRatio: 0.65 },
   { id: "timeline", label: "04 · TIMELINE", targetRatio: 0.85 },
-  { id: "sponsors", label: "05 · SQUAD & PARTNERS", targetRatio: 0.98 },
 ];
 
 export default function HudNavDock({ onRegisterClick, onMiniGamesClick }: HudNavDockProps) {
@@ -33,10 +32,8 @@ export default function HudNavDock({ onRegisterClick, onMiniGamesClick }: HudNav
       if (activeSec !== "domains") setActiveSec("domains");
     } else if (s < 0.75) {
       if (activeSec !== "story") setActiveSec("story");
-    } else if (s < 0.93) {
-      if (activeSec !== "timeline") setActiveSec("timeline");
     } else {
-      if (activeSec !== "sponsors") setActiveSec("sponsors");
+      if (activeSec !== "timeline") setActiveSec("timeline");
     }
   });
 

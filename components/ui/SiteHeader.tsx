@@ -9,8 +9,6 @@ import styles from "./ui.module.css";
 
 const NAV = [
   { label: "Schedule", href: "/schedule" },
-  { label: "Team", href: "/team" },
-  { label: "Sponsors", href: "/sponsors" },
 ];
 
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
