@@ -29,7 +29,7 @@ export default function CinematicCanvas() {
         premultipliedAlpha: true,
         powerPreference: "high-performance",
       }}
-      dpr={[1, 2]}
+      dpr={[0.75, 1.25]}
       camera={{ position: [0, 0, 6], fov: 45, near: 0.1, far: 120 }}
       onCreated={({ gl, scene }) => {
         gl.setClearColor(0x000000, 0); // fully transparent so the video shows
@@ -42,7 +42,7 @@ export default function CinematicCanvas() {
       {/* Marvel Multiverse Crimson & Gold dust */}
       <ParticleField
         mode="dust"
-        count={7000}
+        count={4200}
         colorA="#ed1d24"
         colorB="#ffd700"
         size={4.6}
@@ -56,7 +56,7 @@ export default function CinematicCanvas() {
       {/* Stark Arc embers drifting in front */}
       <ParticleField
         mode="ember"
-        count={1600}
+        count={900}
         colorA="#e62429"
         colorB="#f5a623"
         size={6}

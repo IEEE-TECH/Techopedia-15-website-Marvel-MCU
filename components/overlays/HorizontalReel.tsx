@@ -133,9 +133,6 @@ export default function HorizontalReel() {
 
     const cx = vw / 2;
     for (let i = 0; i < SCENES.length; i++) {
-      const v = videoRefs.current[i];
-      if (v && v.paused) v.play().catch(() => {});
-
       const f = frameRefs.current[i];
       if (!f) continue;
       const rect = f.getBoundingClientRect();
@@ -149,6 +146,13 @@ export default function HorizontalReel() {
       f.style.zIndex = String(100 + Math.round(close * 100));
       const inner = innerRefs.current[i];
       if (inner) inner.style.transform = `translate3d(${(-off * 0.04).toFixed(1)}px, 0, 0)`;
+
+      const v = videoRefs.current[i];
+      const shouldPlay = close > 0.18;
+      if (v) {
+        if (shouldPlay && v.paused) v.play().catch(() => {});
+        else if (!shouldPlay && !v.paused) v.pause();
+      }
     }
   });
 
@@ -186,7 +190,7 @@ export default function HorizontalReel() {
                     muted
                     loop
                     playsInline
-                    preload="auto"
+                    preload="metadata"
                     disablePictureInPicture
                   />
                   <span className={styles.scrim} />

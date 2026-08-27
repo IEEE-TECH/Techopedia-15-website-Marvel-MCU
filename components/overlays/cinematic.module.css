@@ -33,12 +33,22 @@
   display: block;
   font-family: var(--font-display);
   text-transform: uppercase;
-  line-height: 0.92;
+  line-height: 1.08;
   letter-spacing: 0.035em;
   font-size: clamp(2.4rem, 8.5vw, 8.4rem);
   color: #ffffff;
   margin: 0;
+  padding: 0.08em 0 0.04em;
 }
+
+.titleImage {
+  display: block;
+  width: min(78vw, 720px);
+  max-height: 30vh;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
 .small {
   font-size: clamp(1.9rem, 6.4vw, 6.2rem);
 }
@@ -115,7 +125,7 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-size: clamp(2.4rem, 7.2vw, 6.5rem);
-  line-height: 1.05;
+  line-height: 1.12;
   white-space: nowrap;
   background: linear-gradient(
     180deg,
@@ -132,7 +142,7 @@
   filter: drop-shadow(0 0 40px rgba(237, 29, 36, 0.8))
     drop-shadow(0 10px 30px rgba(0, 0, 0, 0.95));
   margin: 0 auto;
-  padding: 0 0.1em;
+  padding: 0.08em 0.1em 0.04em;
 }
 
 .subtitle {

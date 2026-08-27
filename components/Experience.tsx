@@ -25,8 +25,6 @@ import RegistrationModal from "@/components/ui/RegistrationModal";
 import MiniGamesModal from "@/components/games/MiniGamesModal";
 import EventDetailModal from "@/components/overlays/EventDetailModal";
 import HudNavDock from "@/components/ui/HudNavDock";
-import TeamSection from "@/components/overlays/TeamSection";
-import SponsorsSection from "@/components/overlays/SponsorsSection";
 
 // Master timeline positions (arbitrary units; ScrollTrigger scrubs scroll→time).
 const T = {
@@ -250,10 +248,8 @@ export default function Experience() {
         <section style={{ height: `${outroVh}vh` }} aria-label="Outro" />
       </div>
 
-      {/* Landing Team & Sponsors sections */}
+      {/* Landing footer */}
       <div style={{ position: "relative", zIndex: 10, background: "#04140f" }}>
-        <TeamSection />
-        <SponsorsSection />
         <SiteFooter />
       </div>
     </>

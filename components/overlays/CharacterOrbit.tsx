@@ -45,17 +45,13 @@ export default function CharacterOrbit({ onSelectEvent }: CharacterOrbitProps) {
 
     for (let i = 0; i < N; i++) {
       const vid = videoRefs.current[i];
-      if (vid) {
-        if (wantPlay && vid.paused) vid.play().catch(() => {});
-        else if (!wantPlay && s < 0.002 && !vid.paused) vid.pause();
-      }
-
       const card = cardRefs.current[i];
       if (!card) continue;
 
       const enterAt = 0.05 + i * 0.055;
       const enter = smoothstep(enterAt, enterAt + 0.16, s);
       if (enter <= 0.001) {
+        if (vid && !vid.paused) vid.pause();
         if (card.style.visibility !== "hidden") card.style.visibility = "hidden";
         continue;
       }
@@ -78,6 +74,12 @@ export default function CharacterOrbit({ onSelectEvent }: CharacterOrbitProps) {
       card.style.filter = d < -0.05 ? `blur(${(-d * 3).toFixed(2)}px)` : "none";
       card.style.setProperty("--glow", smoothstep(0.55, 1, depth01).toFixed(3));
       card.style.pointerEvents = d > 0.4 ? "auto" : "none";
+
+      if (vid) {
+        const shouldPlay = wantPlay && d > 0.05;
+        if (shouldPlay && vid.paused) vid.play().catch(() => {});
+        else if (!shouldPlay && !vid.paused) vid.pause();
+      }
     }
   });
 
@@ -109,7 +111,7 @@ export default function CharacterOrbit({ onSelectEvent }: CharacterOrbitProps) {
             muted
             loop
             playsInline
-            preload="auto"
+            preload="metadata"
             disablePictureInPicture
           />
           <div className={styles.grad} />

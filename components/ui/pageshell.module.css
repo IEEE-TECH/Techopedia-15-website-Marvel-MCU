@@ -368,8 +368,9 @@
   font-family: var(--font-avengers);
   text-transform: uppercase;
   font-size: clamp(2.4rem, 7vw, 5rem);
-  line-height: 0.95;
+  line-height: 1.1;
   letter-spacing: 0.02em;
+  padding: 0.08em 0 0.04em;
   background: linear-gradient(180deg, #ffffff 0%, #ffe4e6 25%, #ed1d24 75%, #990000 100%);
   -webkit-background-clip: text;
   background-clip: text;

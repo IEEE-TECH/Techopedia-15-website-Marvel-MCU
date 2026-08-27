@@ -66,30 +66,6 @@ const CHAPTERS: Panel[] = [
     titleColor: "#ffffff",
     pos: "center",
   },
-  {
-    n: "05",
-    img: "/story/panel-5.jpg",
-    domainId: "paper-expo",
-    kicker: "Research Symposium · Pym Tech Expo",
-    title: ["Paper &", "Project Expo"],
-    desc: "National technical research symposium & hardware invention exhibition showcasing real-world breakthroughs.",
-    accent: "#ff3366",
-    accent2: "#ff9a3c",
-    titleColor: "#fff0ec",
-    pos: "center",
-  },
-  {
-    n: "06",
-    img: "/story/panel-6.jpg?v=2",
-    domainId: "esports-arena",
-    kicker: "Tactical Arena · Multiverse Battlegrounds",
-    title: ["E-Sports", "Arena"],
-    desc: "Valorant & BGMI tournament with custom LAN setups, live casting, and championship glory.",
-    accent: "#4da6ff",
-    accent2: "#9dffd6",
-    titleColor: "#eaf5ff",
-    pos: "center",
-  },
 ];
 
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);

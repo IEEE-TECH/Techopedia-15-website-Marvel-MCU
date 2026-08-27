@@ -135,7 +135,13 @@ export default function CinematicText() {
             style={{ opacity: 0, visibility: "hidden" }}
           >
             {b.kicker && <span className={styles.kicker}>{b.kicker}</span>}
-            {b.lines.map((line, li) => {
+            {b.id === "hero-opening" ? (
+              <img
+                className={styles.titleImage}
+                src="/techopedia%20web%20loggo.png"
+                alt="Techopedia 15"
+              />
+            ) : b.lines.map((line, li) => {
               if (b.variant === "avengers") {
                 return (
                   <span

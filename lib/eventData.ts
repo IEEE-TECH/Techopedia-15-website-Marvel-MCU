@@ -32,9 +32,9 @@ export interface EventDomain {
 
 export const DOMAINS: EventDomain[] = [
   {
-    id: "code-conquest",
+    id: "squabble",
     slug: "doom",
-    name: "Code Conquest",
+    name: "Squabble",
     mcuCodename: "Project Doomsday",
     tagline: "Algorithmic Battlegrounds & 24-Hour Hackathon",
     shortDesc: "Compete in intense speed-coding rounds and build game-changing full-stack AI applications under 24 hours.",
@@ -69,9 +69,9 @@ export const DOMAINS: EventDomain[] = [
     ]
   },
   {
-    id: "cyber-realm",
+    id: "eureka",
     slug: "blackpanther",
-    name: "Cyber Realm & CTF",
+    name: "Eureka",
     mcuCodename: "Wakanda Firewall Siege",
     tagline: "Offensive Security, Cryptography & Live Jeopardy CTF",
     shortDesc: "Crack cryptographic ciphers, reverse engineer binaries, bypass web defenses, and conquer the live leaderboard.",
@@ -104,9 +104,9 @@ export const DOMAINS: EventDomain[] = [
     ]
   },
   {
-    id: "robo-blitz",
+    id: "inquisitve",
     slug: "cyclops",
-    name: "Robo Blitz",
+    name: "Inquisitve",
     mcuCodename: "Stark Industries Bot Wars",
     tagline: "Combat Robotics, Autonomous Line Followers & Drone Arena",
     shortDesc: "Pit customized combat robots in the steel cage, test autonomous line-followers, and pilot drones through obstacle mazes.",
@@ -139,9 +139,9 @@ export const DOMAINS: EventDomain[] = [
     ]
   },
   {
-    id: "pixel-craft",
+    id: "laser-tag",
     slug: "mystique",
-    name: "Pixel Craft",
+    name: "laser tag",
     mcuCodename: "Quantum Reality UI/UX",
     tagline: "Futuristic Design Sprints & Interactive 3D Web Dev",
     shortDesc: "Design breathtaking interfaces, craft micro-animations, and code interactive 3D WebGL experiences from scratch.",
@@ -171,71 +171,6 @@ export const DOMAINS: EventDomain[] = [
       { name: "Vihaan Rao", contact: "+91 98765 43217" }
     ]
   },
-  {
-    id: "paper-expo",
-    slug: "gambit",
-    name: "Paper & Project Expo",
-    mcuCodename: "Pym Tech Research Summit",
-    tagline: "National Technical Symposium & Hardware Prototype Expo",
-    shortDesc: "Present groundbreaking research papers, patentable innovations, and working hardware prototypes to veteran academicians.",
-    fullDesc: "The premier platform for student researchers, innovators, and hardware builders. Present your peer-reviewed technical papers and live hardware working models across AI/IoT, Embedded Systems, Renewable Energy, and Biomedical Tech.",
-    prizePool: "₹30,000+",
-    teamSize: "1 - 3 Members",
-    venue: "Auditorium Annex / Expo Hall",
-    time: "Day 02 · 02:30 PM",
-    rounds: [
-      { title: "Session 1: Research Paper Symposium", description: "10-minute presentation followed by 5-minute Q&A with PhD panel.", duration: "2 Hours" },
-      { title: "Session 2: Hardware Prototype Expo", description: "Interactive exhibition booth demonstrations for attendees and judges.", duration: "2.5 Hours" }
-    ],
-    rules: [
-      "Papers must adhere to IEEE double-column format.",
-      "Plagiarism must strictly be under 15%.",
-      "Working hardware models must have proper surge and safety insulation."
-    ],
-    judgingCriteria: [
-      "Novelty & Research Contribution (35%)",
-      "Methodology & Experimental Validation (30%)",
-      "Live Demonstration & Q&A Defense (35%)"
-    ],
-    accentColor: "#ff9900",
-    glowColor: "rgba(255, 153, 0, 0.4)",
-    coordinators: [
-      { name: "Diya Patel", contact: "+91 98765 43218" },
-      { name: "Zara Ahmed", contact: "+91 98765 43219" }
-    ]
-  },
-  {
-    id: "esports-arena",
-    slug: "namor",
-    name: "E-Sports Arena",
-    mcuCodename: "Multiverse Battlegrounds",
-    tagline: "High-Octane Gaming Tournament: Valorant & BGMI",
-    shortDesc: "Battle in high-stakes esports brackets featuring custom LAN lobbies, live cast commentary, and championship trophies.",
-    fullDesc: "Unleash tactical dominance. Squads clash in bracketed elimination stages across Valorant (5v5 Tactical Shooter) and BGMI (Battle Royale). Features high-refresh-rate gaming setups, live big-screen spectator casting, and intense finals.",
-    prizePool: "₹30,000+",
-    teamSize: "4 - 5 Members",
-    venue: "Gaming Arena / E-Sports Lounge",
-    time: "Day 02 · 04:00 PM",
-    rounds: [
-      { title: "Stage 1: Swiss Qualifiers", description: "Best-of-1 elimination brackets.", duration: "2 Hours" },
-      { title: "Stage 2: Semi-Finals", description: "Best-of-3 map picks and bans.", duration: "2 Hours" },
-      { title: "Stage 3: Grand Championship Final", description: "Best-of-5 live streamed main stage showdown.", duration: "2.5 Hours" }
-    ],
-    rules: [
-      "Any use of third-party cheats, macros, or exploits results in permanent ban.",
-      "Teams must report to LAN desks 15 minutes prior to scheduled match time.",
-      "Players may bring their own gaming peripherals (mouse, keyboard, headset)."
-    ],
-    judgingCriteria: [
-      "Match Scoreboard & Victory Conditions (100%)"
-    ],
-    accentColor: "#ed1d24",
-    glowColor: "rgba(237, 29, 36, 0.4)",
-    coordinators: [
-      { name: "Sara Khan", contact: "+91 98765 43220" },
-      { name: "Naina Gupta", contact: "+91 98765 43221" }
-    ]
-  }
 ];
 
 export type Track =
@@ -432,6 +367,6 @@ export const TEAM: TeamGroup[] = [
 export const EVENT_STATS = [
   { value: "₹2.5L+", label: "Prize Pool" },
   { value: "1500+", label: "Participants" },
-  { value: "06", label: "Heroic Domains" },
+  { value: "04", label: "Heroic Domains" },
   { value: "48hrs", label: "Non-Stop Action" }
 ];
