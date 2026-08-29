@@ -5,10 +5,17 @@ import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { signals } from "@/lib/signals";
 import { useRaf } from "@/lib/useRaf";
+import { sound } from "@/lib/audio";
+import SoundToggle from "./SoundToggle";
 import styles from "./ui.module.css";
 
 const NAV = [
+  { label: "Domains", targetRatio: 0.45 },
+  { label: "Dossiers", targetRatio: 0.65 },
+  { label: "Timeline", targetRatio: 0.85 },
   { label: "Schedule", href: "/schedule" },
+  { label: "Team", href: "/team" },
+  { label: "Sponsors", href: "/sponsors" },
 ];
 
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
@@ -42,6 +49,23 @@ export default function SiteHeader({
     el.style.visibility = op < 0.05 ? "hidden" : "visible";
   });
 
+  const jumpTo = (targetRatio: number) => {
+    sound.playBlip(780, 0.03);
+    const track = document.querySelector(".scroll-track");
+    if (!track) return;
+    const maxScroll = track.getBoundingClientRect().height - window.innerHeight;
+    window.scrollTo({ top: Math.max(0, maxScroll * targetRatio), behavior: "smooth" });
+    setMenuOpen(false);
+  };
+
+  const renderNavItem = (n: (typeof NAV)[number], mobile = false) => {
+    const className = mobile ? styles.mobileNavLink : styles.navLink;
+    if (n.href) {
+      return <Link key={n.label} href={n.href} className={className} onClick={() => setMenuOpen(false)}>{n.label}</Link>;
+    }
+    return <button key={n.label} type="button" className={className} onClick={() => n.targetRatio !== undefined && jumpTo(n.targetRatio)} onMouseEnter={() => sound.playBlip(520, 0.02)}>{n.label}</button>;
+  };
+
   return (
     <header ref={ref} className={styles.header}>
       <div className={styles.brand}>
@@ -51,13 +75,10 @@ export default function SiteHeader({
         </span>
       </div>
       <nav className={styles.nav}>
-        {NAV.map((n) => (
-          <Link key={n.href} href={n.href} className={styles.navLink}>
-            {n.label}
-          </Link>
-        ))}
+        {NAV.map((n) => renderNavItem(n))}
       </nav>
       <div className={styles.headerActions}>
+        <SoundToggle />
         <button
           className={styles.cta}
           type="button"
@@ -92,16 +113,8 @@ export default function SiteHeader({
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
           >
-            {NAV.map((n) => (
-              <Link
-                key={n.href}
-                href={n.href}
-                className={styles.mobileNavLink}
-                onClick={() => setMenuOpen(false)}
-              >
-                {n.label}
-              </Link>
-            ))}
+            {NAV.map((n) => renderNavItem(n, true))}
+            <SoundToggle />
             <button
               className={styles.mobileArcadeBtn}
               type="button"

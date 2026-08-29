@@ -21,6 +21,7 @@
   --font-ui: var(--font-chakra), ui-monospace, monospace;
   --font-avengers: var(--font-avengeance), var(--font-bebas), var(--font-anton), Impact, sans-serif;
   --font-orbitron: var(--font-orbitron), sans-serif;
+  --button-red: linear-gradient(120deg, var(--marvel-red), var(--marvel-crimson));
 
   color-scheme: dark;
 }
@@ -66,7 +67,7 @@ a {
   position: fixed;
   inset: 0;
   overflow: hidden;
-  background: #000;
+  background: radial-gradient(circle at 50% 40%, #28070b 0%, #08090d 48%, #000 100%);
   z-index: 0;
 }
 
@@ -216,6 +217,22 @@ a {
   height: 8px;
   border-bottom: 2px solid var(--marvel-red);
   border-right: 2px solid var(--marvel-red);
+}
+
+.marvel-button {
+  cursor: pointer;
+  color: var(--white);
+  background: var(--button-red);
+  border: 1px solid rgba(255, 215, 0, 0.45);
+  box-shadow: 0 0 20px rgba(237, 29, 36, 0.35), inset 0 1px rgba(255, 255, 255, 0.16);
+  font-family: var(--font-ui);
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.marvel-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(237, 29, 36, 0.7), inset 0 1px rgba(255, 255, 255, 0.22);
 }
 
 

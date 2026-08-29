@@ -243,10 +243,10 @@
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #ffffff;
-  background: linear-gradient(120deg, #ed1d24, #b31016);
+  background: var(--button-red);
   border: 1px solid rgba(255, 215, 0, 0.4);
   padding: 0.85rem 2rem;
-  border-radius: 4px;
+  border-radius: 2px;
   font-weight: 700;
   box-shadow: 0 0 24px rgba(237, 29, 36, 0.5);
   transition: transform 0.25s, box-shadow 0.25s;

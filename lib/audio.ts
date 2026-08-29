@@ -7,6 +7,25 @@ class SoundEngine {
   private ctx: AudioContext | null = null;
   public enabled: boolean = true;
 
+  constructor() {
+    if (typeof window !== "undefined") {
+      this.enabled = window.localStorage.getItem("techopedia-audio-muted") !== "1";
+    }
+  }
+
+  get muted() {
+    return !this.enabled;
+  }
+
+  toggle() {
+    this.enabled = !this.enabled;
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("techopedia-audio-muted", this.enabled ? "0" : "1");
+    }
+    if (this.enabled) this.playBlip(660, 0.08);
+    return this.enabled;
+  }
+
   private getContext(): AudioContext | null {
     if (typeof window === "undefined") return null;
     if (!this.ctx) {

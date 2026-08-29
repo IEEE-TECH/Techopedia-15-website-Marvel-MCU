@@ -125,7 +125,7 @@
 
 .submitBtn {
   margin-top: 0.5rem;
-  background: linear-gradient(135deg, #ed1d24, #b31016);
+  background: var(--button-red);
   color: #ffffff;
   font-family: inherit;
   font-weight: 700;
@@ -134,7 +134,7 @@
   text-transform: uppercase;
   padding: 0.9rem 1.5rem;
   border: 1px solid rgba(255, 215, 0, 0.4);
-  border-radius: 6px;
+  border-radius: 2px;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
 }

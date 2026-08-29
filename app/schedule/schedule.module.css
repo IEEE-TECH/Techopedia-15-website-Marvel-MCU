@@ -29,9 +29,15 @@
 .chipOn {
   color: #ffffff;
   font-weight: 700;
-  background: linear-gradient(120deg, #ed1d24, #b31016);
+  background: var(--button-red);
   border-color: rgba(255, 215, 0, 0.4);
   box-shadow: 0 0 18px rgba(237, 29, 36, 0.5);
+}
+
+.chip,
+.chipOn {
+  min-height: 40px;
+  border-radius: 2px;
 }
 
 /* day block */

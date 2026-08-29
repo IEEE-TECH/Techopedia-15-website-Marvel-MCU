@@ -65,11 +65,11 @@ export default function VideoLayer() {
         style={{
           position: "absolute",
           inset: 0,
-          backgroundImage: "radial-gradient(circle at center, rgba(237, 29, 36, 0.18) 0%, rgba(11, 13, 17, 0.82) 65%, #07080a 100%), url(/marvel-bg.jpg)",
-          backgroundSize: "cover",
-          backgroundPosition: "center 20%",
-          opacity: 0.35,
-          mixBlendMode: "screen",
+          backgroundImage: "radial-gradient(circle at 68% 34%, rgba(237, 29, 36, 0.42), transparent 30%), radial-gradient(circle at 28% 70%, rgba(255, 215, 0, 0.14), transparent 25%), repeating-linear-gradient(60deg, transparent 0 38px, rgba(0, 229, 255, 0.08) 39px 40px), repeating-linear-gradient(-60deg, transparent 0 38px, rgba(237, 29, 36, 0.08) 39px 40px), linear-gradient(135deg, #030408, #16070b 52%, #05070c)",
+          backgroundSize: "cover, cover, 80px 140px, 80px 140px, cover",
+          backgroundPosition: "center",
+          opacity: 0.58,
+          mixBlendMode: "normal",
           pointerEvents: "none",
           zIndex: 0,
         }}

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { AdaptiveDpr } from "@react-three/drei";
 import SceneDriver from "./SceneDriver";
@@ -18,6 +19,16 @@ import Showcase from "./showcase/Showcase";
  * transparent areas let the video show straight through.
  */
 export default function CinematicCanvas() {
+  const [reducedGpu, setReducedGpu] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 820px), (prefers-reduced-motion: reduce)");
+    const update = () => setReducedGpu(media.matches || (navigator.hardwareConcurrency ?? 8) <= 4);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
   return (
     <Canvas
       className="canvas-layer"
@@ -29,7 +40,7 @@ export default function CinematicCanvas() {
         premultipliedAlpha: true,
         powerPreference: "high-performance",
       }}
-      dpr={[0.75, 1.25]}
+      dpr={[1, 1.5]}
       camera={{ position: [0, 0, 6], fov: 45, near: 0.1, far: 120 }}
       onCreated={({ gl, scene }) => {
         gl.setClearColor(0x000000, 0); // fully transparent so the video shows
@@ -42,7 +53,7 @@ export default function CinematicCanvas() {
       {/* Marvel Multiverse Crimson & Gold dust */}
       <ParticleField
         mode="dust"
-        count={4200}
+        count={reducedGpu ? 1200 : 2600}
         colorA="#ed1d24"
         colorB="#ffd700"
         size={4.6}
@@ -56,7 +67,7 @@ export default function CinematicCanvas() {
       {/* Stark Arc embers drifting in front */}
       <ParticleField
         mode="ember"
-        count={900}
+        count={reducedGpu ? 220 : 520}
         colorA="#e62429"
         colorB="#f5a623"
         size={6}

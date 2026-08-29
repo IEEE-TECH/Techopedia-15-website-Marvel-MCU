@@ -24,7 +24,6 @@ import SiteFooter from "@/components/ui/SiteFooter";
 import RegistrationModal from "@/components/ui/RegistrationModal";
 import MiniGamesModal from "@/components/games/MiniGamesModal";
 import EventDetailModal from "@/components/overlays/EventDetailModal";
-import HudNavDock from "@/components/ui/HudNavDock";
 
 // Master timeline positions (arbitrary units; ScrollTrigger scrubs scroll→time).
 const T = {
@@ -231,11 +230,6 @@ export default function Experience() {
         isOpen={!!selectedEvent}
         onClose={() => setSelectedEvent(null)}
         onRegister={(domain) => handleOpenRegistration(domain)}
-      />
-
-      <HudNavDock
-        onRegisterClick={() => handleOpenRegistration("Code Conquest")}
-        onMiniGamesClick={() => handleOpenMiniGames("bugblitz")}
       />
 
       {/* invisible scroll track */}

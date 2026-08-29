@@ -14,12 +14,13 @@ export function useLenis() {
 
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.15,
+      duration: 1.05,
       easing: (t) => 1 - Math.pow(1 - t, 3),
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 1.4,
-      lerp: 0.1,
+      wheelMultiplier: 0.92,
+      touchMultiplier: 1.15,
+      syncTouch: true,
+      lerp: 0.09,
     });
     ref.current = lenis;
     if (process.env.NODE_ENV !== "production") {

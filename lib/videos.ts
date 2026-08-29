@@ -22,6 +22,8 @@ export const VIDEO_META = {
  */
 type Which = "marvel" | "hero" | "finale";
 const els: Record<Which, HTMLVideoElement | null> = { marvel: null, hero: null, finale: null };
+const pendingSeeks = new Map<HTMLVideoElement, number>();
+let seekFrame = 0;
 export function setVideoEl(which: Which, el: HTMLVideoElement | null) {
   els[which] = el;
 }
@@ -50,7 +52,15 @@ export function scrubEl(el: HTMLVideoElement | null, t: number) {
   if (!el || el.readyState < 1) return;
   const dur = el.duration || 1;
   const clamped = Math.max(0, Math.min(dur - 0.03, t));
-  if (Math.abs(el.currentTime - clamped) > 0.008) {
-    el.currentTime = clamped;
+  if (Math.abs(el.currentTime - clamped) <= 0.008) return;
+  pendingSeeks.set(el, clamped);
+  if (!seekFrame && typeof window !== "undefined") {
+    seekFrame = window.requestAnimationFrame(() => {
+      pendingSeeks.forEach((time, video) => {
+        if (video.readyState >= 1 && Math.abs(video.currentTime - time) > 0.008) video.currentTime = time;
+      });
+      pendingSeeks.clear();
+      seekFrame = 0;
+    });
   }
 }

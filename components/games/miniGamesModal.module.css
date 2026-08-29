@@ -115,7 +115,7 @@
 }
 
 .tabActive {
-  background: linear-gradient(135deg, #ed1d24, #b31016) !important;
+  background: var(--button-red) !important;
   color: #ffffff !important;
   border-color: rgba(255, 215, 0, 0.45) !important;
   font-weight: 700;

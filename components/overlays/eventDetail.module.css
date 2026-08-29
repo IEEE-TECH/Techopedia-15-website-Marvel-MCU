@@ -308,7 +308,7 @@
 
 .registerActionBtn {
   cursor: pointer;
-  background: linear-gradient(135deg, #ed1d24, #b31016);
+  background: var(--button-red);
   border: 1px solid rgba(255, 215, 0, 0.4);
   color: #ffffff;
   font-family: var(--font-ui);
@@ -317,7 +317,7 @@
   font-weight: 700;
   text-transform: uppercase;
   padding: 0.75rem 1.6rem;
-  border-radius: 4px;
+  border-radius: 2px;
   box-shadow: 0 0 20px rgba(237, 29, 36, 0.5);
   transition: all 0.2s ease;
 }

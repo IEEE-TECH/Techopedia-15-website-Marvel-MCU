@@ -318,55 +318,103 @@ export interface TeamGroup {
 
 export const TEAM: TeamGroup[] = [
   {
-    dept: "Core Leadership",
-    blurb: "The prime command steering Techopedia Level 15 from vision to flawless execution.",
+    dept: "Leadership",
+    blurb: "The leadership council steering IEEE SIESGST through vision, administration, and strategic direction.",
     members: [
-      { name: "Dr. K. Sharma", role: "Faculty Sponsor", detail: "IEEE Student Branch Mentor & HOD", mcuTitle: "Director of S.H.I.E.L.D.", initials: "KS", linkedin: "https://linkedin.com" },
-      { name: "Aarav Sharma", role: "President & Lead Organizer", detail: "Overall Festival Director", mcuTitle: "Captain America", initials: "AS", linkedin: "https://linkedin.com", github: "https://github.com" },
-      { name: "Diya Patel", role: "Vice President", detail: "Operations & Strategic Alliances", mcuTitle: "Rescue", initials: "DP", linkedin: "https://linkedin.com" }
+      { name: "Prathamesh Palve", role: "Chairperson", detail: "Chairperson", mcuTitle: "Chairperson", initials: "PP", council: "Senior", linkedin: "https://www.linkedin.com/in/prathmesh-palve-7565822b7" },
+      { name: "Abhang Rane", role: "Vice Chairperson", detail: "Vice Chairperson", mcuTitle: "Vice Chairperson", initials: "AR", council: "Senior", linkedin: "https://www.linkedin.com/in/abhang-rane-414a24344" },
+      { name: "Mukul Wani", role: "Secretary", detail: "Secretary", mcuTitle: "Secretary", initials: "MW", council: "Senior", linkedin: "https://www.linkedin.com/in/mukul-wani-1a2ba82b7" },
+      { name: "Aditi Dhanawade", role: "Treasurer", detail: "Treasurer", mcuTitle: "Treasurer", initials: "AD", council: "Senior", linkedin: "https://www.linkedin.com/in/aditi-dhanawade-0675812b7" },
+      { name: "Prathamesh Bhagwat", role: "MDO", detail: "MDO", mcuTitle: "MDO", initials: "PB", council: "Junior", linkedin: "https://www.linkedin.com/in/prathamesh-bhagwat-191409298" },
+      { name: "Ayush Bhadane", role: "Joint Secretary", detail: "Joint Secretary", mcuTitle: "Joint Secretary", initials: "AB", council: "Junior", linkedin: "https://www.linkedin.com/in/ayush-bhadane-b38a71353" },
+      { name: "Vaishnavi Iyer", role: "Joint Secretary", detail: "Joint Secretary", mcuTitle: "Joint Secretary", initials: "VI", council: "Junior", linkedin: "https://www.linkedin.com/in/vaishnavi-iyer-503460350" }
     ]
   },
   {
-    dept: "Technical & Web Arch",
-    blurb: "Architecting the 3D WebGL portal, CTF infrastructure, judge consoles, and live scoreboard.",
+    dept: "Technical",
+    blurb: "The technical team driving IEEE SIESGST technology initiatives and development.",
     members: [
-      { name: "Rohan Mehta", role: "Technical Head", detail: "Lead WebGL & Architecture", mcuTitle: "Iron Man", initials: "RM", linkedin: "https://linkedin.com", github: "https://github.com" },
-      { name: "Ishaan Verma", role: "Full-Stack Engineer", detail: "Frontend & 3D Shaders", mcuTitle: "Doctor Strange", initials: "IV", linkedin: "https://linkedin.com", github: "https://github.com" },
-      { name: "Kavya Nair", role: "Cybersecurity Lead", detail: "CTF Challenges & Backend", mcuTitle: "Black Widow", initials: "KN", linkedin: "https://linkedin.com", github: "https://github.com" }
+      { name: "Janmanjay Verma", role: "Tech Mentor", detail: "Tech Mentor", mcuTitle: "Tech Mentor", initials: "GP", council: "Senior", linkedin: "https://www.linkedin.com/in/janmanjay-verma-64585927b" },
+      { name: "Chirayu Marathe", role: "Tech Mentor", detail: "Tech Mentor", mcuTitle: "Tech Mentor", initials: "CM", council: "Senior", linkedin: "https://www.linkedin.com/in/chirayu-marathe69/" },
+      { name: "Aditya Sharma", role: "Tech Mentor", detail: "Tech Mentor", mcuTitle: "Tech Mentor", initials: "AS", council: "Senior", linkedin: "https://www.linkedin.com/in/aditya-sharma-3625732a8" },
+      { name: "Dakshata Dalvi", role: "Technical Head", detail: "Technical Head", mcuTitle: "Technical Head", initials: "DD", council: "Junior", linkedin: "https://www.linkedin.com/in/dakshata-dalvi-475864344" },
+      { name: "Arya Muthukrishnan", role: "Technical Head", detail: "Technical Head", mcuTitle: "Technical Head", initials: "AM", council: "Junior", linkedin: "https://www.linkedin.com/in/arya-muthukrishnan-pandaram-a2264430a" },
+      { name: "Nanmathi Balachandran", role: "Technical Head", detail: "Technical Head", mcuTitle: "Technical Head", initials: "NB", council: "Junior", linkedin: "https://www.linkedin.com/in/nanmathi-balachandran-11038b32b/" },
+      { name: "Siddharth Patil", role: "Technical Head", detail: "Technical Head", mcuTitle: "Technical Head", initials: "SP", council: "Junior", linkedin: "https://www.linkedin.com/in/siddharth-patil-763635426/" },
+      { name: "Akilesh K", role: "Technical Head", detail: "Technical Head", mcuTitle: "Technical Head", initials: "AK", council: "Junior", linkedin: "https://www.linkedin.com/in/akilesh-kalyanakumar-7901b9255" },
+      { name: "Anoushka Rajesh", role: "Technical Head", detail: "Technical Head", mcuTitle: "Technical Head", initials: "AR", council: "Junior", linkedin: "https://www.linkedin.com/in/anoushka-rajesh-181a85422" }
     ]
   },
   {
-    dept: "Design & Media",
-    blurb: "Crafting every cinematic visual, teaser trailer, motion poster, and holographic asset.",
+    dept: "CS",
+    blurb: "The Computer Society team supporting technical communities and initiatives.",
     members: [
-      { name: "Ananya Iyer", role: "Design Director", detail: "Brand Identity & 3D UI", mcuTitle: "Scarlet Witch", initials: "AI", instagram: "https://instagram.com" },
-      { name: "Vihaan Rao", role: "Motion & Video Producer", detail: "Cinematic Trailers & Reels", mcuTitle: "Vision", initials: "VR", instagram: "https://instagram.com" },
-      { name: "Myra Kapoor", role: "Creative Producer", detail: "Visual Arts & Photography", mcuTitle: "Wasp", initials: "MK", instagram: "https://instagram.com" }
+      { name: "Gaurav Patil", role: "CS Representative", detail: "CS Representative", mcuTitle: "CS Representative", initials: "GP", council: "Senior", linkedin: "https://www.linkedin.com/in/gauravpatil2515" },
+      { name: "Atharva Matale", role: "CS Head", detail: "CS Head", mcuTitle: "CS Head", initials: "AM", council: "Junior", linkedin: "https://www.linkedin.com/in/atharvamatale/" }
     ]
   },
   {
-    dept: "Operations & Logistics",
-    blurb: "Managing 1500+ participants, arena staging, hardware pits, and 48 hours of uninterrupted flow.",
+    dept: "MTT-S",
+    blurb: "The MTT-S team supporting microwave, RF, and emerging technology initiatives.",
     members: [
-      { name: "Aditya Joshi", role: "Head of Operations", detail: "Arena Management & Pits", mcuTitle: "Thor", initials: "AJ", linkedin: "https://linkedin.com" },
-      { name: "Sara Khan", role: "Hospitality & Judges", detail: "VIP Delegates & Logistics", mcuTitle: "Gamora", initials: "SK", linkedin: "https://linkedin.com" },
-      { name: "Kabir Singh", role: "Hardware Logistics", detail: "Robotics Arena & Power Grid", mcuTitle: "War Machine", initials: "KS", linkedin: "https://linkedin.com" }
+      { name: "Payal Wagh", role: "MTT-S Representative", detail: "MTT-S Representative", mcuTitle: "MTT-S Representative", initials: "PW", council: "Senior", linkedin: "https://www.linkedin.com/in/payal-wagh-4395842b7" },
+      { name: "Siddhesh Murkute", role: "MTT-S Head", detail: "MTT-S Head", mcuTitle: "MTT-S Head", initials: "SM", council: "Junior", linkedin: "https://www.linkedin.com/in/siddhesh-murkute-9025332a4" }
     ]
   },
   {
-    dept: "PR, Sponsorship & Media",
-    blurb: "Propelling Techopedia across 100+ universities and locking in global technology sponsors.",
+    dept: "Design",
+    blurb: "The design team shaping the visual identity and creative direction.",
     members: [
-      { name: "Zara Ahmed", role: "Head of PR & Outreach", detail: "Campus Ambassador Network", mcuTitle: "Shuri", initials: "ZA", linkedin: "https://linkedin.com" },
-      { name: "Arjun Reddy", role: "Sponsorship Lead", detail: "Corporate & Tech Partnerships", mcuTitle: "Hawkeye", initials: "AR", linkedin: "https://linkedin.com" },
-      { name: "Naina Gupta", role: "Social & Digital Growth", detail: "Community & Campaigns", mcuTitle: "Mantis", initials: "NG", instagram: "https://instagram.com" }
+      { name: "Divya Hindurao", role: "Design Mentor", detail: "Design Mentor", mcuTitle: "Design Mentor", initials: "DH", council: "Senior", linkedin: "https://www.linkedin.com/in/divya-hindurao-895a992a7" },
+      { name: "Antara Kadam", role: "Design Head", detail: "Design Head", mcuTitle: "Design Head", initials: "AK", council: "Junior", linkedin: "https://www.linkedin.com/in/antarakadam2006/" },
+      { name: "Trushna Mhatre", role: "Design Head", detail: "Design Head", mcuTitle: "Design Head", initials: "TM", council: "Junior", linkedin: "https://www.linkedin.com/in/trushna-mhatre-88930b354" },
+      { name: "Riya Parab", role: "Creative Head", detail: "Creative Head", mcuTitle: "Creative Head", initials: "RP", council: "Junior", linkedin: "https://www.linkedin.com/in/riya-parab-bb712333" }
+    ]
+  },
+  {
+    dept: "Media",
+    blurb: "The media team managing communications, storytelling, and event coverage.",
+    members: [
+      { name: "Varun Ubable", role: "Media Mentor", detail: "Media Mentor", mcuTitle: "Media Mentor", initials: "VU", council: "Senior", linkedin: "https://www.linkedin.com/in/varun-ubale" },
+      { name: "Kaustubh Bhoir", role: "Media Head", detail: "Media Head", mcuTitle: "Media Head", initials: "KB", council: "Junior", linkedin: "https://www.linkedin.com/in/kaustubh-bhoir-7b5220380" },
+      { name: "Karthik Kabadi", role: "Media Head", detail: "Media Head", mcuTitle: "Media Head", initials: "KK", council: "Junior", linkedin: "https://www.linkedin.com/in/karthik-kabadi-6a911a330" }
+    ]
+  },
+  {
+    dept: "Operations",
+    blurb: "The operations team coordinating logistics and smooth execution.",
+    members: [
+      { name: "Taazeen Ansari", role: "Operational Lead", detail: "Operational Lead", mcuTitle: "Operational Lead", initials: "TA", council: "Junior", linkedin: "https://linkedin.com/in/taazeenansari" }
+    ]
+  },
+  {
+    dept: "WiE",
+    blurb: "The Women in Engineering team encouraging participation and technical engagement.",
+    members: [
+      { name: "Nidhi Hegde", role: "WiE Representative", detail: "WiE Representative", mcuTitle: "WiE Representative", initials: "NH", council: "Senior", linkedin: "https://www.linkedin.com/in/nidhi-hegde-0a35822b7" },
+      { name: "Madhu Gowda", role: "WiE Head", detail: "WiE Head", mcuTitle: "WiE Head", initials: "MG", council: "Junior", linkedin: "https://www.linkedin.com/in/madhu-gowda-561307395" }
+    ]
+  },
+  {
+    dept: "Publicity",
+    blurb: "The publicity team expanding IEEE SIESGST's reach and community presence.",
+    members: [
+      { name: "Devanand Bhosale", role: "Publicity Mentor", detail: "Publicity Mentor", mcuTitle: "Publicity Mentor", initials: "DB", council: "Senior", linkedin: "https://www.linkedin.com/in/devanand-bhosale-7405822b7" },
+      { name: "Aarya Yewale", role: "Publicity Head", detail: "Publicity Head", mcuTitle: "Publicity Head", initials: "AY", council: "Junior", linkedin: "https://www.linkedin.com/in/aarya-yewale-047032356" }
+    ]
+  },
+  {
+    dept: "PR & Admin",
+    blurb: "The PR and administration team managing communication and organizational coordination.",
+    members: [
+      { name: "Sudeepto Ghosh", role: "PR & Admin Mentor", detail: "PR & Admin Mentor", mcuTitle: "PR & Admin Mentor", initials: "SG", council: "Senior", linkedin: "https://www.linkedin.com/in/sudeeptoghosh10" },
+      { name: "Neeraj Dalvi", role: "PR & Admin Head", detail: "PR & Admin Head", mcuTitle: "PR & Admin Head", initials: "ND", council: "Junior" },
+      { name: "Ashwin L", role: "PR Head", detail: "PR Head", mcuTitle: "PR Head", initials: "AL", council: "Junior", linkedin: "https://www.linkedin.com/in/ashwin-lakshminarasimman-4b3512412" }
     ]
   }
 ];
-
 export const EVENT_STATS = [
-  { value: "₹2.5L+", label: "Prize Pool" },
-  { value: "1500+", label: "Participants" },
+  { label: "Prize Pool" },
   { value: "04", label: "Heroic Domains" },
   { value: "48hrs", label: "Non-Stop Action" }
 ];
