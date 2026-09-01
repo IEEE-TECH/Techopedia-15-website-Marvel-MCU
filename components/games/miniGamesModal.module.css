@@ -1,7 +1,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  z-index: var(--z-modal-backdrop);
   background: rgba(0, 0, 0, 0.88);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -20,15 +20,16 @@
 .modal {
   background: #0d0f14;
   border: 1px solid rgba(237, 29, 36, 0.45);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   width: 100%;
   max-width: 850px;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 0 50px rgba(237, 29, 36, 0.35), 0 20px 40px rgba(0, 0, 0, 0.95);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8), 0 0 32px rgba(237, 29, 36, 0.25);
   overflow: hidden;
   position: relative;
+  z-index: var(--z-modal);
 }
 
 .headerBar {

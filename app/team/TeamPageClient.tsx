@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import TiltCard from "@/components/ui/TiltCard";
 import { TEAM } from "@/lib/eventData";
+import { EASE_OUT, TAB_SPRING } from "@/lib/motion";
 
 import styles from "./team.module.css";
 
@@ -18,30 +19,20 @@ function initials(name: string) {
     .join("");
 }
 
-type Council = "All" | "Senior" | "Junior";
-
 export default function TeamPageClient() {
-  const [active, setActive] = useState<Council>("All");
+  const [active, setActive] = useState<"All" | "Senior" | "Junior">("All");
 
-  /*
-   * Council is used ONLY for filtering.
-   * It is never displayed on the cards.
-   */
-  const groups =
-    active === "All"
-      ? TEAM
-      : TEAM
-          .map((group) => ({
-            ...group,
-            members: group.members.filter(
-              (member) => member.council === active
-            ),
-          }))
-          .filter((group) => group.members.length > 0);
+  const groups = TEAM.map((g) => ({
+    ...g,
+    members:
+      active === "All"
+        ? g.members
+        : g.members.filter((m) => m.council === active),
+  })).filter((g) => g.members.length > 0);
 
   return (
     <>
-      {/* ONLY 3 TABS */}
+      {/* TABS */}
       <div className={styles.tabs}>
         {(["All", "Senior", "Junior"] as const).map((tab) => (
           <button
@@ -54,11 +45,7 @@ export default function TeamPageClient() {
               <motion.span
                 layoutId="team-page-tab-pill"
                 className={styles.tabPill}
-                transition={{
-                  type: "spring",
-                  stiffness: 380,
-                  damping: 32,
-                }}
+                transition={TAB_SPRING}
               />
             )}
 
@@ -82,7 +69,7 @@ export default function TeamPageClient() {
           exit={{ opacity: 0, y: -18 }}
           transition={{
             duration: 0.35,
-            ease: [0.16, 1, 0.3, 1] as const,
+            ease: EASE_OUT,
           }}
         >
           {groups.map((group) => (
@@ -104,11 +91,6 @@ export default function TeamPageClient() {
                     <div className={styles.photoWrap}>
                       <span
                         className={styles.radarRing}
-                        aria-hidden
-                      />
-
-                      <span
-                        className={styles.radarRing2}
                         aria-hidden
                       />
 
@@ -136,14 +118,12 @@ export default function TeamPageClient() {
 
                     <h3 className={styles.name}>{m.name}</h3>
 
-                    <p className={styles.role}>{m.role}</p>
+                    <div className={styles.role}>{m.role}</div>
 
-                    <p className={styles.detail}>{m.detail}</p>
+                    <div className={styles.detail}>{m.detail}</div>
 
-                    {(m.linkedin ||
-                      m.instagram ||
-                      m.github) && (
-                      <div className={styles.socials}>
+                    {(m.instagram || m.linkedin || m.github) && (
+                      <div className={styles.links}>
                         {m.linkedin && (
                           <a
                             href={m.linkedin}
@@ -184,7 +164,7 @@ export default function TeamPageClient() {
       </AnimatePresence>
 
       {/* JOIN SECTION */}
-      <section className={styles.join}>
+      <TiltCard className={styles.join} maxTilt={5}>
         <h2 className={styles.joinTitle}>
           Want to be on this page next year?
         </h2>
@@ -194,7 +174,7 @@ export default function TeamPageClient() {
           every edition. Bring an interest in tech, design, or running
           things that have a lot of moving parts.
         </p>
-      </section>
+      </TiltCard>
     </>
   );
 }

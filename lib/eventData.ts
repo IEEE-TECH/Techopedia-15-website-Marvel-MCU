@@ -305,6 +305,7 @@ export interface TeamMember {
   mcuTitle: string;
   initials: string;
   photo?: string;
+  council?: "Senior" | "Junior" | string;
   github?: string;
   linkedin?: string;
   instagram?: string;
@@ -414,7 +415,7 @@ export const TEAM: TeamGroup[] = [
   }
 ];
 export const EVENT_STATS = [
-  { label: "Prize Pool" },
+  { value: "₹50K+", label: "Prize Pool" },
   { value: "04", label: "Heroic Domains" },
   { value: "48hrs", label: "Non-Stop Action" }
 ];

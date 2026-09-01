@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { signals } from "@/lib/signals";
 import { useRaf } from "@/lib/useRaf";
+import { prefersReducedMotion } from "@/lib/reducedMotion";
 import { DOMAINS, EventDomain } from "@/lib/eventData";
 import styles from "./orbit.module.css";
 
@@ -40,7 +41,7 @@ export default function CharacterOrbit({ onSelectEvent }: CharacterOrbitProps) {
     const wantPlay = s > 0.006;
     const Rx = vw * 0.3;
     const Ry = vh * 0.15;
-    const base = s * TAU * 0.85 + t * 0.045;
+    const base = s * TAU * 0.85 + (prefersReducedMotion() ? 0 : t * 0.045);
     const N = DOMAINS.length;
 
     for (let i = 0; i < N; i++) {

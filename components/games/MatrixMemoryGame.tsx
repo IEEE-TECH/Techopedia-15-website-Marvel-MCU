@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { sound } from "@/lib/audio";
+import Button from "../ui/Button";
 import styles from "./games.module.css";
 
 const GRID_SIZE = 9; // 3x3 grid
@@ -115,9 +116,9 @@ export default function MatrixMemoryGame() {
           <p>
             The Tesseract emits quantum resonance sequences. Watch the matrix pattern and replicate the exact harmonic frequency order.
           </p>
-          <button className={styles.playBtn} onClick={startGame}>
+          <Button variant="primary" onClick={startGame}>
             // INITIATE SEQUENCE
-          </button>
+          </Button>
         </div>
       )}
 
@@ -125,9 +126,9 @@ export default function MatrixMemoryGame() {
         <>
           <div className={styles.instruction}>
             {gameState === "showing" ? (
-              <span style={{ color: "#ffd700" }}>[ SYSTEM TRANSMITTING FREQUENCY... OBSERVE ]</span>
+              <span style={{ color: "var(--marvel-gold)" }}>[ SYSTEM TRANSMITTING FREQUENCY... OBSERVE ]</span>
             ) : (
-              <span style={{ color: "#00ff9c" }}>[ REPLICATE QUANTUM SEQUENCE NOW ]</span>
+              <span style={{ color: "var(--success)" }}>[ REPLICATE QUANTUM SEQUENCE NOW ]</span>
             )}
           </div>
 
@@ -148,12 +149,12 @@ export default function MatrixMemoryGame() {
 
       {gameState === "gameover" && (
         <div className={styles.gameOverScreen}>
-          <h4 style={{ color: "#ff3366" }}>HARMONIC RESONANCE COLLAPSED</h4>
+          <h4 style={{ color: "var(--error)" }}>HARMONIC RESONANCE COLLAPSED</h4>
           <p>You reached <strong>Level {level}</strong> in the Tesseract Matrix.</p>
           <div className={styles.actionRow}>
-            <button className={styles.playBtn} onClick={startGame}>
+            <Button variant="primary" onClick={startGame}>
               // RE-ESTABLISH LINK
-            </button>
+            </Button>
           </div>
         </div>
       )}

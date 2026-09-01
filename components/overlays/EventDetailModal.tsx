@@ -5,6 +5,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { EventDomain } from "@/lib/eventData";
 import { sound } from "@/lib/audio";
 import { CloseIcon } from "../ui/HudIcon";
+import Button from "../ui/Button";
+import TiltCard from "../ui/TiltCard";
+import { MODAL_SPRING, OVERLAY_FADE } from "@/lib/motion";
 import styles from "./eventDetail.module.css";
 
 interface EventDetailModalProps {
@@ -29,20 +32,16 @@ export default function EventDetailModal({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.25 }}
+          transition={OVERLAY_FADE}
         >
           <motion.div
             className={styles.modal}
             onClick={(e) => e.stopPropagation()}
-            initial={{ opacity: 0, scale: 0.92, y: 30 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.94, y: 20 }}
-            transition={{
-              type: "spring",
-              stiffness: 340,
-              damping: 28,
-              mass: 0.8,
-            }}
+            style={{ transformPerspective: 1000 }}
+            initial={{ opacity: 0, scale: 0.94, y: 20, rotateX: -6 }}
+            animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
+            exit={{ opacity: 0, scale: 0.94, y: 16, rotateX: -4 }}
+            transition={MODAL_SPRING}
           >
             {/* Top Header */}
             <div
@@ -104,14 +103,14 @@ export default function EventDetailModal({
                 <h3 className={styles.sectionHeading}>Rounds &amp; Progression</h3>
                 <div className={styles.roundsList}>
                   {event.rounds.map((r, idx) => (
-                    <div key={idx} className={styles.roundCard}>
+                    <TiltCard key={idx} className={styles.roundCard} maxTilt={4}>
                       <div className={styles.roundHeader}>
                         <span className={styles.roundNum}>STAGE 0{idx + 1}</span>
                         <h4 className={styles.roundTitle}>{r.title}</h4>
                         <span className={styles.roundDuration}>{r.duration}</span>
                       </div>
                       <p className={styles.roundDesc}>{r.description}</p>
-                    </div>
+                    </TiltCard>
                   ))}
                 </div>
               </section>
@@ -157,17 +156,16 @@ export default function EventDetailModal({
 
             {/* Footer Action Bar */}
             <div className={styles.footerBar}>
-              <button
-                className={styles.secondaryBtn}
+              <Button
+                variant="ghost"
                 onClick={() => {
-                  sound.playBlip(600, 0.04);
                   onClose();
                 }}
               >
                 Back to Multiverse
-              </button>
-              <button
-                className={styles.registerBtn}
+              </Button>
+              <Button
+                variant="primary"
                 onClick={() => {
                   sound.playSuccess();
                   onClose();
@@ -175,7 +173,7 @@ export default function EventDetailModal({
                 }}
               >
                 ▸ Initiate Registration // {event.name}
-              </button>
+              </Button>
             </div>
           </motion.div>
         </motion.div>

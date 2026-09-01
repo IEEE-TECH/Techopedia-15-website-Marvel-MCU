@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { sound } from "@/lib/audio";
+import { EASE_OUT } from "@/lib/motion";
 import styles from "./footer.module.css";
 
 /**
@@ -50,7 +52,7 @@ export default function SiteFooter() {
       initial={{ opacity: 0, y: 60 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] as const }}
+      transition={{ duration: 0.9, ease: EASE_OUT }}
     >
       {/* 3D receding floor grid — the horizon this whole thing sits on */}
       <div className={styles.gridScene} aria-hidden>

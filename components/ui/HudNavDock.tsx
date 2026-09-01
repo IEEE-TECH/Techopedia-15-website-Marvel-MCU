@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { signals } from "@/lib/signals";
 import { useRaf } from "@/lib/useRaf";
 import { sound } from "@/lib/audio";
+import Button from "./Button";
 import styles from "./hudDock.module.css";
 
 interface HudNavDockProps {
@@ -69,34 +70,22 @@ export default function HudNavDock({ onRegisterClick, onMiniGamesClick }: HudNav
         </div>
 
         <div className={styles.actionBtns}>
-          <button
-            type="button"
-            className={styles.secBtn}
-            onClick={() => sound.playMarvelFanfare(true)}
-            title="Play Marvel Iconic Intro Fanfare"
+          <Button
+            size="sm"
+            radius="pill"
+            variant="ghost"
+            onClick={() => onMiniGamesClick()}
           >
-            🔊 FANFARE
-          </button>
-          <button
-            type="button"
-            className={styles.arcadeBtn}
-            onClick={() => {
-              sound.playSuccess();
-              onMiniGamesClick();
-            }}
-          >
-            ▸ PLAY MINI-GAMES
-          </button>
-          <button
-            type="button"
-            className={styles.registerBtn}
-            onClick={() => {
-              sound.playSuccess();
-              onRegisterClick();
-            }}
+            ▸ MINI-GAMES
+          </Button>
+          <Button
+            size="sm"
+            radius="pill"
+            variant="gold"
+            onClick={() => onRegisterClick()}
           >
             ▸ REGISTER
-          </button>
+          </Button>
         </div>
       </div>
     </aside>

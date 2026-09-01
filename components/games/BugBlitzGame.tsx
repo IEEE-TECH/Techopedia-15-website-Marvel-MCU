@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { sound } from "@/lib/audio";
+import Button from "../ui/Button";
 import styles from "./games.module.css";
 
 interface Snippet {
@@ -213,25 +214,24 @@ export default function BugBlitzGame() {
           <p>
             Scan real-world code snippets in JavaScript, Python, C++, and React. Identify and neutralize bugs before the quantum clock runs out!
           </p>
-          <button className={styles.primaryBtn} onClick={startGame}>
+          <Button variant="primary" onClick={startGame}>
             ▸ INITIATE DEBUG SPRINT
-          </button>
+          </Button>
         </div>
       )}
 
-      {gameState === "playing" && (
-        <div className={styles.playArena}>
-          <div className={styles.codeWindow}>
-            <div className={styles.codeHeader}>
-              <span className={styles.codeLang}>{current.language}</span>
-              <span className={styles.codeBadge}>Snippet #{currentIndex + 1}</span>
+      {gameState === "playing" && current && (
+        <div className={styles.playZone}>
+          <div className={styles.snippetCard}>
+            <div className={styles.snippetMeta}>
+              <span className={styles.langBadge}>{current.language}</span>
+              <span className={styles.qNum}>TARGET SNIPPET #{currentIndex + 1}</span>
             </div>
-            <pre className={styles.codeContent}>
+            <pre className={styles.codeBlock}>
               <code>{current.code}</code>
             </pre>
+            <p className={styles.questionText}>// QUERY: {current.question}</p>
           </div>
-
-          <div className={styles.questionText}>{current.question}</div>
 
           <div className={styles.optionsGrid}>
             {current.options.map((opt, idx) => {
@@ -268,7 +268,7 @@ export default function BugBlitzGame() {
 
       {gameState === "gameover" && (
         <div className={styles.centerCard}>
-          <h4 style={{ color: "#00ff9c" }}>MISSION COMPLETE</h4>
+          <h4 style={{ color: "var(--success)" }}>MISSION COMPLETE</h4>
           <p>
             Final Score: <strong>{score} PTS</strong> | Max Streak: <strong>{streak}x</strong>
           </p>
@@ -279,9 +279,9 @@ export default function BugBlitzGame() {
               ? "[ RANK A // QUANTUM SENIOR DEVELOPER ]"
               : "[ RANK B // STARK LAB CADET ]"}
           </div>
-          <button className={styles.primaryBtn} onClick={startGame}>
+          <Button variant="primary" onClick={startGame}>
             REPLAY SPRINT
-          </button>
+          </Button>
         </div>
       )}
     </div>

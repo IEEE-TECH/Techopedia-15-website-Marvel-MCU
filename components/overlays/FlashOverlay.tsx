@@ -28,7 +28,7 @@ export default function FlashOverlay() {
         zIndex: 6,
         opacity: 0,
         background:
-          "radial-gradient(120% 90% at 50% 42%, rgba(220,255,240,0.9), rgba(0,255,156,0.35) 38%, rgba(0,40,28,0) 72%)",
+          "radial-gradient(120% 90% at 50% 42%, rgba(255,240,240,0.95), rgba(237,29,36,0.5) 38%, rgba(60,5,8,0) 72%)",
         mixBlendMode: "screen",
         willChange: "opacity",
       }}

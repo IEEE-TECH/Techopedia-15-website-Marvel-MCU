@@ -105,19 +105,19 @@
   backdrop-filter: blur(12px) saturate(140%);
   -webkit-backdrop-filter: blur(12px) saturate(140%);
   border: 1px solid rgba(237, 29, 36, 0.3);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   padding: 1.25rem 2rem;
   min-width: 180px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 22px 40px -26px rgba(0, 0, 0, 0.9);
+  box-shadow: 0 16px 36px -20px rgba(0, 0, 0, 0.9);
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .slot:hover {
   border-color: #ed1d24;
-  box-shadow: 0 0 30px rgba(237, 29, 36, 0.45), 0 26px 48px -26px rgba(0, 0, 0, 0.95);
+  box-shadow: 0 0 24px rgba(237, 29, 36, 0.35);
 }
 
 .pedestalBeam {

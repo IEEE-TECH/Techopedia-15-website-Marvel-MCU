@@ -3,7 +3,9 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import PageShell from "@/components/ui/PageShell";
+import TiltCard from "@/components/ui/TiltCard";
 import { SCHEDULE, type Track } from "@/lib/eventData";
+import { EASE_OUT } from "@/lib/motion";
 import styles from "./schedule.module.css";
 
 const TRACKS: Track[] = [
@@ -25,6 +27,7 @@ export default function SchedulePage() {
       title="Event Schedule"
       intro="Every hour of Level 15, from the opening keynote to the final award. Filter by domain to see only the track you are competing in."
     >
+      <div className={styles.ambientBg} aria-hidden />
       <div className={styles.filters}>
         <button
           className={`${styles.chip} ${active === "All" ? styles.chipOn : ""}`}
@@ -70,12 +73,12 @@ export default function SchedulePage() {
                       initial={false}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -16, scale: 0.96 }}
-                      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] as const }}
+                      transition={{ duration: 0.35, ease: EASE_OUT }}
                       className={styles.row}
                     >
                       <div className={styles.time}>{item.time}</div>
                       <div className={styles.dot} aria-hidden />
-                      <div className={styles.card}>
+                      <TiltCard className={styles.card} maxTilt={5} glow glowColor="237, 29, 36">
                         <span className={styles.cardGlow} aria-hidden />
                         <div className={styles.cardTop}>
                           <h3 className={styles.itemTitle}>{item.title}</h3>
@@ -83,11 +86,11 @@ export default function SchedulePage() {
                         </div>
                         <p className={styles.detail}>{item.detail}</p>
                         {item.venue && (
-                          <div style={{ marginTop: "0.4rem", fontSize: "0.75rem", color: "#00ff9c", opacity: 0.9 }}>
+                          <div style={{ marginTop: "0.4rem", fontSize: "0.75rem", color: "var(--cyan)", opacity: 0.9 }}>
                             ▸ {item.venue}
                           </div>
                         )}
-                      </div>
+                      </TiltCard>
                     </motion.li>
                   ))}
                 </AnimatePresence>

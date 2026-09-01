@@ -27,8 +27,8 @@ const CHAPTERS: Panel[] = [
     kicker: "Flagship Hackathon · Project Doomsday",
     title: ["Code", "Conquest"],
     desc: "24-Hour Hackathon & Algorithmic Duel. Build futuristic AI apps, smart software, and web3 innovations.",
-    accent: "#00ff9c",
-    titleColor: "#e9fff5",
+    accent: "#ed1d24",
+    titleColor: "#ffffff",
     pos: "center",
   },
   {

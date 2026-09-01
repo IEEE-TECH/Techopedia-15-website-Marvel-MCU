@@ -7,6 +7,7 @@ import MatrixMemoryGame from "./MatrixMemoryGame";
 import TerminalModal from "../ui/TerminalModal";
 import { CloseIcon } from "../ui/HudIcon";
 import { sound } from "@/lib/audio";
+import { MODAL_SPRING, OVERLAY_FADE } from "@/lib/motion";
 import styles from "./miniGamesModal.module.css";
 
 interface MiniGamesModalProps {
@@ -98,20 +99,16 @@ export default function MiniGamesModal({ isOpen, onClose, defaultTab = "bugblitz
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.25 }}
+          transition={OVERLAY_FADE}
         >
           <motion.div
             className={styles.modal}
             onClick={(e) => e.stopPropagation()}
-            initial={{ opacity: 0, scale: 0.92, y: 30 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.94, y: 20 }}
-            transition={{
-              type: "spring",
-              stiffness: 340,
-              damping: 28,
-              mass: 0.8,
-            }}
+            style={{ transformPerspective: 1000 }}
+            initial={{ opacity: 0, scale: 0.94, y: 20, rotateX: -6 }}
+            animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
+            exit={{ opacity: 0, scale: 0.94, y: 16, rotateX: -4 }}
+            transition={MODAL_SPRING}
           >
             <div className={styles.headerBar}>
               <div className={styles.titleInfo}>

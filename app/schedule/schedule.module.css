@@ -2,6 +2,20 @@
    Schedule — filterable two-day agenda timeline.
    ============================================================ */
 
+.ambientBg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 10%, rgba(237, 29, 36, 0.14), transparent 70%),
+    radial-gradient(circle 500px at 80% 60%, rgba(255, 215, 0, 0.05), transparent 70%),
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+  opacity: 0.75;
+}
+
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -141,17 +155,16 @@
   backdrop-filter: blur(14px) saturate(140%);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
   border: 1px solid rgba(237, 29, 36, 0.25);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   padding: 1.1rem 1.35rem;
   margin-left: 0.6rem;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 18px 40px -26px rgba(0, 0, 0, 0.9);
+  box-shadow: 0 16px 36px -20px rgba(0, 0, 0, 0.9);
   transform-style: preserve-3d;
-  transition: border-color 0.25s, transform 0.3s, box-shadow 0.3s;
+  transition: border-color 0.25s, box-shadow 0.3s;
 }
 .card:hover {
   border-color: rgba(237, 29, 36, 0.65);
-  transform: translateX(4px) translateY(-3px) rotateX(3deg);
-  box-shadow: 0 0 32px rgba(237, 29, 36, 0.3), 0 22px 46px -26px rgba(0, 0, 0, 0.95);
+  box-shadow: 0 0 24px rgba(237, 29, 36, 0.35);
 }
 .cardGlow {
   position: absolute;

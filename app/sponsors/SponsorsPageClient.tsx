@@ -2,6 +2,7 @@
 
 import { SPONSOR_TIERS, EVENT_STATS } from "@/lib/eventData";
 import TiltCard from "@/components/ui/TiltCard";
+import Button from "@/components/ui/Button";
 import CountUp from "@/components/ui/CountUp";
 import styles from "./sponsors.module.css";
 
@@ -57,10 +58,10 @@ export default function SponsorsPageClient() {
         <h2 className={styles.benefitsTitle}>Why Partner with Level 15</h2>
         <div className={styles.benefitGrid}>
           {SPONSOR_BENEFITS.map((b) => (
-            <article key={b.title} className={styles.benefit}>
+            <TiltCard key={b.title} className={styles.benefit} maxTilt={5} glow glowColor="237, 29, 36">
               <h3 className={styles.benefitName}>{b.title}</h3>
               <p className={styles.benefitDetail}>{b.detail}</p>
-            </article>
+            </TiltCard>
           ))}
         </div>
       </section>
@@ -71,9 +72,14 @@ export default function SponsorsPageClient() {
         <p className={styles.ctaText}>
           Request the official Level 15 sponsorship brochure for tier pricing, deliverables, and past-edition reach metrics.
         </p>
-        <a className={styles.ctaBtn} href="mailto:sponsorships@techopedia15.com?subject=Sponsorship%20Inquiry">
+        <Button
+          href="mailto:sponsorships@techopedia15.com?subject=Sponsorship%20Inquiry"
+          external
+          variant="gold"
+          size="lg"
+        >
           ▸ Request the Brochure // PDF
-        </a>
+        </Button>
         <p className={styles.ctaNote}>
           sponsorships@techopedia15.com · IEEE Student Branch
         </p>

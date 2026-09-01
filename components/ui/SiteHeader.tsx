@@ -7,6 +7,8 @@ import { signals } from "@/lib/signals";
 import { useRaf } from "@/lib/useRaf";
 import { sound } from "@/lib/audio";
 import SoundToggle from "./SoundToggle";
+import Button from "./Button";
+import { EASE_OUT } from "@/lib/motion";
 import styles from "./ui.module.css";
 
 const NAV = [
@@ -79,17 +81,12 @@ export default function SiteHeader({
       </nav>
       <div className={styles.headerActions}>
         <SoundToggle />
-        <button
-          className={styles.cta}
-          type="button"
-          onClick={onMiniGamesClick}
-          style={{ background: "rgba(0, 229, 255, 0.15)", border: "1px solid rgba(0, 229, 255, 0.6)", color: "#00e5ff", textShadow: "0 0 10px rgba(0, 229, 255, 0.5)" }}
-        >
+        <Button variant="cyan" size="sm" onClick={onMiniGamesClick}>
           ▸ ARCADE HUB
-        </button>
-        <button className={styles.cta} type="button" onClick={onRegisterClick}>
+        </Button>
+        <Button variant="primary" size="sm" onClick={onRegisterClick}>
           REGISTER NOW
-        </button>
+        </Button>
       </div>
 
       <button
@@ -111,30 +108,32 @@ export default function SiteHeader({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
+            transition={{ duration: 0.3, ease: EASE_OUT }}
           >
             {NAV.map((n) => renderNavItem(n, true))}
             <SoundToggle />
-            <button
-              className={styles.mobileArcadeBtn}
-              type="button"
+            <Button
+              variant="cyan"
+              size="sm"
+              style={{ marginTop: "0.6rem" }}
               onClick={() => {
                 setMenuOpen(false);
                 onMiniGamesClick?.();
               }}
             >
-              // Arcade Hub
-            </button>
-            <button
-              className={styles.mobileRegisterBtn}
-              type="button"
+              // ARCADE HUB
+            </Button>
+            <Button
+              variant="primary"
+              size="sm"
+              style={{ margin: "0.8rem 0 1.2rem" }}
               onClick={() => {
                 setMenuOpen(false);
                 onRegisterClick?.();
               }}
             >
-              Register Now
-            </button>
+              REGISTER NOW
+            </Button>
           </motion.nav>
         )}
       </AnimatePresence>

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { sound } from "@/lib/audio";
+import { MODAL_SPRING, OVERLAY_FADE } from "@/lib/motion";
 import styles from "./terminal.module.css";
 
 interface TerminalModalProps {
@@ -250,18 +251,14 @@ export default function TerminalModal({ isOpen, onClose, isEmbedded = false }: T
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.25 }}
+          transition={OVERLAY_FADE}
         >
           <motion.div
-            initial={{ opacity: 0, scale: 0.92, y: 30 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.94, y: 20 }}
-            transition={{
-              type: "spring",
-              stiffness: 340,
-              damping: 28,
-              mass: 0.8,
-            }}
+            style={{ transformPerspective: 1000 }}
+            initial={{ opacity: 0, scale: 0.94, y: 20, rotateX: -6 }}
+            animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
+            exit={{ opacity: 0, scale: 0.94, y: 16, rotateX: -4 }}
+            transition={MODAL_SPRING}
           >
             {terminalContent}
           </motion.div>

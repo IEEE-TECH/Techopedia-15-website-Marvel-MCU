@@ -6,9 +6,9 @@ import { useState } from "react";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import RegistrationModal from "./RegistrationModal";
 import SiteFooter from "./SiteFooter";
+import Button from "./Button";
+import { EASE_OUT } from "@/lib/motion";
 import styles from "./pageshell.module.css";
-
-const EASE_OUT: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const heroVariants: Variants = {
   hidden: { opacity: 0, y: 26 },
@@ -79,9 +79,9 @@ export default function PageShell({
         </nav>
         <span className={styles.navBracket} aria-hidden>]</span>
 
-        <button className={styles.cta} type="button" onClick={() => setIsRegOpen(true)}>
+        <Button variant="primary" size="sm" onClick={() => setIsRegOpen(true)}>
           Register Now
-        </button>
+        </Button>
 
         <button
           className={`${styles.menuBtn} ${menuOpen ? styles.menuBtnOpen : ""}`}

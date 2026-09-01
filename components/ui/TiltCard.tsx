@@ -23,7 +23,7 @@ export default function TiltCard({
   className,
   maxTilt = 10,
   glow = false,
-  glowColor = "0, 255, 156",
+  glowColor = "237, 29, 36",
   style,
   id,
 }: {
@@ -38,32 +38,42 @@ export default function TiltCard({
   const ref = useRef<HTMLDivElement>(null);
   const px = useMotionValue(0.5);
   const py = useMotionValue(0.5);
-  const glowOpacity = useSpring(useMotionValue(0), GLOW_SPRING);
+  const glowOpacityRaw = useMotionValue(0);
 
-  const rotateX = useSpring(useTransform(py, [0, 1], [maxTilt, -maxTilt]), TILT_SPRING);
-  const rotateY = useSpring(useTransform(px, [0, 1], [-maxTilt, maxTilt]), TILT_SPRING);
-  const glowX = useTransform(px, [0, 1], ["0%", "100%"]);
-  const glowY = useTransform(py, [0, 1], ["0%", "100%"]);
-  const glowBg = useMotionTemplate`radial-gradient(280px circle at ${glowX} ${glowY}, rgba(${glowColor}, 0.3), transparent 72%)`;
-
-  function onMove(e: React.MouseEvent<HTMLDivElement>) {
-    const rect = ref.current?.getBoundingClientRect();
-    if (!rect) return;
+  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
     px.set((e.clientX - rect.left) / rect.width);
     py.set((e.clientY - rect.top) / rect.height);
-    glowOpacity.set(1);
-  }
-  function onLeave() {
+    glowOpacityRaw.set(1);
+  };
+
+  const onLeave = () => {
     px.set(0.5);
     py.set(0.5);
-    glowOpacity.set(0);
-  }
+    glowOpacityRaw.set(0);
+  };
+
+  const rotX = useTransform(py, [0, 1], [maxTilt, -maxTilt]);
+  const rotY = useTransform(px, [0, 1], [-maxTilt, maxTilt]);
+  const rotateX = useSpring(rotX, TILT_SPRING);
+  const rotateY = useSpring(rotY, TILT_SPRING);
+
+  const glowOpacity = useSpring(glowOpacityRaw, GLOW_SPRING);
+  const glowX = useSpring(useTransform(px, (v) => `${(v * 100).toFixed(1)}%`), GLOW_SPRING);
+  const glowY = useSpring(useTransform(py, (v) => `${(v * 100).toFixed(1)}%`), GLOW_SPRING);
+
+  const glowBg = useMotionTemplate`radial-gradient(400px circle at ${glowX} ${glowY}, rgba(${glowColor}, 0.28), transparent 70%)`;
 
   return (
     <motion.div
       ref={ref}
       id={id}
       className={className}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.96 }}
+      transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
       style={{
         position: "relative",
         rotateX,

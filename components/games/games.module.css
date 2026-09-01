@@ -314,7 +314,7 @@
 .matrixPadActive {
   background: radial-gradient(circle, #ffffff 0%, #ed1d24 60%, #8b0000 100%) !important;
   border-color: #ffd700 !important;
-  box-shadow: 0 0 35px #ed1d24, inset 0 0 20px #ffffff !important;
+  box-shadow: 0 0 24px #ed1d24 !important;
   transform: scale(1.08) !important;
 }
 

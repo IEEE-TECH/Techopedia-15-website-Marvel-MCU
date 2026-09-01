@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Button from "@/components/ui/Button";
 import styles from "./not-found.module.css";
 
 export default function NotFound() {
@@ -15,12 +15,12 @@ export default function NotFound() {
           Return to central command to realign your dimensional matrix.
         </p>
         <div className={styles.actionRow}>
-          <Link href="/" className={styles.homeBtn}>
+          <Button href="/" variant="primary">
             // RETURN TO COMMAND CENTER
-          </Link>
-          <Link href="/schedule" className={styles.secBtn}>
+          </Button>
+          <Button href="/schedule" variant="ghost">
             VIEW TIMELINE
-          </Link>
+          </Button>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  z-index: 9999;
+  z-index: var(--z-modal-backdrop);
   background: rgba(0, 0, 0, 0.88);
   backdrop-filter: blur(12px);
   display: flex;
@@ -13,12 +13,13 @@
 
 .modal {
   position: relative;
+  z-index: var(--z-modal);
   width: 100%;
   max-width: 540px;
   background: linear-gradient(135deg, rgba(24, 27, 36, 0.96), rgba(11, 13, 17, 0.98));
   border: 1px solid rgba(237, 29, 36, 0.45);
-  box-shadow: 0 0 40px rgba(237, 29, 36, 0.3), inset 0 0 20px rgba(237, 29, 36, 0.08);
-  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8), 0 0 32px rgba(237, 29, 36, 0.25);
+  border-radius: var(--radius-lg);
   padding: 2.5rem;
   color: #ffffff;
   font-family: var(--font-chakra), sans-serif;

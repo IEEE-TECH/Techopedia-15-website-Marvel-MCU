@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { TEAM } from "@/lib/eventData";
 import TiltCard from "@/components/ui/TiltCard";
+import { EASE_OUT, TAB_SPRING } from "@/lib/motion";
 import styles from "./teamSection.module.css";
 
 export default function TeamSection() {
@@ -33,7 +34,7 @@ export default function TeamSection() {
                 <motion.span
                   layoutId="team-tab-pill"
                   className={styles.tabPill}
-                  transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                  transition={TAB_SPRING}
                 />
               )}
               <span className={styles.tabLabel}>{g.dept}</span>
@@ -50,7 +51,7 @@ export default function TeamSection() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -18 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] as const }}
+            transition={{ duration: 0.35, ease: EASE_OUT }}
           >
             {group.members.map((m) => (
               <TiltCard key={m.name} className={styles.card} maxTilt={9} glow>
@@ -60,9 +61,7 @@ export default function TeamSection() {
 
                 <div className={styles.avatar}>
                   <span className={styles.radarRing} aria-hidden />
-                  <span className={styles.radarRing2} aria-hidden />
                   <span className={styles.initials}>{m.initials}</span>
-                  <span className={styles.glow} />
                 </div>
 
                 <h3 className={styles.name}>{m.name}</h3>
