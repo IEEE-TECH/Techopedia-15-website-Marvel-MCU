@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { sound } from "@/lib/audio";
 import { EASE_OUT } from "@/lib/motion";
+import { EVENT_STATS, EVENT_INFO } from "@/lib/eventData";
 import styles from "./footer.module.css";
 
 /**
@@ -13,14 +14,21 @@ import styles from "./footer.module.css";
  * the Team/Sponsors sections). Reveals on scroll-into-view instead, and carries
  * a 3D receding floor grid + an extruded wordmark that parallaxes to the cursor.
  */
-const NAV = [
+const EXPLORE = [
+  { label: "Home", href: "/" },
   { label: "Schedule", href: "/schedule" },
+  { label: "Team", href: "/team" },
+  { label: "Sponsors", href: "/sponsors" },
 ];
 const SOCIAL = ["Instagram", "LinkedIn", "X (Twitter)", "YouTube"];
 
 const SPRING = { stiffness: 120, damping: 20, mass: 0.5 };
 
-export default function SiteFooter() {
+export default function SiteFooter({
+  onRegisterClick,
+}: {
+  onRegisterClick?: () => void;
+}) {
   const ref = useRef<HTMLElement>(null);
 
   // cursor parallax — drives the wordmark tilt and the grid's vanishing point
@@ -70,14 +78,26 @@ export default function SiteFooter() {
             Techopedia XV<span>.</span>
           </motion.span>
           <span className={styles.tag}>
-            Annual National Technical Symposium · IEEE Student Branch
+            Annual National Technical Symposium · {EVENT_INFO.org}
           </span>
+          <span className={styles.dates}>
+            [ {EVENT_INFO.dates} &nbsp;·&nbsp; {EVENT_INFO.duration} ]
+          </span>
+
+          <div className={styles.factRow}>
+            {EVENT_STATS.map((s) => (
+              <div key={s.label} className={styles.factChip}>
+                <b>{s.value}</b>
+                <span>{s.label}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
         <nav className={styles.panel}>
           <div className={styles.colHead}>Explore</div>
           <div className={styles.links}>
-            {NAV.map((l) => (
+            {EXPLORE.map((l) => (
               <Link key={l.href} href={l.href}>
                 {l.label}
               </Link>
@@ -86,7 +106,23 @@ export default function SiteFooter() {
         </nav>
 
         <div className={styles.panel}>
+          <div className={styles.colHead}>Get Involved</div>
+          <div className={styles.links}>
+            <button type="button" onClick={() => onRegisterClick?.()}>
+              Register Now
+            </button>
+            <a href={`mailto:${EVENT_INFO.sponsorEmail}?subject=Sponsorship%20Inquiry`}>
+              Become a Sponsor
+            </a>
+            <Link href="/team">Join the Organizing Team</Link>
+          </div>
+        </div>
+
+        <div className={styles.panel}>
           <div className={styles.colHead}>Connect</div>
+          <div className={styles.links}>
+            <a href={`mailto:${EVENT_INFO.contactEmail}`}>{EVENT_INFO.contactEmail}</a>
+          </div>
           <div className={styles.social}>
             {SOCIAL.map((l) => (
               <a key={l} href="#" onClick={noop}>
@@ -100,7 +136,7 @@ export default function SiteFooter() {
       <div className={styles.rule} />
       <div className={styles.base}>
         <span>© 2026 Techopedia Level 15. All Rights Reserved.</span>
-        <span>Organized by IEEE Student Branch.</span>
+        <span>Organized by {EVENT_INFO.org}.</span>
       </div>
     </motion.footer>
   );

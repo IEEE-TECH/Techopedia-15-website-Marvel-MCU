@@ -1,6 +1,6 @@
 "use client";
 
-import { SPONSOR_TIERS, EVENT_STATS } from "@/lib/eventData";
+import { SPONSOR_TIERS, EVENT_STATS, EVENT_INFO } from "@/lib/eventData";
 import TiltCard from "@/components/ui/TiltCard";
 import Button from "@/components/ui/Button";
 import CountUp from "@/components/ui/CountUp";
@@ -73,7 +73,7 @@ export default function SponsorsPageClient() {
           Request the official Level 15 sponsorship brochure for tier pricing, deliverables, and past-edition reach metrics.
         </p>
         <Button
-          href="mailto:sponsorships@techopedia15.com?subject=Sponsorship%20Inquiry"
+          href={`mailto:${EVENT_INFO.sponsorEmail}?subject=Sponsorship%20Inquiry`}
           external
           variant="gold"
           size="lg"
@@ -81,7 +81,7 @@ export default function SponsorsPageClient() {
           ▸ Request the Brochure // PDF
         </Button>
         <p className={styles.ctaNote}>
-          sponsorships@techopedia15.com · IEEE Student Branch
+          {EVENT_INFO.sponsorEmail} · {EVENT_INFO.org} · {EVENT_INFO.dates}
         </p>
       </section>
     </>

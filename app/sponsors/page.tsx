@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import PageShell from "@/components/ui/PageShell";
+import { EVENT_INFO } from "@/lib/eventData";
 import SponsorsPageClient from "./SponsorsPageClient";
 
 export const metadata: Metadata = {
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 export default function SponsorsPage() {
   return (
     <PageShell
-      kicker="Partner With Level 15"
+      kicker={`Partner With Level 15 · ${EVENT_INFO.dates}`}
       title="Sponsors"
       intro="Techopedia runs on the backing of companies who want to meet engineers before anyone else does. Here is who makes Level 15 possible."
     >

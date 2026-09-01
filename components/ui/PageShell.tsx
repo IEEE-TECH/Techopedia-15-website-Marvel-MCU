@@ -22,6 +22,8 @@ const heroVariants: Variants = {
 const NAV = [
   { label: "Experience", href: "/" },
   { label: "Schedule", href: "/schedule" },
+  { label: "Team", href: "/team" },
+  { label: "Sponsors", href: "/sponsors" },
 ];
 
 /**
@@ -170,7 +172,7 @@ export default function PageShell({
         </div>
       </main>
 
-      <SiteFooter />
+      <SiteFooter onRegisterClick={() => setIsRegOpen(true)} />
 
       <RegistrationModal isOpen={isRegOpen} onClose={() => setIsRegOpen(false)} />
     </div>

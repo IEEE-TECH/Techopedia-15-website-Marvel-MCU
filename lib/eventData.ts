@@ -415,7 +415,17 @@ export const TEAM: TeamGroup[] = [
   }
 ];
 export const EVENT_STATS = [
-  { value: "₹50K+", label: "Prize Pool" },
+  { value: "₹1.5L+", label: "Prize Pool" },
+  { value: "1500+", label: "Participants" },
   { value: "04", label: "Heroic Domains" },
   { value: "48hrs", label: "Non-Stop Action" }
 ];
+
+/** Single source of truth for "when/where" copy reused across hero intros and the footer. */
+export const EVENT_INFO = {
+  dates: "October 16–17, 2026",
+  duration: "2 Days · 48 Hours",
+  org: "IEEE SIESGST Student Branch",
+  contactEmail: "hello@techopedia15.com",
+  sponsorEmail: "sponsorships@techopedia15.com",
+} as const;

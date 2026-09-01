@@ -248,7 +248,7 @@ export default function Experience() {
       <div style={{ position: "relative", zIndex: 10, background: "#06070a" }}>
         <TeamSection />
         <SponsorsSection />
-        <SiteFooter />
+        <SiteFooter onRegisterClick={() => handleOpenRegistration("Code Conquest")} />
       </div>
     </>
   );
