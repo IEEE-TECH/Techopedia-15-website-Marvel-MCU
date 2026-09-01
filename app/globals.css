@@ -55,11 +55,16 @@
   --z-modal-backdrop: 1000;
   --z-modal: 1010;
 
-  /* Fonts */
-  --font-display: var(--font-anton), "Arial Narrow", sans-serif;
-  --font-ui: var(--font-chakra), ui-monospace, monospace;
-  --font-avengers: var(--font-avengeance), var(--font-bebas), var(--font-anton), Impact, sans-serif;
-  --font-orbitron: var(--font-orbitron), sans-serif;
+  /* Fonts
+     --font-display  = hero/section headings  (Avengeance → Anton → Impact)
+     --font-avengers = branding/logo text      (same stack + Bebas)
+     --font-ui       = body / HUD / kickers    (Chakra Petch → monospace)
+     --font-orbitron = score chips / numeric   (Orbitron → Chakra → mono)
+  */
+  --font-display:   var(--font-avengeance), var(--font-anton), "Arial Narrow", Impact, sans-serif;
+  --font-avengers:  var(--font-avengeance), var(--font-bebas), var(--font-anton), Impact, sans-serif;
+  --font-ui:        var(--font-chakra), ui-monospace, "Courier New", monospace;
+  --font-orbitron:  var(--font-orb), var(--font-chakra), ui-monospace, monospace;
   --button-red: linear-gradient(120deg, var(--marvel-red), var(--marvel-crimson));
 
   color-scheme: dark;
@@ -85,8 +90,11 @@ body {
   background: #000;
   color: var(--white);
   font-family: var(--font-ui);
+  /* Crisp sub-pixel rendering on all platforms */
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
   overscroll-behavior: none;
 }
 

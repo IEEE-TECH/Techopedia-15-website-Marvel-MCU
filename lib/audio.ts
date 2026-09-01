@@ -10,18 +10,40 @@ class SoundEngine {
   private masterGain: GainNode | null = null;
   public enabled: boolean = true;
   private hasPlayedIntro: boolean = false;
+  private voicesReady: boolean = false;
+  private pendingSpeech: string | null = null;
 
   constructor() {
     if (typeof window !== "undefined") {
       this.enabled = window.localStorage.getItem("techopedia-audio-muted") !== "1";
+
+      // Auto-resume AudioContext on any user gesture
       const unlockAudio = () => {
         if (this.ctx && this.ctx.state === "suspended") {
           this.ctx.resume().catch(() => {});
         }
       };
-      ["click", "pointerdown", "keydown", "touchstart"].forEach((evt) => {
+      ["click", "pointerdown", "keydown", "touchstart", "scroll", "wheel"].forEach((evt) => {
         window.addEventListener(evt, unlockAudio, { passive: true });
       });
+
+      // Wait for speech synthesis voices to be loaded
+      if ("speechSynthesis" in window) {
+        const checkVoices = () => {
+          const voices = window.speechSynthesis.getVoices();
+          if (voices.length > 0) {
+            this.voicesReady = true;
+            // Flush any pending speech that was queued before voices loaded
+            if (this.pendingSpeech) {
+              const text = this.pendingSpeech;
+              this.pendingSpeech = null;
+              this.speak(text);
+            }
+          }
+        };
+        checkVoices();
+        window.speechSynthesis.addEventListener("voiceschanged", checkVoices);
+      }
     }
   }
 
@@ -51,16 +73,17 @@ class SoundEngine {
     }
     if (this.ctx) {
       if (!this.masterGain) {
-        // Dynamics compressor boosts perceived loudness while preventing clipping
+        // Dynamics compressor — maximises perceived loudness without clipping
         this.compressor = this.ctx.createDynamicsCompressor();
-        this.compressor.threshold.setValueAtTime(-14, this.ctx.currentTime);
-        this.compressor.knee.setValueAtTime(10, this.ctx.currentTime);
-        this.compressor.ratio.setValueAtTime(4, this.ctx.currentTime);
-        this.compressor.attack.setValueAtTime(0.003, this.ctx.currentTime);
-        this.compressor.release.setValueAtTime(0.25, this.ctx.currentTime);
+        this.compressor.threshold.setValueAtTime(-12, this.ctx.currentTime);
+        this.compressor.knee.setValueAtTime(6, this.ctx.currentTime);
+        this.compressor.ratio.setValueAtTime(6, this.ctx.currentTime);
+        this.compressor.attack.setValueAtTime(0.002, this.ctx.currentTime);
+        this.compressor.release.setValueAtTime(0.2, this.ctx.currentTime);
 
+        // Master gain at 1.5 — extra perceived loudness
         this.masterGain = this.ctx.createGain();
-        this.masterGain.gain.setValueAtTime(1.0, this.ctx.currentTime);
+        this.masterGain.gain.setValueAtTime(1.5, this.ctx.currentTime);
 
         this.compressor.connect(this.masterGain);
         this.masterGain.connect(this.ctx.destination);
@@ -78,24 +101,34 @@ class SoundEngine {
 
   /**
    * Stark / Jarvis AI Voice Announcement
-   * High-volume speech synthesis using native Web Speech API.
+   * Queues speech if voices are not yet loaded (async browser init).
    */
   speak(text: string, priority: boolean = false) {
     if (!this.enabled || typeof window === "undefined" || !("speechSynthesis" in window)) return;
     try {
+      // If voices haven't loaded yet, queue the speech and return
+      if (!this.voicesReady) {
+        this.pendingSpeech = text;
+        return;
+      }
+
       if (priority) {
         window.speechSynthesis.cancel();
       }
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.volume = 1.0; // Maximum loudness
-      utterance.rate = 1.02;  // Confident, clear cadence
-      utterance.pitch = 0.95; // Authoritative cinematic tone
+      utterance.rate = 0.95;  // Slightly slower = clearer Jarvis delivery
+      utterance.pitch = 0.88; // Lower pitch = authoritative cinematic tone
 
-      // Pick clear English voice if loaded
+      // Prefer clear English voices: Google, Natural, Daniel (Mac), Alex (Mac)
       const voices = window.speechSynthesis.getVoices();
-      const voice = voices.find(
-        (v) => (v.name.includes("Natural") || v.name.includes("Google") || v.name.includes("Daniel") || v.name.includes("Alex") || v.lang === "en-US" || v.lang === "en-GB") && v.lang.startsWith("en")
-      );
+      const voice =
+        voices.find((v) => v.name.includes("Google UK English Male")) ||
+        voices.find((v) => v.name.includes("Google US English")) ||
+        voices.find((v) => v.name.includes("Natural") && v.lang.startsWith("en")) ||
+        voices.find((v) => (v.name.includes("Daniel") || v.name.includes("Alex")) && v.lang.startsWith("en")) ||
+        voices.find((v) => v.lang === "en-US") ||
+        voices.find((v) => v.lang.startsWith("en"));
       if (voice) utterance.voice = voice;
 
       window.speechSynthesis.speak(utterance);
