@@ -12,12 +12,12 @@ import { EASE_OUT } from "@/lib/motion";
 import styles from "./ui.module.css";
 
 const NAV = [
-  { label: "Domains", targetRatio: 0.45 },
-  { label: "Dossiers", targetRatio: 0.65 },
-  { label: "Timeline", targetRatio: 0.85 },
+  { label: "Domains", target: 0.45 },
+  { label: "Dossiers", target: 0.65 },
+  { label: "Timeline", target: 0.85 },
   { label: "Schedule", href: "/schedule" },
-  { label: "Team", href: "/team" },
-  { label: "Sponsors", href: "/sponsors" },
+  { label: "Team", target: "team", href: "/team" },
+  { label: "Sponsors", target: "sponsors", href: "/sponsors" },
 ];
 
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
@@ -51,21 +51,54 @@ export default function SiteHeader({
     el.style.visibility = op < 0.05 ? "hidden" : "visible";
   });
 
-  const jumpTo = (targetRatio: number) => {
+  const jumpTo = (target: number | string, fallbackHref?: string) => {
     sound.playBlip(780, 0.03);
-    const track = document.querySelector(".scroll-track");
-    if (!track) return;
-    const maxScroll = track.getBoundingClientRect().height - window.innerHeight;
-    window.scrollTo({ top: Math.max(0, maxScroll * targetRatio), behavior: "smooth" });
     setMenuOpen(false);
+
+    if (typeof target === "string") {
+      const el = document.getElementById(target);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+        return;
+      }
+      if (fallbackHref && typeof window !== "undefined") {
+        window.location.href = fallbackHref;
+        return;
+      }
+    }
+
+    const track = document.querySelector(".scroll-track");
+    if (!track) {
+      if (fallbackHref && typeof window !== "undefined") {
+        window.location.href = fallbackHref;
+      }
+      return;
+    }
+    const maxScroll = track.getBoundingClientRect().height - window.innerHeight;
+    const ratio = typeof target === "number" ? target : 0;
+    window.scrollTo({ top: Math.max(0, maxScroll * ratio), behavior: "smooth" });
   };
 
   const renderNavItem = (n: (typeof NAV)[number], mobile = false) => {
     const className = mobile ? styles.mobileNavLink : styles.navLink;
-    if (n.href) {
-      return <Link key={n.label} href={n.href} className={className} onClick={() => setMenuOpen(false)}>{n.label}</Link>;
+    if (n.target !== undefined) {
+      return (
+        <button
+          key={n.label}
+          type="button"
+          className={className}
+          onClick={() => jumpTo(n.target, n.href)}
+          onMouseEnter={() => sound.playBlip(520, 0.02)}
+        >
+          {n.label}
+        </button>
+      );
     }
-    return <button key={n.label} type="button" className={className} onClick={() => n.targetRatio !== undefined && jumpTo(n.targetRatio)} onMouseEnter={() => sound.playBlip(520, 0.02)}>{n.label}</button>;
+    return (
+      <Link key={n.label} href={n.href!} className={className} onClick={() => setMenuOpen(false)}>
+        {n.label}
+      </Link>
+    );
   };
 
   return (

@@ -12,11 +12,20 @@ interface HudNavDockProps {
   onMiniGamesClick: () => void;
 }
 
-const SECTIONS = [
+interface SectionItem {
+  id: string;
+  label: string;
+  targetRatio?: number;
+  elementId?: string;
+}
+
+const SECTIONS: SectionItem[] = [
   { id: "intro", label: "01 · INTRO", targetRatio: 0.05 },
-  { id: "domains", label: "02 · 4 DOMAINS", targetRatio: 0.45 },
+  { id: "domains", label: "02 · DOMAINS", targetRatio: 0.45 },
   { id: "story", label: "03 · DOSSIERS", targetRatio: 0.65 },
   { id: "timeline", label: "04 · TIMELINE", targetRatio: 0.85 },
+  { id: "team", label: "05 · TEAM", elementId: "team" },
+  { id: "sponsors", label: "06 · SPONSORS", elementId: "sponsors" },
 ];
 
 export default function HudNavDock({ onRegisterClick, onMiniGamesClick }: HudNavDockProps) {
@@ -27,7 +36,15 @@ export default function HudNavDock({ onRegisterClick, onMiniGamesClick }: HudNav
     const s = signals.scroll;
     setScrollPct(Math.round(s * 100));
 
-    if (s < 0.35) {
+    const sponsorsEl = document.getElementById("sponsors");
+    const teamEl = document.getElementById("team");
+    const scrollY = window.scrollY;
+
+    if (sponsorsEl && scrollY >= sponsorsEl.offsetTop - 350) {
+      if (activeSec !== "sponsors") setActiveSec("sponsors");
+    } else if (teamEl && scrollY >= teamEl.offsetTop - 350) {
+      if (activeSec !== "team") setActiveSec("team");
+    } else if (s < 0.35) {
       if (activeSec !== "intro") setActiveSec("intro");
     } else if (s < 0.55) {
       if (activeSec !== "domains") setActiveSec("domains");
@@ -38,12 +55,19 @@ export default function HudNavDock({ onRegisterClick, onMiniGamesClick }: HudNav
     }
   });
 
-  const jumpTo = (targetRatio: number) => {
+  const jumpTo = (sec: SectionItem) => {
     sound.playBlip(780, 0.03);
+    if (sec.elementId) {
+      const el = document.getElementById(sec.elementId);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+        return;
+      }
+    }
     const scrollTrack = document.querySelector(".scroll-track");
     if (!scrollTrack) return;
     const maxScroll = scrollTrack.getBoundingClientRect().height - window.innerHeight;
-    const targetY = maxScroll * targetRatio;
+    const targetY = maxScroll * (sec.targetRatio ?? 0);
     window.scrollTo({ top: targetY, behavior: "smooth" });
   };
 
@@ -61,7 +85,7 @@ export default function HudNavDock({ onRegisterClick, onMiniGamesClick }: HudNav
               key={sec.id}
               type="button"
               className={`${styles.secBtn} ${activeSec === sec.id ? styles.secBtnActive : ""}`}
-              onClick={() => jumpTo(sec.targetRatio)}
+              onClick={() => jumpTo(sec)}
               onMouseEnter={() => sound.playBlip(520, 0.02)}
             >
               {sec.label}
