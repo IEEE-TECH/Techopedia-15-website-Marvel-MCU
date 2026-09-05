@@ -120,7 +120,9 @@ export default function TeamPageClient() {
 
                     <div className={styles.role}>{m.role}</div>
 
-                    <div className={styles.detail}>{m.detail}</div>
+                    {m.detail && m.detail.toLowerCase() !== m.role.toLowerCase() && (
+                      <div className={styles.detail}>{m.detail}</div>
+                    )}
 
                     {(m.instagram || m.linkedin || m.github) && (
                       <div className={styles.links}>

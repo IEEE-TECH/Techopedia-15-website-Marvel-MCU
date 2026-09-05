@@ -8,6 +8,10 @@ import styles from "./sponsorsSection.module.css";
 export default function SponsorsSection() {
   return (
     <section className={styles.section} id="sponsors">
+      {/* 3D Cyber Grid Horizon & Light Beam */}
+      <div className={styles.cyberGridFloor} aria-hidden />
+      <div className={styles.horizonGlow} aria-hidden />
+
       <div className={styles.container}>
         <div className={styles.header}>
           <span className={styles.kicker}>STARK TECH ECOSYSTEM · PARTNERS</span>
