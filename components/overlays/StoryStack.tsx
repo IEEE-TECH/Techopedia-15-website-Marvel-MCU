@@ -170,7 +170,7 @@ export default function StoryStack({ onSelectEvent }: StoryStackProps) {
             <span className={styles.glow} />
             <span className={styles.vignette} />
             <span className={styles.edge} />
-            <span className={styles.counter}>{c.n} / 06</span>
+            <span className={styles.counter}>{c.n} / 04</span>
 
             <div
               className={styles.content}

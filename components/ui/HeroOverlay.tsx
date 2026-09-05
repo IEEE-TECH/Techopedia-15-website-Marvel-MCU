@@ -37,7 +37,7 @@ export default function HeroOverlay({ onRegisterClick, onMiniGamesClick }: HeroO
         </div>
         <h1 className={styles.heroTitleText}>Decoding The Future</h1>
         <p className={styles.heroSubText}>
-          6 Heroic Domains · 24-Hr Hackathon · Offensive CTF · Combat Robotics · ₹2.5L+ Prize Pool
+          04 Heroic Domains · 24-Hr Hackathon · Offensive CTF · Combat Robotics · ₹1.5L+ Prize Pool
         </p>
 
         <div className={styles.heroActions}>

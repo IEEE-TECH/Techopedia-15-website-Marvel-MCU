@@ -43,7 +43,7 @@ const BEATS: Beat[] = [
   // ── Hero · text sequence ──
   {
     id: "domains",
-    lines: ["6 HEROIC DOMAINS", "₹2,50,000+ PRIZE POOL"],
+    lines: ["04 HEROIC DOMAINS", "₹1,50,000+ PRIZE POOL"],
     startU: 5.35,
     endU: 6.0,
     variant: "rise",
