@@ -34,6 +34,16 @@ export default function CharacterOrbit({ onSelectEvent }: CharacterOrbitProps) {
 
   useRaf(() => {
     const s = signals.showcase;
+    if (s <= 0.001) {
+      for (let i = 0; i < cardRefs.current.length; i++) {
+        const card = cardRefs.current[i];
+        if (card && card.style.visibility !== "hidden") card.style.visibility = "hidden";
+        const vid = videoRefs.current[i];
+        if (vid && !vid.paused) vid.pause();
+      }
+      return;
+    }
+
     const t = signals.time;
     const vw = window.innerWidth;
     const vh = window.innerHeight;

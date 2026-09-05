@@ -14,8 +14,9 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: clamp(300px, 33vw, 520px);
-  aspect-ratio: 1180 / 486;
+  width: clamp(300px, 32vw, 480px);
+  aspect-ratio: 16 / 9;
+  min-height: 200px;
   transform: translate(-50%, -50%);
   transform-origin: 50% 50%;
   will-change: transform, opacity;

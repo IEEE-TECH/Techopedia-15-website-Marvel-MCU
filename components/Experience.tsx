@@ -122,6 +122,12 @@ export default function Experience() {
           }
           const next = self.progress >= heroThreshold ? "hero" : "intro";
           if (useExperience.getState().phase !== next) useExperience.getState().setPhase(next);
+
+          // Performance: pause stage rendering when scrolled down into Team/Sponsors/Footer
+          const stage = document.querySelector(".stage") as HTMLElement | null;
+          if (stage) {
+            stage.style.visibility = self.progress >= 0.985 ? "hidden" : "visible";
+          }
         },
       },
     });
@@ -150,10 +156,11 @@ export default function Experience() {
     tl.to(signals, { heroOp: 1, duration: 0.3, ease: "power2.out" }, T.videoStart);
     tl.to(signals, { energy: 0.15, duration: 0.6 }, T.videoStart);
     tl.to(signals, { heroT: VIDEO.heroDur, duration: T.videoEnd - T.videoStart }, T.videoStart);
+    // Smoothly fade heroOp before "ENTER THE MULTIVERSE" appears at 10.6
+    tl.to(signals, { heroOp: 0, duration: 0.5, ease: "power2.in" }, 10.1);
     tl.to(signals, { energy: 0.13, duration: 0.8 }, T.videoEnd);
 
     // ── Section 2 · showcase ──
-    tl.to(signals, { heroOp: 0, duration: 1.0, ease: "power2.in" }, T.showcaseStart);
     tl.to(signals, { showcase: 1, duration: T.showcaseEnd - T.showcaseStart, ease: "none" }, T.showcaseStart);
     tl.to(signals, { energy: 0.22, duration: 1.2, ease: "power1.out" }, T.showcaseStart);
 

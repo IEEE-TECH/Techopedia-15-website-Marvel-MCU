@@ -88,6 +88,8 @@ export default function HorizontalReel() {
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const progressRef = useRef<HTMLSpanElement>(null);
 
+  const cachedCenters = useRef<number[]>([]);
+
   useEffect(() => {
     videoRefs.current.forEach((v) => {
       if (!v) return;
@@ -95,6 +97,13 @@ export default function HorizontalReel() {
       v.defaultMuted = true;
       v.playsInline = true;
     });
+
+    const measure = () => {
+      cachedCenters.current = frameRefs.current.map((f) => (f ? f.offsetLeft + f.offsetWidth / 2 : 0));
+    };
+    measure();
+    window.addEventListener("resize", measure, { passive: true });
+    return () => window.removeEventListener("resize", measure);
   }, []);
 
   useRaf(() => {
@@ -135,8 +144,9 @@ export default function HorizontalReel() {
     for (let i = 0; i < SCENES.length; i++) {
       const f = frameRefs.current[i];
       if (!f) continue;
-      const rect = f.getBoundingClientRect();
-      const fc = rect.left + rect.width / 2;
+      // High-performance: read cached horizontal center instead of triggering reflow every frame
+      const centerInTrack = cachedCenters.current[i] || (vw * 0.19 + i * (vw * 0.67) + vw * 0.31);
+      const fc = x + centerInTrack;
       const off = fc - cx;
       const close = 1 - clamp01(Math.abs(off) / (vw * 0.62));
       const scl = 0.82 + close * 0.2;

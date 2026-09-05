@@ -14,13 +14,12 @@ export function useLenis() {
 
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.05,
-      easing: (t) => 1 - Math.pow(1 - t, 3),
+      duration: 1.15,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      wheelMultiplier: 0.92,
-      touchMultiplier: 1.15,
+      wheelMultiplier: 0.95,
+      touchMultiplier: 1.2,
       syncTouch: true,
-      lerp: 0.09,
     });
     ref.current = lenis;
     if (process.env.NODE_ENV !== "production") {
@@ -31,7 +30,7 @@ export function useLenis() {
 
     const raf = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(raf);
-    gsap.ticker.lagSmoothing(0);
+    gsap.ticker.lagSmoothing(500, 33);
 
     return () => {
       gsap.ticker.remove(raf);
