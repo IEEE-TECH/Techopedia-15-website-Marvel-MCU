@@ -428,6 +428,7 @@
   padding: 0.08em 0 0.04em;
   background: linear-gradient(180deg, #ffffff 0%, #ffe4e6 30%, #ed1d24 75%, #990000 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 28px rgba(237, 29, 36, 0.6);
   margin: 0;

@@ -69,6 +69,7 @@
   letter-spacing: 0.05em;
   background: linear-gradient(180deg, #ffffff 0%, #fff2b2 35%, #ffd700 75%, #b38600 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   text-transform: uppercase;
   filter: drop-shadow(0 0 28px rgba(255, 215, 0, 0.6)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.9));
