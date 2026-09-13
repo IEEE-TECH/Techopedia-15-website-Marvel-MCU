@@ -17,6 +17,7 @@ import styles from "./footer.module.css";
 const EXPLORE = [
   { label: "Home", href: "/" },
   { label: "Schedule", href: "/schedule" },
+  { label: "Leaderboard", href: "/leaderboard" },
   { label: "Team", href: "/team" },
   { label: "Sponsors", href: "/sponsors" },
 ];

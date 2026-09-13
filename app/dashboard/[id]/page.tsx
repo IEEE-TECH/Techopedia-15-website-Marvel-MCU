@@ -7,6 +7,7 @@ import type { Participant, ActivityLog } from "@/lib/db";
 import { sound } from "@/lib/audio";
 import { useOnlineStatus } from "@/lib/useOnlineStatus";
 import { WarningIcon, TargetIcon, ScanIcon, TrophyIcon, SyncIcon, GamepadIcon, SwordIcon, LogIcon } from "@/components/ui/HudIcon";
+import PageShell from "@/components/ui/PageShell";
 import styles from "./dashboard.module.css";
 
 export default function ParticipantDashboard({
@@ -66,7 +67,11 @@ export default function ParticipantDashboard({
 
   if (loading) {
     return (
-      <div className={styles.dashboardContainer}>
+      <PageShell
+        kicker="S.H.I.E.L.D. Quantum Database"
+        title="Authenticating Access"
+        intro="Decrypting participant credentials from secure neural storage..."
+      >
         <div className={styles.loadingWrap}>
           <SyncIcon size={32} spinning />
           <h3>DECRYPTING AGENT CLEARANCE...</h3>
@@ -74,20 +79,18 @@ export default function ParticipantDashboard({
             Connecting to S.H.I.E.L.D. Quantum Database
           </p>
         </div>
-      </div>
+      </PageShell>
     );
   }
 
   if (error || !participant) {
     return (
-      <div className={styles.dashboardContainer}>
-        <div className={styles.dashboardInner} style={{ textAlign: "center", paddingTop: "5rem" }}>
-          <h2 style={{ color: "#ed1d24", fontFamily: "var(--font-avengers)" }}>
-            AGENT DOSSIER NOT FOUND
-          </h2>
-          <p style={{ color: "#94a3b8", margin: "1rem 0 2rem" }}>
-            {error || "The requested Agent ID or PRN does not exist in the Techopedia registry."}
-          </p>
+      <PageShell
+        kicker="S.H.I.E.L.D. Security Alert"
+        title="Dossier Not Found"
+        intro={error || "The requested Agent ID or PRN does not exist in the Techopedia registry."}
+      >
+        <div className={styles.dashboardInner} style={{ textAlign: "center", padding: "3rem 0" }}>
           <Link
             href="/"
             className={styles.ctaBtn}
@@ -96,50 +99,50 @@ export default function ParticipantDashboard({
             ← Return to Command Center
           </Link>
         </div>
-      </div>
+      </PageShell>
     );
   }
 
   return (
-    <div className={styles.dashboardContainer}>
-      {!isOnline && (
-        <div className={styles.offlineBanner} role="status">
-          <WarningIcon size={14} /> Offline — showing last synced dossier. Reconnect to resume live point tracking.
-        </div>
-      )}
-      <div className={styles.dashboardInner}>
-        {/* Navigation Bar */}
-        <div className={styles.navBar}>
-          <Link
-            href="/"
-            className={styles.backLink}
-            onClick={() => sound.playBlip(600, 0.04)}
-          >
-            ← COMMAND CENTER
-          </Link>
-          <div
-            className={styles.hudStatus}
-            style={!isOnline ? { color: "#ed1d24" } : undefined}
-          >
-            <span
-              className={styles.statusDot}
-              style={!isOnline ? { background: "#ed1d24", boxShadow: "0 0 10px #ed1d24" } : undefined}
-            />
-            <span>{isOnline ? "QUANTUM LINK ACTIVE · AUTO-SYNCING" : "QUANTUM LINK LOST · OFFLINE"}</span>
+    <PageShell
+      kicker="Agent Dossier // Level 15 Clearance"
+      title={participant.name}
+      intro="Official participant portal for Techopedia Level 15. Present your Holographic Pass to stall coordinators to earn battle points!"
+      maxWidth={1280}
+    >
+      <div className={styles.dashboardContainer}>
+        {!isOnline && (
+          <div className={styles.offlineBanner} role="status">
+            <WarningIcon size={14} /> Offline — showing last synced dossier. Reconnect to resume live point tracking.
           </div>
-        </div>
+        )}
+        <div className={styles.dashboardInner}>
+          {/* Sub-bar with Live Quantum Status & Quick Link */}
+          <div className={styles.navBar}>
+            <div
+              className={styles.hudStatus}
+              style={!isOnline ? { color: "#ed1d24" } : undefined}
+            >
+              <span
+                className={styles.statusDot}
+                style={!isOnline ? { background: "#ed1d24", boxShadow: "0 0 10px #ed1d24" } : undefined}
+              />
+              <span>{isOnline ? "QUANTUM LINK ACTIVE · AUTO-SYNCING" : "QUANTUM LINK LOST · OFFLINE"}</span>
+            </div>
 
-        {/* Hero Header */}
-        <div className={styles.heroHeader}>
-          <span className={styles.kicker}>AGENT DOSSIER // LEVEL 15 CLEARANCE</span>
-          <h1 className={styles.title}>{participant.name}</h1>
-          <p className={styles.subtitle}>
-            Official participant portal for Techopedia Level 15. Present your Holographic Pass to stall coordinators to earn battle points!
-          </p>
-        </div>
+            <div className={styles.quickLinks}>
+              <Link
+                href="/leaderboard"
+                className={styles.quickBtn}
+                onClick={() => sound.playBlip(650, 0.04)}
+              >
+                <TrophyIcon size={13} /> MULTIVERSE LEADERBOARD
+              </Link>
+            </div>
+          </div>
 
-        {/* Main 2-Column Grid */}
-        <div className={styles.layoutGrid}>
+          {/* Main 2-Column Grid */}
+          <div className={styles.layoutGrid}>
           {/* Column 1: 3D Holographic ID Card */}
           <div className={styles.cardColumn}>
             <DigitalIdCard
@@ -279,6 +282,7 @@ export default function ParticipantDashboard({
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </PageShell>
   );
 }

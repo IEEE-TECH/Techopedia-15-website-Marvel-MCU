@@ -7,6 +7,7 @@ import { useOnlineStatus } from "@/lib/useOnlineStatus";
 import { WarningIcon, ScanIcon, ExportIcon, SparkleIcon, CrownIcon, TrophyIcon } from "@/components/ui/HudIcon";
 import type { Participant, ActivityLog } from "@/lib/db";
 import styles from "./leaderboard.module.css";
+import PageShell from "@/components/ui/PageShell";
 
 interface DomainColorMap {
   stroke: string;
@@ -66,36 +67,46 @@ export default function LeaderboardPage() {
       if (typeof document !== "undefined" && document.hidden) return;
       if (!navigator.onLine) return;
       fetchLeaderboard(true);
-    }, 6000);
+    }, 8000);
     return () => clearInterval(interval);
   }, []);
 
   // Cycle activity toasts
   useEffect(() => {
-    if (activities.length === 0) return;
-    const toastTimer = setInterval(() => {
-      setActiveToastIndex((idx) => (idx + 1) % activities.length);
+    if (activities.length <= 1) return;
+    const toastInterval = setInterval(() => {
+      setActiveToastIndex((prev) => (prev + 1) % activities.length);
     }, 4500);
-    return () => clearInterval(toastTimer);
-  }, [activities]);
+    return () => clearInterval(toastInterval);
+  }, [activities.length]);
 
   // Filtered participants
   const filteredParticipants = useMemo(() => {
     return participants.filter((p) => {
       const matchesSearch =
         p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.prn.toLowerCase().includes(searchTerm.toLowerCase()) ||
         p.agentId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.college.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesDomain =
-        selectedDomain === "ALL" || p.domain.toLowerCase() === selectedDomain.toLowerCase();
+        p.prn.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        p.college.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (p.teamName && p.teamName.toLowerCase().includes(searchTerm.toLowerCase()));
+
+      const matchesDomain = selectedDomain === "ALL" || p.domain === selectedDomain;
+
       return matchesSearch && matchesDomain;
     });
   }, [participants, searchTerm, selectedDomain]);
 
   // Overall totals
   const totalBattlePoints = useMemo(() => {
-    return participants.reduce((acc, curr) => acc + curr.points, 0);
+    return participants.reduce((acc, curr) => acc + (curr.points || 0), 0);
+  }, [participants]);
+
+  const domains = useMemo(() => {
+    const set = new Set<string>();
+    participants.forEach((p) => {
+      if (p.domain) set.add(p.domain);
+    });
+    return Array.from(set);
   }, [participants]);
 
   // Top 3 Podium
@@ -103,19 +114,22 @@ export default function LeaderboardPage() {
 
   // Generate deterministic layout for the Bubble Node Universe
   const bubbleNodes = useMemo(() => {
-    const width = 1000;
-    const height = 480;
-    const centerX = width / 2;
-    const centerY = height / 2;
+    const top25 = participants.slice(0, 25);
+    if (top25.length === 0) return [];
 
-    return participants.slice(0, 24).map((p, index) => {
-      // Scale radius proportionally to points
-      // Points range typically 100 to 1000+
-      const radius = Math.min(54, Math.max(26, 18 + Math.sqrt(p.points) * 1.35));
+    const maxPts = Math.max(...top25.map((p) => p.points || 100), 100);
+    const minPts = Math.min(...top25.map((p) => p.points || 100), 100);
 
-      // Golden spiral distribution with some organic jitter
-      const angle = index * 2.399963; // golden angle in radians
-      const distance = Math.min(180, 50 + Math.sqrt(index) * 65);
+    const centerX = 500;
+    const centerY = 240;
+
+    return top25.map((p, i) => {
+      const pts = p.points || 100;
+      const normalized = (pts - minPts) / (maxPts - minPts || 1);
+      const radius = 14 + normalized * 32;
+
+      const angle = (i / top25.length) * (Math.PI * 2) + 0.4;
+      const distance = 80 + (1 - normalized) * 230;
 
       const x = centerX + Math.cos(angle) * distance;
       const y = centerY + Math.sin(angle) * (distance * 0.72);
@@ -135,65 +149,59 @@ export default function LeaderboardPage() {
   const currentToast = activities[activeToastIndex];
 
   return (
-    <div className={styles.leaderboardContainer}>
-      {!isOnline && (
-        <div className={styles.offlineBanner} role="status">
-          <WarningIcon size={14} /> Offline — showing last synced data. Reconnect to resume live updates.
-        </div>
-      )}
-      <div className={styles.inner}>
-        {/* Top Bar */}
-        <div className={styles.topBar}>
-          <Link
-            href="/"
-            className={styles.backLink}
-            onClick={() => sound.playBlip(600, 0.04)}
-          >
-            ← COMMAND CENTER
-          </Link>
-
-          <div className={styles.topActions}>
-            <Link
-              href="/scanner"
-              className={styles.csvBtn}
-              onClick={() => sound.playBlip(700, 0.04)}
-            >
-              <ScanIcon size={14} /> SCANNER PORTAL
-            </Link>
-            <button
-              type="button"
-              className={styles.csvBtn}
-              onClick={() => {
-                const saved = sessionStorage.getItem("techopedia15_organizer_token");
-                const token = saved || window.prompt("Enter organizer passcode to export participant data:");
-                if (!token) return;
-                sessionStorage.setItem("techopedia15_organizer_token", token);
-                const a = document.createElement("a");
-                a.href = `/api/export-csv?token=${encodeURIComponent(token)}`;
-                a.rel = "noopener";
-                a.click();
-              }}
-            >
-              <ExportIcon size={14} /> EXPORT PARTICIPANT CSV
-            </button>
+    <PageShell
+      kicker="Live S.H.I.E.L.D. Quantum Matrix"
+      title="Multiverse Leaderboard"
+      intro="Real-time battle score rankings for Techopedia Level 15. The larger the battle points, the greater the agent’s glowing gravitational pull!"
+      maxWidth={1320}
+    >
+      <div className={styles.leaderboardContainer}>
+        {!isOnline && (
+          <div className={styles.offlineBanner} role="status">
+            <WarningIcon size={14} /> Offline — showing last synced data. Reconnect to resume live updates.
           </div>
-        </div>
+        )}
+        <div className={styles.inner}>
+          {/* Action Toolbar */}
+          <div className={styles.topBar}>
+            <div className={styles.statusIndicator}>
+              <span className={styles.liveDot} />
+              <span>LIVE QUANTUM TELEMETRY ACTIVE</span>
+            </div>
 
-        {/* Hero Banner */}
-        <div className={styles.heroHeader}>
-          <span className={styles.kicker}>LIVE S.H.I.E.L.D. QUANTUM MATRIX</span>
-          <h1 className={styles.title}>Multiverse Leaderboard</h1>
-          <p className={styles.subtitle}>
-            Real-time battle score rankings for Techopedia Level 15. The larger the battle points, the greater the agent’s glowing gravitational pull!
-          </p>
-        </div>
-
-        {/* 4 Stats Cards */}
-        <div className={styles.statsBanner}>
-          <div className={styles.statBox}>
-            <div className={styles.statBoxTitle}>TOTAL REGISTERED AGENTS</div>
-            <div className={styles.statBoxValue}>{participants.length}</div>
+            <div className={styles.topActions}>
+              <Link
+                href="/scanner"
+                className={styles.csvBtn}
+                onClick={() => sound.playBlip(700, 0.04)}
+              >
+                <ScanIcon size={14} /> SCANNER PORTAL
+              </Link>
+              <button
+                type="button"
+                className={styles.csvBtn}
+                onClick={() => {
+                  const saved = sessionStorage.getItem("techopedia15_organizer_token");
+                  const token = saved || window.prompt("Enter organizer passcode to export participant data:");
+                  if (!token) return;
+                  sessionStorage.setItem("techopedia15_organizer_token", token);
+                  const a = document.createElement("a");
+                  a.href = `/api/export-csv?token=${encodeURIComponent(token)}`;
+                  a.rel = "noopener";
+                  a.click();
+                }}
+              >
+                <ExportIcon size={14} /> EXPORT CSV
+              </button>
+            </div>
           </div>
+
+          {/* 4 Stats Cards */}
+          <div className={styles.statsBanner}>
+            <div className={styles.statBox}>
+              <div className={styles.statBoxTitle}>TOTAL REGISTERED AGENTS</div>
+              <div className={styles.statBoxValue}>{participants.length}</div>
+            </div>
           <div className={styles.statBox}>
             <div className={styles.statBoxTitle}>TOTAL BATTLE POINTS ALLOCATED</div>
             <div className={styles.statBoxValue} style={{ color: "#ffd700" }}>
@@ -527,6 +535,7 @@ export default function LeaderboardPage() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </PageShell>
   );
 }

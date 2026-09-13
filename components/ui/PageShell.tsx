@@ -23,6 +23,7 @@ const heroVariants: Variants = {
 const NAV = [
   { label: "Experience", href: "/" },
   { label: "Schedule", href: "/schedule" },
+  { label: "Leaderboard", href: "/leaderboard" },
   { label: "Team", href: "/team" },
   { label: "Sponsors", href: "/sponsors" },
 ];
@@ -30,18 +31,22 @@ const NAV = [
 /**
  * The chrome for every non-cinematic page. The landing route is a scroll-jacked
  * film with its own fixed header/footer, so these content pages get plain,
- * normally-scrolling chrome instead — same dark-green language, no GSAP.
+ * normally-scrolling chrome instead — same dark-green/MCU language, no GSAP.
  */
 export default function PageShell({
   kicker,
   title,
   intro,
   children,
+  maxWidth,
+  headerExtra,
 }: {
-  kicker: string;
-  title: string;
-  intro: string;
+  kicker?: string;
+  title?: string;
+  intro?: string;
   children: React.ReactNode;
+  maxWidth?: string | number;
+  headerExtra?: React.ReactNode;
 }) {
   const [isRegOpen, setIsRegOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -83,6 +88,7 @@ export default function PageShell({
         <span className={styles.navBracket} aria-hidden>]</span>
 
         <div className={styles.headerActions}>
+          {headerExtra}
           <SoundToggle />
           <Button variant="primary" size="sm" onClick={() => setIsRegOpen(true)}>
             Register Now
@@ -124,6 +130,7 @@ export default function PageShell({
                 </Link>
               );
             })}
+            {headerExtra && <div style={{ margin: "0.4rem 0" }}>{headerExtra}</div>}
             <div style={{ margin: "0.4rem 0" }}>
               <SoundToggle />
             </div>
@@ -141,38 +148,44 @@ export default function PageShell({
         )}
       </AnimatePresence>
 
-      <main className={styles.main}>
-        <section className={styles.hero}>
-          <span className={styles.glow} aria-hidden />
-          <div className={styles.heroRig} aria-hidden>
-            <span className={styles.heroRing} />
-            <span className={`${styles.heroRing} ${styles.heroRingInner}`} />
-          </div>
-          <motion.span
-            className={styles.kicker}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            {kicker}
-          </motion.span>
-          <motion.h1
-            className={styles.title}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.08 }}
-          >
-            {title}
-          </motion.h1>
-          <motion.p
-            className={styles.intro}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.16 }}
-          >
-            {intro}
-          </motion.p>
-        </section>
+      <main className={styles.main} style={maxWidth ? { maxWidth } : undefined}>
+        {title && (
+          <section className={styles.hero}>
+            <span className={styles.glow} aria-hidden />
+            <div className={styles.heroRig} aria-hidden>
+              <span className={styles.heroRing} />
+              <span className={`${styles.heroRing} ${styles.heroRingInner}`} />
+            </div>
+            {kicker && (
+              <motion.span
+                className={styles.kicker}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                {kicker}
+              </motion.span>
+            )}
+            <motion.h1
+              className={styles.title}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.08 }}
+            >
+              {title}
+            </motion.h1>
+            {intro && (
+              <motion.p
+                className={styles.intro}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.55, delay: 0.16 }}
+              >
+                {intro}
+              </motion.p>
+            )}
+          </section>
+        )}
 
         <div className={styles.contentWrap}>
           {children}

@@ -6,6 +6,7 @@ import { sound } from "@/lib/audio";
 import { enqueueAward, flushQueue, getQueue } from "@/lib/scanQueue";
 import { LockIcon, WarningIcon, ShieldIcon, CameraIcon, TargetIcon, ScanIcon, SyncIcon } from "@/components/ui/HudIcon";
 import type { Participant } from "@/lib/db";
+import PageShell from "@/components/ui/PageShell";
 import styles from "./scanner.module.css";
 
 const TOKEN_STORAGE_KEY = "techopedia15_organizer_token";
@@ -63,8 +64,13 @@ export default function ScannerPage() {
 
   if (!orgToken) {
     return (
-      <div className={styles.scannerContainer}>
-        <div className={styles.scannerInner} style={{ maxWidth: 420 }}>
+      <PageShell
+        kicker="S.H.I.E.L.D. Protocol · Restricted Area"
+        title="Scanner Terminal"
+        intro="Enter the organizer passcode to unlock stall scanning and point allocation."
+        maxWidth={640}
+      >
+        <div className={styles.scannerInner} style={{ maxWidth: 440, margin: "1.5rem auto 3rem" }}>
           <div className={styles.panel}>
             <div className={styles.panelTitle}>
               <LockIcon size={16} /> ORGANIZER ACCESS REQUIRED
@@ -97,12 +103,9 @@ export default function ScannerPage() {
               </button>
             </form>
             {tokenError && <div className={styles.errorAlert}><WarningIcon size={14} /> {tokenError}</div>}
-            <Link href="/" className={styles.backLink} style={{ display: "block", marginTop: "1.5rem" }}>
-              ← Return to Command Center
-            </Link>
           </div>
         </div>
-      </div>
+      </PageShell>
     );
   }
 
@@ -351,55 +354,44 @@ function ScannerTerminal({ orgToken }: { orgToken: string }) {
   };
 
   return (
-    <div className={styles.scannerContainer}>
-      <div className={styles.scannerInner}>
-        {/* Top Header */}
-        <div className={styles.headerRow}>
-          <Link
-            href="/"
-            className={styles.backLink}
-            onClick={() => sound.playBlip(600, 0.04)}
-          >
-            ← COMMAND CENTER
-          </Link>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
-            {queueCount > 0 && (
-              <div
-                className={styles.shieldBadge}
-                style={{ background: "rgba(0, 229, 255, 0.15)", borderColor: "#00e5ff", color: "#00e5ff", display: "flex", alignItems: "center", gap: "0.4rem" }}
-                title="Awards queued locally, waiting for connection to sync"
-              >
-                <SyncIcon size={12} spinning /> {queueCount} PENDING SYNC
-              </div>
-            )}
+    <PageShell
+      kicker="Tactical Scanner & Point Dispatch"
+      title="Stall Verification Portal"
+      intro="Scan participant QR passes or enter PRN / Agent ID to verify clearance and allocate real-time battle points with instant Google Sheets synchronization."
+      maxWidth={1320}
+    >
+      <div className={styles.scannerContainer}>
+        <div className={styles.scannerInner}>
+          {/* Status Sub-bar */}
+          <div className={styles.headerRow}>
             <div className={styles.shieldBadge} style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
               <ShieldIcon size={13} /> IEEE TECHOPEDIA 15 ORGANIZER TERMINAL
             </div>
-            <button
-              type="button"
-              className={styles.backLink}
-              style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.35rem" }}
-              onClick={() => {
-                sessionStorage.removeItem(TOKEN_STORAGE_KEY);
-                window.location.reload();
-              }}
-            >
-              <LockIcon size={12} /> LOCK
-            </button>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
+              {queueCount > 0 && (
+                <div
+                  className={styles.shieldBadge}
+                  style={{ background: "rgba(0, 229, 255, 0.15)", borderColor: "#00e5ff", color: "#00e5ff", display: "flex", alignItems: "center", gap: "0.4rem" }}
+                  title="Awards queued locally, waiting for connection to sync"
+                >
+                  <SyncIcon size={12} spinning /> {queueCount} PENDING SYNC
+                </div>
+              )}
+              <button
+                type="button"
+                className={styles.lockBtn}
+                onClick={() => {
+                  sessionStorage.removeItem(TOKEN_STORAGE_KEY);
+                  window.location.reload();
+                }}
+              >
+                <LockIcon size={12} /> LOCK TERMINAL
+              </button>
+            </div>
           </div>
-        </div>
 
-        {/* Hero */}
-        <div className={styles.heroHeader}>
-          <span className={styles.kicker}>TACTICAL SCANNER & POINT DISPATCH</span>
-          <h1 className={styles.title}>Stall Verification Portal</h1>
-          <p className={styles.subtitle}>
-            Scan participant QR passes or enter PRN / Agent ID to verify clearance and allocate real-time battle points with instant Google Sheets synchronization.
-          </p>
-        </div>
-
-        {/* 2-Column Grid */}
-        <div className={styles.grid}>
+          {/* 2-Column Grid */}
+          <div className={styles.grid}>
           {/* Column 1: Scan & Search Panel */}
           <div className={styles.panel}>
             <div className={styles.panelTitle}>
@@ -616,6 +608,7 @@ function ScannerTerminal({ orgToken }: { orgToken: string }) {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </PageShell>
   );
 }
