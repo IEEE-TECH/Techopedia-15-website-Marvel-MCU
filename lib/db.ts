@@ -36,7 +36,9 @@ interface DatabaseSchema {
   activities: ActivityLog[];
 }
 
-const DATA_DIR = path.join(process.cwd(), "data");
+const DATA_DIR = process.env.VERCEL
+  ? path.join("/tmp", "techopedia_data")
+  : path.join(process.cwd(), "data");
 const DB_FILE = path.join(DATA_DIR, "techopedia.json");
 
 // Default seed participants so the Leaderboard & Bubble graph looks vibrant immediately
@@ -277,6 +279,16 @@ function readDb(): DatabaseSchema {
       fs.mkdirSync(DATA_DIR, { recursive: true });
     }
     if (!fs.existsSync(DB_FILE)) {
+      const bundledPath = path.join(process.cwd(), "data", "techopedia.json");
+      if (fs.existsSync(bundledPath)) {
+        try {
+          const raw = fs.readFileSync(bundledPath, "utf8");
+          fs.writeFileSync(DB_FILE, raw, "utf8");
+          return JSON.parse(raw) as DatabaseSchema;
+        } catch {
+          // fall through
+        }
+      }
       fs.writeFileSync(DB_FILE, JSON.stringify(INITIAL_SEED, null, 2), "utf8");
       return INITIAL_SEED;
     }

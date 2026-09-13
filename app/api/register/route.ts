@@ -105,7 +105,11 @@ export async function POST(req: NextRequest) {
     const agentId = `TECH15-${codename}-${prnSuffix}`;
 
     // Construct Dashboard URL and QR Code Payload
-    const origin = req.headers.get("origin") || req.nextUrl.origin || "http://localhost:3000";
+    const origin =
+      process.env.NEXT_PUBLIC_APP_URL ||
+      req.headers.get("origin") ||
+      req.nextUrl.origin ||
+      "http://localhost:3000";
     const dashboardUrl = `${origin}/dashboard/${agentId}`;
     const qrPayload = JSON.stringify({
       v: "TECHOPEDIA-15",

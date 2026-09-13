@@ -14,7 +14,9 @@ export interface SendRegistrationEmailOptions {
   dashboardUrl: string;
 }
 
-const OUTBOX_DIR = path.join(process.cwd(), "data", "outbox");
+const OUTBOX_DIR = process.env.VERCEL
+  ? path.join("/tmp", "techopedia_outbox")
+  : path.join(process.cwd(), "data", "outbox");
 
 export async function sendRegistrationEmail(
   opts: SendRegistrationEmailOptions
