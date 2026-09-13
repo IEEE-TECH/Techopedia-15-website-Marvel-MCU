@@ -47,8 +47,8 @@
 
 .csvBtn {
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 215, 0, 0.4);
-  color: #ffd700;
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  color: var(--color-interactive);
   padding: 0.5rem 1rem;
   border-radius: 6px;
   font-size: 0.8rem;
@@ -62,9 +62,9 @@
 }
 
 .csvBtn:hover {
-  background: #ffd700;
+  background: var(--color-interactive);
   color: #000000;
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
 }
 
 .heroHeader {

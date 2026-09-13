@@ -167,7 +167,7 @@
   bottom: -2px;
   width: 100%;
   height: 1px;
-  background: #ed1d24;
+  background: var(--color-interactive);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.35s ease;
@@ -179,7 +179,7 @@
   transform: scaleX(1);
 }
 .navLinkActive {
-  color: #ffd700;
+  color: var(--color-interactive);
 }
 .navLinkActive::after {
   transform: scaleX(1);
@@ -188,8 +188,8 @@
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ed1d24;
-  box-shadow: 0 0 8px rgba(237, 29, 36, 0.9);
+  background: var(--color-interactive);
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.9);
 }
 .cta {
   cursor: pointer;

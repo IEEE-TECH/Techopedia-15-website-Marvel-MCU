@@ -48,7 +48,7 @@ export default function SponsorsPageClient() {
 
           <div className={`${styles.logoGrid} ${getTierScaleClass(tier.tier, styles)}`}>
             {tier.sponsors.map((s) => (
-              <TiltCard key={s.name} className={styles.slot} maxTilt={10} glow>
+              <TiltCard key={s.name} className={`${styles.slot} hud-panel`} maxTilt={10} glow>
                 <span className={styles.pedestalBeam} aria-hidden />
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.3rem", textAlign: "center" }}>
                   <span className={styles.wordmark}>{s.name}</span>
@@ -66,7 +66,7 @@ export default function SponsorsPageClient() {
         <h2 className={styles.benefitsTitle}>Why Partner with Level 15</h2>
         <div className={styles.benefitGrid}>
           {SPONSOR_BENEFITS.map((b) => (
-            <TiltCard key={b.title} className={styles.benefit} maxTilt={5} glow glowColor="237, 29, 36">
+            <TiltCard key={b.title} className={`${styles.benefit} hud-panel-sm`} maxTilt={5} glow glowColor="0, 229, 255">
               <h3 className={styles.benefitName}>{b.title}</h3>
               <p className={styles.benefitDetail}>{b.detail}</p>
             </TiltCard>
@@ -83,7 +83,7 @@ export default function SponsorsPageClient() {
         <Button
           href={`mailto:${EVENT_INFO.sponsorEmail}?subject=Sponsorship%20Inquiry`}
           external
-          variant="gold"
+          variant="primary"
           size="lg"
         >
           ▸ Request the Brochure // PDF

@@ -380,7 +380,7 @@
 
 .actionBtn {
   background: rgba(15, 23, 42, 0.8);
-  border: 1px solid rgba(255, 215, 0, 0.4);
+  border: 1px solid rgba(0, 229, 255, 0.35);
   color: #ffffff;
   padding: 0.6rem 1rem;
   border-radius: 8px;
@@ -396,21 +396,21 @@
 }
 
 .actionBtn:hover {
-  background: #ed1d24;
-  border-color: #ed1d24;
-  box-shadow: 0 0 15px rgba(237, 29, 36, 0.6);
+  background: #00b8d4;
+  border-color: #00e5ff;
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
   transform: translateY(-2px);
-  color: #ffffff;
+  color: #04141a;
 }
 
 .actionBtnPrimary {
-  background: linear-gradient(135deg, #ed1d24, #b31016);
-  border-color: #ffd700;
+  background: linear-gradient(135deg, #00b8d4, #007a94);
+  border-color: #00e5ff;
   color: #ffffff;
 }
 
 .actionBtnPrimary:hover {
-  box-shadow: 0 0 20px rgba(237, 29, 36, 0.8);
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.8);
 }
 
 @media print {

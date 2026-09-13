@@ -4,6 +4,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import { sound } from "@/lib/audio";
 import { useOnlineStatus } from "@/lib/useOnlineStatus";
+import { WarningIcon, ScanIcon, ExportIcon, SparkleIcon, CrownIcon, TrophyIcon } from "@/components/ui/HudIcon";
 import type { Participant, ActivityLog } from "@/lib/db";
 import styles from "./leaderboard.module.css";
 
@@ -137,7 +138,7 @@ export default function LeaderboardPage() {
     <div className={styles.leaderboardContainer}>
       {!isOnline && (
         <div className={styles.offlineBanner} role="status">
-          ⚠ OFFLINE — showing last synced data. Reconnect to resume live updates.
+          <WarningIcon size={14} /> Offline — showing last synced data. Reconnect to resume live updates.
         </div>
       )}
       <div className={styles.inner}>
@@ -157,7 +158,7 @@ export default function LeaderboardPage() {
               className={styles.csvBtn}
               onClick={() => sound.playBlip(700, 0.04)}
             >
-              📷 SCANNER PORTAL
+              <ScanIcon size={14} /> SCANNER PORTAL
             </Link>
             <button
               type="button"
@@ -173,7 +174,7 @@ export default function LeaderboardPage() {
                 a.click();
               }}
             >
-              📥 EXPORT PARTICIPANT CSV
+              <ExportIcon size={14} /> EXPORT PARTICIPANT CSV
             </button>
           </div>
         </div>
@@ -217,7 +218,7 @@ export default function LeaderboardPage() {
         <div className={styles.bubbleSection}>
           <div className={styles.sectionTitleRow}>
             <div className={styles.sectionHeading}>
-              <span>✨</span> DYNAMIC POINT NODES (BIGGER POINTS = LARGER GLOW)
+              <SparkleIcon size={15} /> DYNAMIC POINT NODES (BIGGER POINTS = LARGER GLOW)
             </div>
             <div style={{ fontSize: "0.75rem", color: "#94a3b8" }}>
               Hover or click any agent sphere to inspect dossier
@@ -360,7 +361,7 @@ export default function LeaderboardPage() {
             <div className={styles.podiumRow}>
               {/* Silver #2 */}
               <div className={`${styles.podiumCard} ${styles.podiumSecond}`}>
-                <div className={styles.podiumCrown}>🥈</div>
+                <div className={styles.podiumCrown} style={{ color: "#cbd5e1" }}><TrophyIcon size={28} /></div>
                 <div className={styles.podiumName}>{topThree[1].name}</div>
                 <div className={styles.podiumDomain}>{topThree[1].domain}</div>
                 <div className={styles.podiumPoints} style={{ color: "#cbd5e1" }}>
@@ -373,7 +374,7 @@ export default function LeaderboardPage() {
 
               {/* Gold #1 */}
               <div className={`${styles.podiumCard} ${styles.podiumFirst}`}>
-                <div className={styles.podiumCrown}>👑</div>
+                <div className={styles.podiumCrown} style={{ color: "#ffd700" }}><CrownIcon size={32} /></div>
                 <div style={{ color: "#ffd700", fontWeight: 800, fontSize: "0.75rem", letterSpacing: "2px", textTransform: "uppercase" }}>
                   RANK #1 LEADER
                 </div>
@@ -391,7 +392,7 @@ export default function LeaderboardPage() {
 
               {/* Bronze #3 */}
               <div className={`${styles.podiumCard} ${styles.podiumThird}`}>
-                <div className={styles.podiumCrown}>🥉</div>
+                <div className={styles.podiumCrown} style={{ color: "#cd7f32" }}><TrophyIcon size={28} /></div>
                 <div className={styles.podiumName}>{topThree[2].name}</div>
                 <div className={styles.podiumDomain}>{topThree[2].domain}</div>
                 <div className={styles.podiumPoints} style={{ color: "#cd7f32" }}>
@@ -514,8 +515,8 @@ export default function LeaderboardPage() {
         <div className={styles.liveActivityToast}>
           <span className={styles.toastPulse} />
           <div>
-            <div style={{ fontSize: "0.7rem", color: "#ffd700", textTransform: "uppercase", letterSpacing: "1px" }}>
-              ⚡ LIVE STALL CHECK-IN
+            <div style={{ fontSize: "0.7rem", color: "var(--color-alert)", textTransform: "uppercase", letterSpacing: "1px" }}>
+              Live Stall Check-In
             </div>
             <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#ffffff" }}>
               <strong>{currentToast.name}</strong> earned +{currentToast.pointsEarned} PTS

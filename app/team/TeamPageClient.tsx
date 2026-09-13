@@ -84,7 +84,7 @@ export default function TeamPageClient() {
                 {group.members.map((m) => (
                   <TiltCard
                     key={m.name}
-                    className={styles.card}
+                    className={`${styles.card} hud-panel`}
                     maxTilt={8}
                     glow
                   >

@@ -78,7 +78,7 @@ export default function SchedulePage() {
                     >
                       <div className={styles.time}>{item.time}</div>
                       <div className={styles.dot} aria-hidden />
-                      <TiltCard className={styles.card} maxTilt={5} glow glowColor="237, 29, 36">
+                      <TiltCard className={`${styles.card} hud-panel-sm`} maxTilt={5} glow glowColor="0, 229, 255">
                         <span className={styles.cardGlow} aria-hidden />
                         <div className={styles.cardTop}>
                           <h3 className={styles.itemTitle}>{item.title}</h3>

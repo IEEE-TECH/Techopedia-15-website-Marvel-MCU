@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { sound } from "@/lib/audio";
-import { CloseIcon, CheckIcon } from "./HudIcon";
+import { CloseIcon, CheckIcon, WarningIcon, MailIcon } from "./HudIcon";
 import { MODAL_SPRING, OVERLAY_FADE } from "@/lib/motion";
 import DigitalIdCard from "./DigitalIdCard";
 import type { Participant } from "@/lib/db";
@@ -128,7 +128,7 @@ export default function RegistrationModal({
 
                 {errorMsg && (
                   <div className={styles.errorBanner}>
-                    <span>⚠️</span>
+                    <WarningIcon />
                     <span>{errorMsg}</span>
                   </div>
                 )}
@@ -241,7 +241,7 @@ export default function RegistrationModal({
                     className={styles.submitBtn}
                     disabled={loading}
                   >
-                    {loading ? "⚡ INITIALIZING QUANTUM PASS..." : "▸ CONFIRM LEVEL 15 REGISTRATION"}
+                    {loading ? "▸ INITIALIZING QUANTUM PASS..." : "▸ CONFIRM LEVEL 15 REGISTRATION"}
                   </button>
                 </form>
               </>
@@ -262,7 +262,8 @@ export default function RegistrationModal({
 
                 {emailPreviewUrl && (
                   <div className={styles.emailAlert}>
-                    <span>📧 Confirmation email generated for <strong>{formData.email}</strong></span>
+                    <MailIcon />
+                    <span>Confirmation email generated for <strong>{formData.email}</strong></span>
                     <a
                       href={emailPreviewUrl}
                       target="_blank"

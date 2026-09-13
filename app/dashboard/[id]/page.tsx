@@ -6,6 +6,7 @@ import DigitalIdCard from "@/components/ui/DigitalIdCard";
 import type { Participant, ActivityLog } from "@/lib/db";
 import { sound } from "@/lib/audio";
 import { useOnlineStatus } from "@/lib/useOnlineStatus";
+import { WarningIcon, TargetIcon, ScanIcon, TrophyIcon, SyncIcon, GamepadIcon, SwordIcon, LogIcon } from "@/components/ui/HudIcon";
 import styles from "./dashboard.module.css";
 
 export default function ParticipantDashboard({
@@ -67,7 +68,7 @@ export default function ParticipantDashboard({
     return (
       <div className={styles.dashboardContainer}>
         <div className={styles.loadingWrap}>
-          <div style={{ fontSize: "2rem" }}>⚡</div>
+          <SyncIcon size={32} spinning />
           <h3>DECRYPTING AGENT CLEARANCE...</h3>
           <p style={{ color: "#94a3b8", fontSize: "0.85rem" }}>
             Connecting to S.H.I.E.L.D. Quantum Database
@@ -103,7 +104,7 @@ export default function ParticipantDashboard({
     <div className={styles.dashboardContainer}>
       {!isOnline && (
         <div className={styles.offlineBanner} role="status">
-          ⚠ OFFLINE — showing last synced dossier. Reconnect to resume live point tracking.
+          <WarningIcon size={14} /> Offline — showing last synced dossier. Reconnect to resume live point tracking.
         </div>
       )}
       <div className={styles.dashboardInner}>
@@ -179,7 +180,7 @@ export default function ParticipantDashboard({
             <div className={styles.panel}>
               <div className={styles.panelHeader}>
                 <span className={styles.panelTitle}>
-                  <span>🎯</span> MISSION DIRECTIVES (EARN POINTS)
+                  <TargetIcon size={15} /> MISSION DIRECTIVES (EARN POINTS)
                 </span>
                 <span style={{ fontSize: "0.75rem", color: "#ffd700", fontWeight: 700 }}>
                   UP TO +500 PTS
@@ -187,7 +188,7 @@ export default function ParticipantDashboard({
               </div>
               <div className={styles.missionGrid}>
                 <div className={styles.missionCard}>
-                  <div className={styles.missionIcon}>🕹️</div>
+                  <div className={styles.missionIcon}><GamepadIcon size={20} /></div>
                   <div className={styles.missionText}>
                     <h4>Arcade Hub Mini-Games</h4>
                     <p>Play web mini-games or physical game stalls for +50 to +100 PTS.</p>
@@ -195,7 +196,7 @@ export default function ParticipantDashboard({
                 </div>
 
                 <div className={styles.missionCard}>
-                  <div className={styles.missionIcon}>⚡</div>
+                  <div className={styles.missionIcon}><ScanIcon size={20} /></div>
                   <div className={styles.missionText}>
                     <h4>Stall Verification</h4>
                     <p>Have coordinators scan your QR pass at game stalls for instant points.</p>
@@ -203,7 +204,7 @@ export default function ParticipantDashboard({
                 </div>
 
                 <div className={styles.missionCard}>
-                  <div className={styles.missionIcon}>⚔️</div>
+                  <div className={styles.missionIcon}><SwordIcon size={20} /></div>
                   <div className={styles.missionText}>
                     <h4>Domain Round Clears</h4>
                     <p>Advance through CTF, Hackathon & Robo rounds for +150 to +250 PTS.</p>
@@ -211,7 +212,7 @@ export default function ParticipantDashboard({
                 </div>
 
                 <div className={styles.missionCard}>
-                  <div className={styles.missionIcon}>🏆</div>
+                  <div className={styles.missionIcon}><TrophyIcon size={20} /></div>
                   <div className={styles.missionText}>
                     <h4>Podium Finish</h4>
                     <p>Top agents take home cash prize pools and IEEE certificates.</p>
@@ -243,7 +244,7 @@ export default function ParticipantDashboard({
             <div className={styles.panel}>
               <div className={styles.panelHeader}>
                 <span className={styles.panelTitle}>
-                  <span>📜</span> AGENT PARTICIPATION LOG
+                  <LogIcon size={15} /> AGENT PARTICIPATION LOG
                 </span>
                 <span style={{ fontSize: "0.75rem", color: "#94a3b8" }}>
                   {activities.length} Records

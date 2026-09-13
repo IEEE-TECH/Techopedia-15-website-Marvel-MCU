@@ -68,7 +68,7 @@ export default function TeamSection() {
             transition={{ duration: 0.35, ease: EASE_OUT }}
           >
             {group.members.map((m, idx) => (
-              <TiltCard key={m.name} className={styles.card} maxTilt={14} glow glowColor="237, 29, 36">
+              <TiltCard key={m.name} className={`${styles.card} hud-panel`} maxTilt={14} glow glowColor="0, 229, 255">
                 {/* 3D Sci-Fi HUD Corner Brackets */}
                 <span className={styles.cardCornerTL} aria-hidden />
                 <span className={styles.cardCornerTR} aria-hidden />

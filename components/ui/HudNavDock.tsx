@@ -105,7 +105,7 @@ export default function HudNavDock({ onRegisterClick, onMiniGamesClick }: HudNav
           <Button
             size="sm"
             radius="pill"
-            variant="gold"
+            variant="primary"
             onClick={() => onRegisterClick()}
           >
             ▸ REGISTER

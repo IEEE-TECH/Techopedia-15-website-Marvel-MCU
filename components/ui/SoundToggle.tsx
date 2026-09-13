@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { sound } from "@/lib/audio";
+import { SpeakerOnIcon, SpeakerOffIcon } from "./HudIcon";
 import styles from "./ui.module.css";
 
 export default function SoundToggle() {
@@ -17,7 +18,9 @@ export default function SoundToggle() {
       aria-label={muted ? "Unmute cinematic audio" : "Mute cinematic audio"}
       title={muted ? "Unmute cinematic audio" : "Mute cinematic audio"}
     >
-      <span className={styles.soundIcon} aria-hidden>{muted ? "🔇" : "🔊"}</span>
+      <span className={styles.soundIcon} aria-hidden>
+        {muted ? <SpeakerOffIcon size={14} /> : <SpeakerOnIcon size={14} />}
+      </span>
       <span className={styles.eq} aria-hidden><i /><i /><i /><i /></span>
       <span>{muted ? "AUDIO OFF" : "AUDIO ON"}</span>
     </button>

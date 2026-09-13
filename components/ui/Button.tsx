@@ -8,7 +8,7 @@ import styles from "./button.module.css";
 
 export interface ButtonProps extends Omit<HTMLMotionProps<"button">, "children"> {
   children: React.ReactNode;
-  variant?: "primary" | "gold" | "ghost" | "cyan";
+  variant?: "primary" | "gold" | "ghost" | "cyan" | "alert";
   size?: "sm" | "md" | "lg";
   radius?: "sm" | "pill";
   href?: string;

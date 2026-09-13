@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { sound } from "@/lib/audio";
+import { CloseIcon, CheckIcon, ShieldIcon, SaveIcon, PrintIcon, ClipboardIcon } from "./HudIcon";
 import styles from "./digitalIdCard.module.css";
 
 export interface DigitalIdCardProps {
@@ -369,7 +370,7 @@ export default function DigitalIdCard({
 
       ctx.fillStyle = "#22c55e";
       ctx.font = "700 10px system-ui, -apple-system, sans-serif";
-      ctx.fillText("🛡️ SEC-ENCRYPTED", 32, footY + 20);
+      ctx.fillText("[ SEC-ENCRYPTED ]", 32, footY + 20);
 
       ctx.textAlign = "right";
       ctx.fillStyle = "#94a3b8";
@@ -399,7 +400,7 @@ export default function DigitalIdCard({
     <div className={styles.cardWrapper}>
       <div
         ref={cardRef}
-        className={`${styles.cardContainer} ${touching ? styles.cardTouching : ""}`}
+        className={`${styles.cardContainer} hud-panel ${touching ? styles.cardTouching : ""}`}
         onMouseMove={handleMouseMove}
         onMouseLeave={resetTilt}
         onTouchStart={handleTouchStart}
@@ -529,7 +530,7 @@ export default function DigitalIdCard({
         {/* Footer Bar */}
         <div className={styles.cardFooter}>
           <div className={styles.securityChip}>
-            <span>🛡️ SEC-ENCRYPTED</span>
+            <ShieldIcon size={12} /> <span>SEC-ENCRYPTED</span>
           </div>
           <span>OFFICIAL ENTRY PASS</span>
         </div>
@@ -538,7 +539,15 @@ export default function DigitalIdCard({
       {showActions && (
         <div className={styles.actionsBar}>
           <button type="button" className={styles.actionBtn} onClick={handleCopyId}>
-            {copied ? "✓ COPIED" : "📋 COPY ID"}
+            {copied ? (
+              <>
+                <CheckIcon size={14} /> Copied
+              </>
+            ) : (
+              <>
+                <ClipboardIcon size={14} /> Copy ID
+              </>
+            )}
           </button>
           <button
             type="button"
@@ -546,10 +555,10 @@ export default function DigitalIdCard({
             onClick={handleDownloadPass}
             disabled={isSaving}
           >
-            {isSaving ? "⏳ SAVING..." : "💾 SAVE PASS"}
+            <SaveIcon size={14} /> {isSaving ? "Saving..." : "Save pass"}
           </button>
           <button type="button" className={styles.actionBtn} onClick={handlePrint}>
-            🖨️ PRINT PASS
+            <PrintIcon size={14} /> Print pass
           </button>
           {showDashboardLink ? (
             <Link
@@ -557,7 +566,7 @@ export default function DigitalIdCard({
               className={`${styles.actionBtn} ${styles.actionBtnPrimary}`}
               onClick={() => sound.playBlip(800, 0.05)}
             >
-              ⚡ LIVE DASHBOARD →
+              ▸ Live dashboard →
             </Link>
           ) : (
             <Link
@@ -565,7 +574,7 @@ export default function DigitalIdCard({
               className={`${styles.actionBtn} ${styles.actionBtnPrimary}`}
               onClick={() => sound.playBlip(800, 0.05)}
             >
-              🌐 LEADERBOARD →
+              ▸ Leaderboard →
             </Link>
           )}
         </div>
@@ -585,7 +594,7 @@ export default function DigitalIdCard({
             onClick={closeQrModal}
             aria-label="Close QR code"
           >
-            ✕
+            <CloseIcon size={18} />
           </button>
 
           <div className={styles.qrModalContent} onClick={(e) => e.stopPropagation()}>

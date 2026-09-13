@@ -45,7 +45,7 @@ export default function SponsorsSection() {
 
               <div className={styles.grid}>
                 {tier.sponsors.map((s) => (
-                  <TiltCard key={s.name} className={styles.slot} maxTilt={12} glow>
+                  <TiltCard key={s.name} className={`${styles.slot} hud-panel`} maxTilt={12} glow>
                     <span className={styles.pedestalBeam} aria-hidden />
                     <div className={styles.sponsorCardContent}>
                       <span className={styles.wordmark}>{s.name}</span>

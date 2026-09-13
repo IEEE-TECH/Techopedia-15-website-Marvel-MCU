@@ -18,6 +18,19 @@
   --success: #00ff9c;
   --error: #ff2a44;
 
+  /* One job per color, not three colors doing the same job everywhere:
+     - interactive: the default action color — links, active nav state,
+       borders, buttons, scanning UI. This is what "Stark tech" actually
+       looks like: clean and technical, not a Christmas palette.
+     - alert: reserved for live/urgent states only (countdown urgency,
+       "LIVE" badges, form/API errors). Never a default button color.
+     - prestige: reserved for rank/achievement only (podium #1, top
+       scorer glow, verification stamps). If it shows up everywhere it
+       means nothing when it matters. */
+  --color-interactive: var(--cyan);
+  --color-alert: var(--marvel-red);
+  --color-prestige: var(--marvel-gold);
+
   /* Spacing scale */
   --space-1: 4px;
   --space-2: 8px;
@@ -47,6 +60,12 @@
   --radius-pill: 999px;
   --radius-circle: 50%;
 
+  /* Chamfer — the card shape language. One or two corners cut at 45°
+     instead of a uniform rounded-rect: reads as engineered plating, not
+     a rounded SaaS card. Applied via the global .hud-panel class below. */
+  --chamfer: 16px;
+  --chamfer-sm: 10px;
+
   /* Z-Index scale */
   --z-base: 0;
   --z-content: 1;
@@ -68,6 +87,45 @@
   --button-red: linear-gradient(120deg, var(--marvel-red), var(--marvel-crimson));
 
   color-scheme: dark;
+}
+
+/* ============================================================
+   .hud-panel — the shared card shape language. Two opposite corners
+   chamfered at 45°, a 1px low-opacity cyan hairline border instead of a
+   soft grey drop shadow, no border-radius. Add alongside a component's
+   own module class (className={`${styles.card} hud-panel`}) so every
+   card/tile/tier reads as one engineered plating system instead of N
+   independently-invented rounded-rect cards.
+   ============================================================ */
+.hud-panel {
+  clip-path: polygon(
+    var(--chamfer) 0,
+    100% 0,
+    100% calc(100% - var(--chamfer)),
+    calc(100% - var(--chamfer)) 100%,
+    0 100%,
+    0 var(--chamfer)
+  );
+  border-radius: 0 !important;
+  border: 1px solid rgba(0, 229, 255, 0.22) !important;
+  box-shadow: none !important;
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+.hud-panel:hover {
+  border-color: rgba(0, 229, 255, 0.55) !important;
+}
+.hud-panel-sm {
+  clip-path: polygon(
+    var(--chamfer-sm) 0,
+    100% 0,
+    100% calc(100% - var(--chamfer-sm)),
+    calc(100% - var(--chamfer-sm)) 100%,
+    0 100%,
+    0 var(--chamfer-sm)
+  );
+  border-radius: 0 !important;
+  border: 1px solid rgba(0, 229, 255, 0.22) !important;
+  box-shadow: none !important;
 }
 
 *,

@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { sound } from "@/lib/audio";
 import { enqueueAward, flushQueue, getQueue } from "@/lib/scanQueue";
+import { LockIcon, WarningIcon, ShieldIcon, CameraIcon, TargetIcon, ScanIcon, SyncIcon } from "@/components/ui/HudIcon";
 import type { Participant } from "@/lib/db";
 import styles from "./scanner.module.css";
 
@@ -66,7 +67,7 @@ export default function ScannerPage() {
         <div className={styles.scannerInner} style={{ maxWidth: 420 }}>
           <div className={styles.panel}>
             <div className={styles.panelTitle}>
-              <span>🔒</span> ORGANIZER ACCESS REQUIRED
+              <LockIcon size={16} /> ORGANIZER ACCESS REQUIRED
             </div>
             <p style={{ color: "#94a3b8", fontSize: "0.85rem", margin: "0.5rem 0 1.2rem" }}>
               Enter the event organizer passcode to unlock the scanner terminal. This page can
@@ -95,7 +96,7 @@ export default function ScannerPage() {
                 {unlocking ? "VERIFYING..." : "▸ UNLOCK TERMINAL"}
               </button>
             </form>
-            {tokenError && <div className={styles.errorAlert}>⚠️ {tokenError}</div>}
+            {tokenError && <div className={styles.errorAlert}><WarningIcon size={14} /> {tokenError}</div>}
             <Link href="/" className={styles.backLink} style={{ display: "block", marginTop: "1.5rem" }}>
               ← Return to Command Center
             </Link>
@@ -271,7 +272,7 @@ function ScannerTerminal({ orgToken }: { orgToken: string }) {
     });
     setQueueCount(getQueue().length);
     setSuccessMsg(
-      `⏳ ${reason} — queued +${points} PTS for ${participant.name}. Will sync automatically once reconnected.`
+      `${reason} — queued +${points} PTS for ${participant.name}. Will sync automatically once reconnected.`
     );
     sound.playBlip(500, 0.05);
   };
@@ -365,25 +366,25 @@ function ScannerTerminal({ orgToken }: { orgToken: string }) {
             {queueCount > 0 && (
               <div
                 className={styles.shieldBadge}
-                style={{ background: "rgba(255, 215, 0, 0.15)", borderColor: "#ffd700", color: "#ffd700" }}
+                style={{ background: "rgba(0, 229, 255, 0.15)", borderColor: "#00e5ff", color: "#00e5ff", display: "flex", alignItems: "center", gap: "0.4rem" }}
                 title="Awards queued locally, waiting for connection to sync"
               >
-                ⏳ {queueCount} PENDING SYNC
+                <SyncIcon size={12} spinning /> {queueCount} PENDING SYNC
               </div>
             )}
-            <div className={styles.shieldBadge}>
-              🛡️ IEEE TECHOPEDIA 15 ORGANIZER TERMINAL
+            <div className={styles.shieldBadge} style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+              <ShieldIcon size={13} /> IEEE TECHOPEDIA 15 ORGANIZER TERMINAL
             </div>
             <button
               type="button"
               className={styles.backLink}
-              style={{ background: "none", border: "none", cursor: "pointer" }}
+              style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.35rem" }}
               onClick={() => {
                 sessionStorage.removeItem(TOKEN_STORAGE_KEY);
                 window.location.reload();
               }}
             >
-              🔒 LOCK
+              <LockIcon size={12} /> LOCK
             </button>
           </div>
         </div>
@@ -402,7 +403,7 @@ function ScannerTerminal({ orgToken }: { orgToken: string }) {
           {/* Column 1: Scan & Search Panel */}
           <div className={styles.panel}>
             <div className={styles.panelTitle}>
-              <span>📷</span> TACTICAL SCANNER & AGENT LOOKUP
+              <CameraIcon size={16} /> TACTICAL SCANNER & AGENT LOOKUP
             </div>
 
             {/* Camera Viewport */}
@@ -414,7 +415,7 @@ function ScannerTerminal({ orgToken }: { orgToken: string }) {
                 </>
               ) : (
                 <div className={styles.cameraPlaceholder}>
-                  <div style={{ fontSize: "2.5rem" }}>📷</div>
+                  <CameraIcon size={40} />
                   <div>Camera Inactive</div>
                   <div style={{ fontSize: "0.75rem", color: "#64748b" }}>
                     Enable camera to scan physical QR passes or use manual lookup
@@ -488,13 +489,13 @@ function ScannerTerminal({ orgToken }: { orgToken: string }) {
               </button>
             </div>
 
-            {errorMsg && <div className={styles.errorAlert}>⚠️ {errorMsg}</div>}
+            {errorMsg && <div className={styles.errorAlert}><WarningIcon size={14} /> {errorMsg}</div>}
           </div>
 
           {/* Column 2: Agent Dossier & Awarding Panel */}
           <div className={styles.panel}>
             <div className={styles.panelTitle}>
-              <span>⚡</span> ALLOCATE BATTLE POINTS
+              <TargetIcon size={16} /> ALLOCATE BATTLE POINTS
             </div>
 
             {participant ? (
@@ -567,13 +568,15 @@ function ScannerTerminal({ orgToken }: { orgToken: string }) {
                   </div>
 
                   <button type="submit" className={styles.awardBtn} disabled={awarding}>
-                    {awarding ? "SYNCING TO GOOGLE SHEETS..." : `⚡ AWARD +${points} POINTS NOW`}
+                    {awarding ? "SYNCING TO GOOGLE SHEETS..." : `▸ AWARD +${points} POINTS NOW`}
                   </button>
                 </form>
               </>
             ) : (
               <div style={{ textAlign: "center", color: "#64748b", padding: "3rem 1.5rem" }}>
-                <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>🎯</div>
+                <div style={{ marginBottom: "0.5rem", display: "flex", justifyContent: "center" }}>
+                  <ScanIcon size={32} />
+                </div>
                 <div>No Agent Verified Yet</div>
                 <div style={{ fontSize: "0.8rem", marginTop: "0.4rem" }}>
                   Scan a QR code or search by PRN to load participant credentials and award points.

@@ -40,7 +40,7 @@ export default function CinematicCanvas() {
         premultipliedAlpha: true,
         powerPreference: "high-performance",
       }}
-      dpr={[1, 1.5]}
+      dpr={reducedGpu ? [1, 1] : [1, 1.5]}
       camera={{ position: [0, 0, 6], fov: 45, near: 0.1, far: 120 }}
       onCreated={({ gl, scene }) => {
         gl.setClearColor(0x000000, 0); // fully transparent so the video shows
@@ -78,8 +78,15 @@ export default function CinematicCanvas() {
         opacity={0.9}
       />
 
-      <Lightning />
-      <Sparks />
+      {/* Procedural lightning is the single most expensive effect here (a
+          fractal-geometry bolt system) and it's flashing content — a real
+          concern on low-end/congested-network phones during the actual
+          event, and a WCAG 2.3.1 concern for prefers-reduced-motion.
+          reducedGpu already covers both device capability and
+          prefers-reduced-motion, so gate this fully rather than just
+          thinning the particle counts around it. */}
+      {!reducedGpu && <Lightning />}
+      {!reducedGpu && <Sparks />}
       <Portal />
 
       {/* Phase 2 · Section 2 — character showcase (self-gates on signals.showcase) */}
