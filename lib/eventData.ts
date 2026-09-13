@@ -34,7 +34,7 @@ export const DOMAINS: EventDomain[] = [
   {
     id: "squabble",
     slug: "doom",
-    name: "Squabble",
+    name: "Code Conquest",
     mcuCodename: "Project Doomsday",
     tagline: "Algorithmic Battlegrounds & 24-Hour Hackathon",
     shortDesc: "Compete in intense speed-coding rounds and build game-changing full-stack AI applications under 24 hours.",
@@ -71,7 +71,7 @@ export const DOMAINS: EventDomain[] = [
   {
     id: "eureka",
     slug: "blackpanther",
-    name: "Eureka",
+    name: "Cyber Realm & CTF",
     mcuCodename: "Wakanda Firewall Siege",
     tagline: "Offensive Security, Cryptography & Live Jeopardy CTF",
     shortDesc: "Crack cryptographic ciphers, reverse engineer binaries, bypass web defenses, and conquer the live leaderboard.",
@@ -106,7 +106,7 @@ export const DOMAINS: EventDomain[] = [
   {
     id: "inquisitve",
     slug: "cyclops",
-    name: "Inquisitve",
+    name: "Robo Blitz",
     mcuCodename: "Stark Industries Bot Wars",
     tagline: "Combat Robotics, Autonomous Line Followers & Drone Arena",
     shortDesc: "Pit customized combat robots in the steel cage, test autonomous line-followers, and pilot drones through obstacle mazes.",
@@ -141,7 +141,7 @@ export const DOMAINS: EventDomain[] = [
   {
     id: "laser-tag",
     slug: "mystique",
-    name: "laser tag",
+    name: "Pixel Craft",
     mcuCodename: "Quantum Reality UI/UX",
     tagline: "Futuristic Design Sprints & Interactive 3D Web Dev",
     shortDesc: "Design breathtaking interfaces, craft micro-animations, and code interactive 3D WebGL experiences from scratch.",

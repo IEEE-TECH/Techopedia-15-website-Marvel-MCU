@@ -5,6 +5,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { sound } from "@/lib/audio";
 import { CloseIcon, CheckIcon } from "./HudIcon";
 import { MODAL_SPRING, OVERLAY_FADE } from "@/lib/motion";
+import DigitalIdCard from "./DigitalIdCard";
+import type { Participant } from "@/lib/db";
 import styles from "./registration.module.css";
 
 interface RegistrationModalProps {
@@ -18,12 +20,17 @@ export default function RegistrationModal({
   onClose,
   initialDomain = "Code Conquest",
 }: RegistrationModalProps) {
+  const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [passId, setPassId] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [participant, setParticipant] = useState<Participant | null>(null);
+  const [emailPreviewUrl, setEmailPreviewUrl] = useState<string | null>(null);
+
   const [formData, setFormData] = useState({
     name: "",
+    prn: "",
     email: "",
-    college: "",
+    college: "SIES Graduate School of Technology",
     phone: "",
     teamName: "",
     teamSize: "2",
@@ -36,16 +43,45 @@ export default function RegistrationModal({
     }
   }, [initialDomain]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const randomId = "TECH15-PASS-" + Math.floor(100000 + Math.random() * 900000);
-    setPassId(randomId);
-    setSubmitted(true);
-    sound.playSuccess();
+    setErrorMsg("");
+    setLoading(true);
+    sound.playBlip(650, 0.05);
+
+    try {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Registration failed. Please check your details.");
+      }
+
+      setParticipant(data.participant);
+      if (data.emailPreviewUrl) {
+        setEmailPreviewUrl(data.emailPreviewUrl);
+      }
+      setSubmitted(true);
+      sound.playSuccess();
+    } catch (err: unknown) {
+      console.error("Submission error:", err);
+      setErrorMsg(err instanceof Error ? err.message : "Something went wrong.");
+      sound.playBlip(320, 0.08);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleReset = () => {
     setSubmitted(false);
+    setParticipant(null);
+    setEmailPreviewUrl(null);
+    setErrorMsg("");
     onClose();
   };
 
@@ -61,7 +97,7 @@ export default function RegistrationModal({
           transition={OVERLAY_FADE}
         >
           <motion.div
-            className={styles.modal}
+            className={`${styles.modal} ${submitted ? styles.modalSuccess : ""}`}
             onClick={(e) => e.stopPropagation()}
             style={{ transformPerspective: 1000 }}
             initial={{ opacity: 0, scale: 0.94, y: 20, rotateX: -6 }}
@@ -73,7 +109,7 @@ export default function RegistrationModal({
               className={styles.closeBtn}
               onClick={() => {
                 sound.playBlip(600, 0.04);
-                onClose();
+                handleReset();
               }}
               aria-label="Close modal"
             >
@@ -83,17 +119,24 @@ export default function RegistrationModal({
             {!submitted ? (
               <>
                 <div className={styles.header}>
-                  <span className={styles.kicker}>IEEE TECHOPEDIA 15.0 · REGISTRATION</span>
+                  <span className={styles.kicker}>IEEE TECHOPEDIA 15.0 · S.H.I.E.L.D. PROTOCOL</span>
                   <h2 className={styles.title}>Assemble Your Squad</h2>
                   <p className={styles.subtitle}>
-                    Lock in your spot for national-level hackathons, CTF sieges, and engineering colosseums.
+                    Enter your PRN, Name & Email to instantly unlock your Quantum Digital ID Pass and receive official confirmation.
                   </p>
                 </div>
+
+                {errorMsg && (
+                  <div className={styles.errorBanner}>
+                    <span>⚠️</span>
+                    <span>{errorMsg}</span>
+                  </div>
+                )}
 
                 <form onSubmit={handleSubmit} className={styles.form}>
                   <div className={styles.row}>
                     <div className={styles.field}>
-                      <label>Team Lead / Full Name</label>
+                      <label>Team Lead / Full Name *</label>
                       <input
                         type="text"
                         required
@@ -104,7 +147,20 @@ export default function RegistrationModal({
                     </div>
 
                     <div className={styles.field}>
-                      <label>Email Address</label>
+                      <label>College PRN / Student ID *</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. 2023CS0199"
+                        value={formData.prn}
+                        onChange={(e) => setFormData({ ...formData, prn: e.target.value })}
+                      />
+                    </div>
+                  </div>
+
+                  <div className={styles.row}>
+                    <div className={styles.field}>
+                      <label>Email Address (Pass Sent Here) *</label>
                       <input
                         type="email"
                         required
@@ -113,22 +169,9 @@ export default function RegistrationModal({
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       />
                     </div>
-                  </div>
-
-                  <div className={styles.row}>
-                    <div className={styles.field}>
-                      <label>College / Institution</label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="XYZ Institute of Technology"
-                        value={formData.college}
-                        onChange={(e) => setFormData({ ...formData, college: e.target.value })}
-                      />
-                    </div>
 
                     <div className={styles.field}>
-                      <label>WhatsApp / Phone Number</label>
+                      <label>WhatsApp / Mobile Number</label>
                       <input
                         type="tel"
                         required
@@ -141,7 +184,18 @@ export default function RegistrationModal({
 
                   <div className={styles.row}>
                     <div className={styles.field}>
-                      <label>Team Name</label>
+                      <label>College / Institution</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="SIES Graduate School of Technology"
+                        value={formData.college}
+                        onChange={(e) => setFormData({ ...formData, college: e.target.value })}
+                      />
+                    </div>
+
+                    <div className={styles.field}>
+                      <label>Squad / Team Name</label>
                       <input
                         type="text"
                         required
@@ -150,9 +204,11 @@ export default function RegistrationModal({
                         onChange={(e) => setFormData({ ...formData, teamName: e.target.value })}
                       />
                     </div>
+                  </div>
 
+                  <div className={styles.row}>
                     <div className={styles.field}>
-                      <label>Team Size</label>
+                      <label>Squad Size</label>
                       <select
                         value={formData.teamSize}
                         onChange={(e) => setFormData({ ...formData, teamSize: e.target.value })}
@@ -163,43 +219,60 @@ export default function RegistrationModal({
                         <option value="4">4 Members (Full Squad)</option>
                       </select>
                     </div>
+
+                    <div className={styles.field}>
+                      <label>Select Domain</label>
+                      <select
+                        value={formData.domain}
+                        onChange={(e) => setFormData({ ...formData, domain: e.target.value })}
+                      >
+                        <option value="Code Conquest">Code Conquest (24-Hr Hackathon & Speed Coding)</option>
+                        <option value="Cyber Realm & CTF">Cyber Realm & CTF (Offensive Cybersecurity)</option>
+                        <option value="Robo Blitz">Robo Blitz (Robo Wars & Drone Obstacle Arena)</option>
+                        <option value="Pixel Craft">Pixel Craft (UI/UX Design Sprint & 3D Web Dev)</option>
+                        <option value="Paper & Project Expo">Paper & Project Expo (National Research Symposium)</option>
+                        <option value="E-Sports Arena">E-Sports Arena (Valorant & BGMI Tournament)</option>
+                      </select>
+                    </div>
                   </div>
 
-                  <div className={styles.field}>
-                    <label>Selected Event Domain</label>
-                    <select
-                      value={formData.domain}
-                      onChange={(e) => setFormData({ ...formData, domain: e.target.value })}
-                    >
-                      <option value="Code Conquest">Code Conquest (24-Hr Hackathon & Speed Coding)</option>
-                      <option value="Cyber Realm & CTF">Cyber Realm & CTF (Offensive Cybersecurity)</option>
-                      <option value="Robo Blitz">Robo Blitz (Robo Wars & Drone Obstacle Arena)</option>
-                      <option value="Pixel Craft">Pixel Craft (UI/UX Design Sprint & 3D Web Dev)</option>
-                      <option value="Paper & Project Expo">Paper & Project Expo (National Research Symposium)</option>
-                      <option value="E-Sports Arena">E-Sports Arena (Valorant & BGMI Tournament)</option>
-                    </select>
-                  </div>
-
-                  <button type="submit" className={styles.submitBtn}>
-                    ▸ CONFIRM LEVEL 15 REGISTRATION
+                  <button
+                    type="submit"
+                    className={styles.submitBtn}
+                    disabled={loading}
+                  >
+                    {loading ? "⚡ INITIALIZING QUANTUM PASS..." : "▸ CONFIRM LEVEL 15 REGISTRATION"}
                   </button>
                 </form>
               </>
             ) : (
               <div className={styles.success}>
-                <div className={styles.successIcon}><CheckIcon size={40} /></div>
-                <h3>REGISTRATION CONFIRMED</h3>
-                <div className={styles.passBox}>
-                  <span className={styles.passLabel}>DELEGATE ACCESS PASS ID</span>
-                  <span className={styles.passNumber}>{passId}</span>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem" }}>
+                  <CheckIcon size={32} />
+                  <h3 className={styles.successTitle}>S.H.I.E.L.D. PASS ISSUED</h3>
                 </div>
-                <p>
-                  Welcome to Techopedia Level 15, <strong>{formData.name}</strong> of team <strong>{formData.teamName || "Avengers"}</strong>.
-                  Your official credentials for <strong>{formData.domain}</strong> have been confirmed and sent to <strong>{formData.email}</strong>.
+                <p className={styles.successMsg}>
+                  Your digital delegate pass has been encrypted and synched with the Google Sheet database.
                 </p>
-                <button className={styles.submitBtn} onClick={handleReset}>
-                  Back to Experience
-                </button>
+
+                {/* Render the 3D Holographic ID Card */}
+                {participant && (
+                  <DigitalIdCard participant={participant} showActions={true} />
+                )}
+
+                {emailPreviewUrl && (
+                  <div className={styles.emailAlert}>
+                    <span>📧 Confirmation email generated for <strong>{formData.email}</strong></span>
+                    <a
+                      href={emailPreviewUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.emailPreviewBtn}
+                    >
+                      VIEW EMAIL ↗
+                    </a>
+                  </div>
+                )}
               </div>
             )}
           </motion.div>

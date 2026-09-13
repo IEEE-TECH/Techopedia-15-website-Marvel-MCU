@@ -7,6 +7,7 @@ import { AnimatePresence, motion, type Variants } from "framer-motion";
 import RegistrationModal from "./RegistrationModal";
 import SiteFooter from "./SiteFooter";
 import Button from "./Button";
+import SoundToggle from "./SoundToggle";
 import { EASE_OUT } from "@/lib/motion";
 import styles from "./pageshell.module.css";
 
@@ -81,9 +82,12 @@ export default function PageShell({
         </nav>
         <span className={styles.navBracket} aria-hidden>]</span>
 
-        <Button variant="primary" size="sm" onClick={() => setIsRegOpen(true)}>
-          Register Now
-        </Button>
+        <div className={styles.headerActions}>
+          <SoundToggle />
+          <Button variant="primary" size="sm" onClick={() => setIsRegOpen(true)}>
+            Register Now
+          </Button>
+        </div>
 
         <button
           className={`${styles.menuBtn} ${menuOpen ? styles.menuBtnOpen : ""}`}
@@ -120,6 +124,9 @@ export default function PageShell({
                 </Link>
               );
             })}
+            <div style={{ margin: "0.4rem 0" }}>
+              <SoundToggle />
+            </div>
             <button
               className={styles.mobileRegisterBtn}
               type="button"

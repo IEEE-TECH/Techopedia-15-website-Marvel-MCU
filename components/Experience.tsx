@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { gsap } from "@/lib/gsap";
 import { useLenis } from "@/lib/useLenis";
 import { useExperience } from "@/lib/store";
@@ -10,7 +11,14 @@ import { VIDEO, SCROLL, TIMELINE_UNITS } from "@/lib/constants";
 import { EventDomain } from "@/lib/eventData";
 import { sound } from "@/lib/audio";
 
-import CinematicCanvas from "@/components/webgl/CinematicCanvas";
+// The Three.js/R3F/postprocessing stack is the single heaviest chunk on
+// this page. It's purely a visual overlay (particles, fog, lightning —
+// nothing here affects layout or SEO-relevant content), so it's code-split
+// into its own chunk that loads after hydration instead of bloating the
+// initial JS bundle every visitor pays for on first paint.
+const CinematicCanvas = dynamic(() => import("@/components/webgl/CinematicCanvas"), {
+  ssr: false,
+});
 import VideoLayer from "@/components/overlays/VideoLayer";
 import CharacterOrbit from "@/components/overlays/CharacterOrbit";
 import StoryStack from "@/components/overlays/StoryStack";

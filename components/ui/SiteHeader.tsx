@@ -15,6 +15,7 @@ const NAV = [
   { label: "Domains", target: 0.45 },
   { label: "Dossiers", target: 0.65 },
   { label: "Timeline", target: 0.85 },
+  { label: "Leaderboard", href: "/leaderboard" },
   { label: "Schedule", href: "/schedule" },
   { label: "Team", target: "team", href: "/team" },
   { label: "Sponsors", target: "sponsors", href: "/sponsors" },

@@ -1,0 +1,593 @@
+.cardWrapper {
+  perspective: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1.5rem auto;
+  width: 100%;
+  max-width: 420px;
+}
+
+.cardContainer {
+  position: relative;
+  width: 100%;
+  min-height: 480px;
+  aspect-ratio: 1 / 1.34;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(145deg, #0d121f, #06080d);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 215, 0, 0.45);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.8),
+    0 0 30px rgba(237, 29, 36, 0.25),
+    inset 0 0 20px rgba(255, 215, 0, 0.1);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+  user-select: none;
+}
+
+.cardContainer:hover,
+.cardTouching {
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.9),
+    0 0 45px rgba(237, 29, 36, 0.45),
+    0 0 20px rgba(0, 229, 255, 0.3);
+}
+
+/* Holographic dynamic sheen */
+.holoSheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 30%,
+    rgba(255, 215, 0, 0.15) 45%,
+    rgba(0, 229, 255, 0.2) 50%,
+    rgba(237, 29, 36, 0.15) 55%,
+    transparent 70%
+  );
+  background-size: 200% 200%;
+  mix-blend-mode: color-dodge;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.cardContainer:hover .holoSheen,
+.cardTouching .holoSheen {
+  opacity: 0.9;
+}
+
+/* Card Header banner */
+.cardHeader {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.4rem 0.8rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(90deg, rgba(237, 29, 36, 0.2), rgba(255, 215, 0, 0.1));
+}
+
+.orgBrand {
+  display: flex;
+  flex-direction: column;
+}
+
+.orgLogo {
+  font-family: var(--font-avengers, "Chakra Petch", sans-serif);
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  color: #ffffff;
+  font-weight: 800;
+  text-shadow: 0 0 8px rgba(237, 29, 36, 0.8);
+}
+
+.orgSubtitle {
+  font-size: 0.65rem;
+  letter-spacing: 1.5px;
+  color: #ffd700;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.clearanceBadge {
+  background: rgba(237, 29, 36, 0.2);
+  border: 1px solid #ed1d24;
+  color: #ffffff;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  box-shadow: 0 0 10px rgba(237, 29, 36, 0.4);
+}
+
+/* Body & Content */
+.cardBody {
+  position: relative;
+  padding: 1.2rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 2;
+}
+
+.agentHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.agentInfo {
+  flex: 1;
+}
+
+.agentKicker {
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.agentName {
+  font-family: var(--font-ui);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.agentCode {
+  font-family: var(--font-orbitron);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffd700;
+  letter-spacing: 1px;
+  margin-top: 0.2rem;
+}
+
+.reactorIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid #00e5ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, #00e5ff 0%, rgba(0, 229, 255, 0.2) 60%, transparent 80%);
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
+  animation: pulseReactor 3s ease-in-out infinite;
+}
+
+@keyframes pulseReactor {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(0, 229, 255, 0.9);
+    transform: scale(1.05);
+  }
+}
+
+/* Center Section with QR Code and Stats */
+.cardCenter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 0.9rem;
+  gap: 1rem;
+}
+
+.qrWrap {
+  background: #ffffff;
+  padding: 6px;
+  border-radius: 8px;
+  border: 2px solid #ffd700;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.qrImage {
+  width: 96px;
+  height: 96px;
+  display: block;
+}
+
+.statsColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.statRow {
+  display: flex;
+  flex-direction: column;
+}
+
+.statLabel {
+  font-size: 0.6rem;
+  color: #94a3b8;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.statValue {
+  font-family: var(--font-orbitron);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.statPoints {
+  font-family: var(--font-orbitron);
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #ffd700;
+  letter-spacing: 1px;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+}
+
+/* Details grid */
+.detailsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 8px;
+  padding: 0.8rem;
+  border-left: 3px solid #ed1d24;
+}
+
+.detailItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.detailTitle {
+  font-size: 0.58rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.detailText {
+  font-size: 0.78rem;
+  color: #e2e8f0;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Security Strip with Barcode & Dates */
+.securityStrip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(237, 29, 36, 0.08);
+  border: 1px dashed rgba(255, 215, 0, 0.35);
+  border-radius: 8px;
+  padding: 0.6rem 0.85rem;
+  margin-top: 0.1rem;
+}
+
+.barcodeBox {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.barcodeLines {
+  width: 120px;
+  height: 12px;
+  background: repeating-linear-gradient(
+    90deg,
+    #ffffff 0px,
+    #ffffff 2px,
+    transparent 2px,
+    transparent 4px,
+    #ffd700 4px,
+    #ffd700 5px,
+    transparent 5px,
+    transparent 7px,
+    #ffffff 7px,
+    #ffffff 9px
+  );
+  opacity: 0.85;
+}
+
+.barcodeCode {
+  font-family: var(--font-orbitron);
+  font-size: 0.58rem;
+  color: #94a3b8;
+  letter-spacing: 1.2px;
+}
+
+.eventDates {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #ffd700;
+}
+
+.eventDates span:last-child {
+  color: #94a3b8;
+  font-size: 0.56rem;
+  font-weight: 500;
+}
+
+/* Card Footer */
+.cardFooter {
+  margin-top: auto;
+  padding: 0.65rem 1.4rem;
+  background: rgba(6, 8, 13, 0.95);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.62rem;
+  color: #94a3b8;
+  letter-spacing: 1px;
+}
+
+.securityChip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #ffd700;
+  font-weight: 700;
+}
+
+/* Actions below card */
+.actionsBar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.2rem;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.actionBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.actionBtn {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  color: #ffffff;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.actionBtn:hover {
+  background: #ed1d24;
+  border-color: #ed1d24;
+  box-shadow: 0 0 15px rgba(237, 29, 36, 0.6);
+  transform: translateY(-2px);
+  color: #ffffff;
+}
+
+.actionBtnPrimary {
+  background: linear-gradient(135deg, #ed1d24, #b31016);
+  border-color: #ffd700;
+  color: #ffffff;
+}
+
+.actionBtnPrimary:hover {
+  box-shadow: 0 0 20px rgba(237, 29, 36, 0.8);
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .cardContainer, .cardContainer * {
+    visibility: visible;
+  }
+  .cardWrapper {
+    max-width: 3.4in; /* fits comfortably on A4/Letter with margin to spare */
+    margin: 0 auto;
+  }
+
+  /* The dark holographic skin doesn't translate to paper — most browsers
+     skip printing background colors by default, which would otherwise
+     print an all-white card with invisible white/gold text. Force a
+     dedicated high-contrast black-on-white pass instead of relying on the
+     user enabling "background graphics" in their print dialog. */
+  .cardContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+    box-shadow: none !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .holoSheen {
+    display: none !important;
+  }
+  .cardHeader {
+    background: #000000 !important;
+    border-bottom: none !important;
+  }
+  .orgLogo,
+  .orgSubtitle,
+  .clearanceBadge {
+    color: #ffffff !important;
+    text-shadow: none !important;
+  }
+  .clearanceBadge {
+    background: #000000 !important;
+    border: 1px solid #ffffff !important;
+  }
+  .agentKicker,
+  .agentCode,
+  .statLabel,
+  .detailTitle {
+    color: #333333 !important;
+  }
+  .agentName,
+  .statValue,
+  .statPoints,
+  .detailText {
+    color: #000000 !important;
+    text-shadow: none !important;
+  }
+  .reactorIcon {
+    display: none !important;
+  }
+  .qrWrap {
+    border: 2px solid #000000 !important;
+    box-shadow: none !important;
+  }
+  .cardFooter {
+    background: #ffffff !important;
+    border-top: 2px solid #000000 !important;
+    color: #000000 !important;
+  }
+  .securityChip {
+    color: #000000 !important;
+  }
+  .actionsBar {
+    display: none !important;
+  }
+}
+
+/* ============================================================
+   Full-screen QR modal — pure white, max-brightness surface so
+   venue gate scanners can read it instantly even in direct sun.
+   Deliberately breaks from the dark HUD skin used everywhere else
+   on this card: readability under a scanner beats theme consistency.
+   ============================================================ */
+.qrModalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  animation: qrModalFadeIn 0.18s ease-out;
+}
+
+@keyframes qrModalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.qrModalClose {
+  position: absolute;
+  top: max(1rem, env(safe-area-inset-top));
+  right: max(1rem, env(safe-area-inset-right));
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid #000000;
+  background: #ffffff;
+  color: #000000;
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.qrModalClose:hover {
+  background: #000000;
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.qrModalContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  max-width: 92vw;
+}
+
+.qrModalImage {
+  width: min(78vw, 78vh, 460px);
+  height: min(78vw, 78vh, 460px);
+  image-rendering: pixelated;
+  border: 3px solid #000000;
+  border-radius: 12px;
+  padding: 16px;
+  background: #ffffff;
+}
+
+.qrModalName {
+  margin-top: 0.4rem;
+  font-family: var(--font-ui);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #000000;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.qrModalCode {
+  font-family: var(--font-orbitron);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #111111;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+.qrModalHint {
+  font-size: 0.72rem;
+  color: #555555;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qrModalOverlay {
+    animation: none;
+  }
+}

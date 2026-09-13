@@ -212,6 +212,12 @@
   box-shadow: 0 0 34px rgba(237, 29, 36, 0.8);
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
 /* mobile menu toggle + panel */
 .menuBtn {
   display: none;
@@ -389,7 +395,8 @@
 @media (max-width: 820px) {
   .nav,
   .navBracket,
-  .cta {
+  .cta,
+  .headerActions {
     display: none;
   }
   .menuBtn {

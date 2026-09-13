@@ -8,6 +8,7 @@
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
+  overflow-y: auto;
   animation: fadeIn 0.3s ease;
 }
 
@@ -15,7 +16,7 @@
   position: relative;
   z-index: var(--z-modal);
   width: 100%;
-  max-width: 540px;
+  max-width: 560px;
   background: linear-gradient(135deg, rgba(24, 27, 36, 0.96), rgba(11, 13, 17, 0.98));
   border: 1px solid rgba(237, 29, 36, 0.45);
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8), 0 0 32px rgba(237, 29, 36, 0.25);
@@ -24,27 +25,57 @@
   color: #ffffff;
   font-family: var(--font-chakra), sans-serif;
   animation: slideUp 0.3s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(237, 29, 36, 0.4) transparent;
+}
+
+.modal::-webkit-scrollbar {
+  width: 6px;
+}
+.modal::-webkit-scrollbar-thumb {
+  background: rgba(237, 29, 36, 0.4);
+  border-radius: 4px;
+}
+.modal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modalSuccess {
+  max-width: 540px;
+  padding: 1.8rem;
 }
 
 .closeBtn {
   position: absolute;
-  top: 1.25rem;
-  right: 1.25rem;
-  background: transparent;
-  border: none;
-  color: #ed1d24;
-  font-size: 1.25rem;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(237, 29, 36, 0.12);
+  border: 1px solid rgba(237, 29, 36, 0.35);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffd700;
+  font-size: 1rem;
   cursor: pointer;
-  opacity: 0.85;
-  transition: opacity 0.2s;
+  opacity: 0.9;
+  transition: all 0.2s;
+  z-index: 10;
 }
 
 .closeBtn:hover {
+  background: #ed1d24;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(237, 29, 36, 0.6);
   opacity: 1;
 }
 
 .header {
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.5rem;
   text-align: center;
 }
 
@@ -60,7 +91,7 @@
 
 .title {
   font-family: var(--font-avengers), var(--font-anton), sans-serif;
-  font-size: 2.25rem;
+  font-size: 2.1rem;
   margin: 0 0 0.5rem 0;
   letter-spacing: 0.05em;
   background: linear-gradient(180deg, #ffffff 0%, #ffe4e6 30%, #ed1d24 85%);
@@ -70,15 +101,29 @@
 }
 
 .subtitle {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: #cbd5e1;
   margin: 0;
+  line-height: 1.5;
+}
+
+.errorBanner {
+  background: rgba(237, 29, 36, 0.15);
+  border: 1px solid #ed1d24;
+  color: #ff8b8f;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.1rem;
 }
 
 .row {
@@ -87,17 +132,25 @@
   gap: 1rem;
 }
 
+@media (max-width: 600px) {
+  .row {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+}
+
 .field {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.35rem;
 }
 
 .field label {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   letter-spacing: 0.05em;
   color: #ffd700;
   text-transform: uppercase;
+  font-weight: 700;
 }
 
 .field input,
@@ -105,10 +158,10 @@
   background: rgba(0, 0, 0, 0.65);
   border: 1px solid rgba(237, 29, 36, 0.3);
   border-radius: 6px;
-  padding: 0.75rem 1rem;
+  padding: 0.7rem 0.9rem;
   color: #ffffff;
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
@@ -126,82 +179,85 @@
 
 .submitBtn {
   margin-top: 0.5rem;
-  background: var(--button-red);
+  background: var(--button-red, #ed1d24);
   color: #ffffff;
   font-family: inherit;
-  font-weight: 700;
-  font-size: 1rem;
+  font-weight: 800;
+  font-size: 0.95rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 0.9rem 1.5rem;
   border: 1px solid rgba(255, 215, 0, 0.4);
-  border-radius: 2px;
+  border-radius: 4px;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-.submitBtn:hover {
+.submitBtn:hover:not(:disabled) {
   box-shadow: 0 0 24px rgba(237, 29, 36, 0.8);
   transform: translateY(-2px);
 }
 
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .success {
   text-align: center;
-  padding: 1.5rem 0;
+  padding: 0.5rem 0;
 }
 
-.successIcon {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: rgba(237, 29, 36, 0.2);
-  border: 2px solid #ed1d24;
+.successTitle {
+  font-family: var(--font-avengers), sans-serif;
+  font-size: 1.6rem;
   color: #ffd700;
-  font-size: 1.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1.5rem auto;
-}
-
-.success h3 {
-  font-family: var(--font-avengers), var(--font-anton), sans-serif;
-  font-size: 1.8rem;
-  margin: 0 0 1rem 0;
-  color: #ffd700;
-}
-
-.success p {
-  font-size: 0.95rem;
-  color: #cbd5e1;
-  line-height: 1.6;
-  margin-bottom: 2rem;
-}
-
-.passBox {
-  background: rgba(237, 29, 36, 0.12);
-  border: 1px dashed #ed1d24;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-.passLabel {
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
-  color: var(--silver);
+  letter-spacing: 1px;
+  margin: 0.5rem 0;
   text-transform: uppercase;
 }
 
-.passNumber {
-  font-family: var(--font-orbitron), monospace;
-  font-size: 1.3rem;
+.successMsg {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  margin-bottom: 1.2rem;
+}
+
+.emailAlert {
+  background: rgba(0, 229, 255, 0.1);
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  font-size: 0.82rem;
+  color: #e0f2fe;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.emailPreviewBtn {
+  background: rgba(0, 229, 255, 0.2);
+  border: 1px solid #00e5ff;
+  color: #ffffff;
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
   font-weight: 700;
-  color: #ffd700;
-  letter-spacing: 0.1em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.emailPreviewBtn:hover {
+  background: #00e5ff;
+  color: #000000;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
 }
 
 @keyframes fadeIn {

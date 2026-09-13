@@ -46,3 +46,8 @@ CLAUDE.md
 AGENTS.md
 screenshots/
 
+# Techopedia sensitive runtime data & outbox
+/data/
+*.docx
+
+

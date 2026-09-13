@@ -149,7 +149,13 @@ export default function StoryStack({ onSelectEvent }: StoryStackProps) {
   return (
     <div className="story-layer" ref={layerRef} aria-hidden>
       {CHAPTERS.map((c, i) => {
-        const matchedDomain = DOMAINS.find((d) => d.id === c.domainId) || DOMAINS[i];
+        const matchedDomain =
+          DOMAINS.find(
+            (d) =>
+              d.id === c.domainId ||
+              d.slug === c.domainId ||
+              d.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").includes(c.domainId)
+          ) || DOMAINS[i];
 
         return (
           <article

@@ -13,6 +13,14 @@ const SPONSOR_BENEFITS = [
   { title: "Sponsor a Track", detail: "Set your own custom problem statements and judge domain finalists." },
 ];
 
+function getTierScaleClass(tierName: string, stylesObj: Record<string, string>) {
+  const lower = tierName.toLowerCase();
+  if (lower.includes("title")) return stylesObj.xl;
+  if (lower.includes("vibranium") || lower.includes("gold")) return stylesObj.lg;
+  if (lower.includes("silver") || lower.includes("pym")) return stylesObj.md;
+  return stylesObj.sm;
+}
+
 export default function SponsorsPageClient() {
   return (
     <>
@@ -38,7 +46,7 @@ export default function SponsorsPageClient() {
             <p className={styles.tierBlurb}>{tier.blurb}</p>
           </div>
 
-          <div className={styles.logoGrid}>
+          <div className={`${styles.logoGrid} ${getTierScaleClass(tier.tier, styles)}`}>
             {tier.sponsors.map((s) => (
               <TiltCard key={s.name} className={styles.slot} maxTilt={10} glow>
                 <span className={styles.pedestalBeam} aria-hidden />
