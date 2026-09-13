@@ -184,23 +184,23 @@ export default function DigitalIdCard({
       ctx.fillText("IEEE SIESGST · LEVEL 15 ACCESS", 32, 57);
 
       // Clearance Badge
-      ctx.fillStyle = "rgba(237, 29, 36, 0.2)";
+      ctx.fillStyle = "rgba(237, 29, 36, 0.25)";
       ctx.beginPath();
       ctx.roundRect(width - 170, 26, 138, 32, 4);
       ctx.fill();
-      ctx.strokeStyle = "#ed1d24";
+      ctx.strokeStyle = "rgba(237, 29, 36, 0.8)";
       ctx.stroke();
 
       ctx.fillStyle = "#ffffff";
       ctx.font = "800 11px system-ui, -apple-system, sans-serif";
       ctx.textAlign = "center";
-      ctx.fillText("CLEARANCE LVL 15", width - 101, 46);
+      ctx.fillText("LVL-15 GRANTED", width - 101, 46);
       ctx.textAlign = "left";
 
       // 4. Agent Header
       ctx.fillStyle = "#00e5ff";
       ctx.font = "700 10px system-ui, -apple-system, sans-serif";
-      ctx.fillText("STARK INDUSTRIES PROTOCOL", 32, 105);
+      ctx.fillText("STARK INDUSTRIES PROTOCOL // LEVEL 15", 32, 105);
 
       ctx.fillStyle = "#ffffff";
       ctx.font = "800 24px system-ui, -apple-system, sans-serif";
@@ -231,6 +231,9 @@ export default function DigitalIdCard({
       ctx.beginPath();
       ctx.roundRect(qrX, qrY, qrSize, qrSize, 8);
       ctx.fill();
+      ctx.strokeStyle = "#00e5ff";
+      ctx.lineWidth = 2;
+      ctx.stroke();
 
       // Load QR code image if available
       if (participant.qrCodeUrl) {
@@ -250,17 +253,17 @@ export default function DigitalIdCard({
       const statsX = qrX + qrSize + 24;
       const statsWidth = width - statsX - 32;
 
-      ctx.fillStyle = "rgba(255, 255, 255, 0.03)";
+      ctx.fillStyle = "rgba(8, 14, 26, 0.75)";
       ctx.beginPath();
       ctx.roundRect(statsX, qrY, statsWidth, qrSize, 8);
       ctx.fill();
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
+      ctx.strokeStyle = "rgba(0, 229, 255, 0.25)";
       ctx.lineWidth = 1;
       ctx.stroke();
 
       // PRN
       ctx.fillStyle = "#94a3b8";
-      ctx.font = "600 10px system-ui, -apple-system, sans-serif";
+      ctx.font = "700 10px system-ui, -apple-system, sans-serif";
       ctx.fillText("AGENT PRN", statsX + 16, qrY + 28);
       ctx.fillStyle = "#ffffff";
       ctx.font = "700 14px 'Courier New', monospace";
@@ -268,8 +271,8 @@ export default function DigitalIdCard({
 
       // Points
       ctx.fillStyle = "#94a3b8";
-      ctx.font = "600 10px system-ui, -apple-system, sans-serif";
-      ctx.fillText("LIVE POINTS", statsX + 16, qrY + 76);
+      ctx.font = "700 10px system-ui, -apple-system, sans-serif";
+      ctx.fillText("BATTLE POINTS", statsX + 16, qrY + 76);
       ctx.fillStyle = "#ffd700";
       ctx.font = "900 18px system-ui, -apple-system, sans-serif";
       ctx.fillText(`${participant.points ?? 100} PTS`, statsX + 16, qrY + 98);
@@ -277,7 +280,7 @@ export default function DigitalIdCard({
       // Rank
       if (participant.rank) {
         ctx.fillStyle = "#94a3b8";
-        ctx.font = "600 10px system-ui, -apple-system, sans-serif";
+        ctx.font = "700 10px system-ui, -apple-system, sans-serif";
         ctx.fillText("LEADERBOARD RANK", statsX + 16, qrY + 116);
         ctx.fillStyle = "#00e5ff";
         ctx.font = "800 14px system-ui, -apple-system, sans-serif";
@@ -289,29 +292,30 @@ export default function DigitalIdCard({
       const itemW = (width - 64 - 16) / 2;
 
       // Domain
-      ctx.fillStyle = "rgba(255, 255, 255, 0.025)";
+      ctx.fillStyle = "rgba(0, 229, 255, 0.04)";
       ctx.beginPath();
       ctx.roundRect(32, gridY, itemW, 58, 6);
       ctx.fill();
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.06)";
+      ctx.strokeStyle = "rgba(0, 229, 255, 0.18)";
       ctx.stroke();
 
-      ctx.fillStyle = "#94a3b8";
-      ctx.font = "600 9px system-ui, -apple-system, sans-serif";
+      ctx.fillStyle = "#00e5ff";
+      ctx.font = "700 9px system-ui, -apple-system, sans-serif";
       ctx.fillText("EVENT DOMAIN", 44, gridY + 22);
       ctx.fillStyle = "#ffffff";
       ctx.font = "700 13px system-ui, -apple-system, sans-serif";
       ctx.fillText(participant.domain || "Code Conquest", 44, gridY + 44);
 
       // Squad
-      ctx.fillStyle = "rgba(255, 255, 255, 0.025)";
+      ctx.fillStyle = "rgba(0, 229, 255, 0.04)";
       ctx.beginPath();
       ctx.roundRect(32 + itemW + 16, gridY, itemW, 58, 6);
       ctx.fill();
+      ctx.strokeStyle = "rgba(0, 229, 255, 0.18)";
       ctx.stroke();
 
-      ctx.fillStyle = "#94a3b8";
-      ctx.font = "600 9px system-ui, -apple-system, sans-serif";
+      ctx.fillStyle = "#00e5ff";
+      ctx.font = "700 9px system-ui, -apple-system, sans-serif";
       ctx.fillText("SQUAD / TEAM", 32 + itemW + 28, gridY + 22);
       ctx.fillStyle = "#ffffff";
       ctx.font = "700 13px system-ui, -apple-system, sans-serif";
@@ -319,30 +323,31 @@ export default function DigitalIdCard({
 
       // Institution
       const instY = gridY + 68;
-      ctx.fillStyle = "rgba(255, 255, 255, 0.025)";
+      ctx.fillStyle = "rgba(0, 229, 255, 0.04)";
       ctx.beginPath();
       ctx.roundRect(32, instY, width - 64, 52, 6);
       ctx.fill();
+      ctx.strokeStyle = "rgba(0, 229, 255, 0.18)";
       ctx.stroke();
 
-      ctx.fillStyle = "#94a3b8";
-      ctx.font = "600 9px system-ui, -apple-system, sans-serif";
-      ctx.fillText("INSTITUTION", 44, instY + 20);
       ctx.fillStyle = "#00e5ff";
+      ctx.font = "700 9px system-ui, -apple-system, sans-serif";
+      ctx.fillText("INSTITUTION", 44, instY + 20);
+      ctx.fillStyle = "#ffffff";
       ctx.font = "700 13px system-ui, -apple-system, sans-serif";
       ctx.fillText(participant.college || "SIES GST", 44, instY + 40);
 
       // 7. Security Barcode & Event Dates
       const secY = 475;
-      ctx.fillStyle = "rgba(255, 255, 255, 0.04)";
+      ctx.fillStyle = "rgba(12, 19, 32, 0.8)";
       ctx.beginPath();
       ctx.roundRect(32, secY, width - 64, 60, 6);
       ctx.fill();
-      ctx.strokeStyle = "rgba(255, 215, 0, 0.15)";
+      ctx.strokeStyle = "rgba(0, 229, 255, 0.3)";
       ctx.stroke();
 
       // Simulated barcode lines
-      ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+      ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
       let barX = 48;
       const barPatterns = [3, 1, 2, 4, 1, 3, 2, 1, 4, 2, 1, 3, 2, 4, 1, 2, 3, 1, 4, 2, 1, 3, 2, 1, 3, 4, 2];
       for (const w of barPatterns) {
@@ -365,15 +370,15 @@ export default function DigitalIdCard({
 
       // 8. Footer Bar
       const footY = height - 46;
-      ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+      ctx.fillStyle = "rgba(4, 6, 10, 0.95)";
       ctx.fillRect(16, footY, width - 32, 30);
 
-      ctx.fillStyle = "#22c55e";
+      ctx.fillStyle = "#00e5ff";
       ctx.font = "700 10px system-ui, -apple-system, sans-serif";
-      ctx.fillText("[ SEC-ENCRYPTED ]", 32, footY + 20);
+      ctx.fillText("SEC-ENCRYPTED", 32, footY + 20);
 
       ctx.textAlign = "right";
-      ctx.fillStyle = "#94a3b8";
+      ctx.fillStyle = "#ffd700";
       ctx.font = "700 10px system-ui, -apple-system, sans-serif";
       ctx.fillText("OFFICIAL ENTRY PASS", width - 32, footY + 20);
       ctx.textAlign = "left";
@@ -400,7 +405,7 @@ export default function DigitalIdCard({
     <div className={styles.cardWrapper}>
       <div
         ref={cardRef}
-        className={`${styles.cardContainer} hud-panel ${touching ? styles.cardTouching : ""}`}
+        className={`${styles.cardContainer} ${touching ? styles.cardTouching : ""}`}
         onMouseMove={handleMouseMove}
         onMouseLeave={resetTilt}
         onTouchStart={handleTouchStart}
@@ -412,6 +417,12 @@ export default function DigitalIdCard({
           touchAction: "pan-y",
         }}
       >
+        {/* Futuristic Corner HUD Accents */}
+        <div className={styles.cornerTL} aria-hidden />
+        <div className={styles.cornerTR} aria-hidden />
+        <div className={styles.cornerBL} aria-hidden />
+        <div className={styles.cornerBR} aria-hidden />
+
         {/* Holographic Sheen Layer */}
         <div
           className={styles.holoSheen}
@@ -423,11 +434,14 @@ export default function DigitalIdCard({
         {/* Header Bar */}
         <div className={styles.cardHeader}>
           <div className={styles.orgBrand}>
-            <span className={styles.orgLogo}>TECHOPEDIA 15</span>
+            <span className={styles.orgLogo}>
+              <span className={styles.orgDot} />
+              TECHOPEDIA 15
+            </span>
             <span className={styles.orgSubtitle}>IEEE SIESGST · LEVEL 15 ACCESS</span>
           </div>
           <div className={styles.clearanceBadge}>
-            CLEARANCE LVL 15
+            LVL-15 GRANTED
           </div>
         </div>
 
@@ -435,15 +449,17 @@ export default function DigitalIdCard({
         <div className={styles.cardBody}>
           <div className={styles.agentHeader}>
             <div className={styles.agentInfo}>
-              <span className={styles.agentKicker}>STARK INDUSTRIES PROTOCOL</span>
+              <span className={styles.agentKicker}>STARK INDUSTRIES PROTOCOL // LEVEL 15</span>
               <div className={styles.agentName}>{participant.name}</div>
-              <div className={styles.agentCode}>{participant.agentId}</div>
+              <div className={styles.agentCodeBadge}>
+                <span className={styles.agentCode}>{participant.agentId}</span>
+              </div>
             </div>
             <div className={styles.reactorIcon} title="Arc Reactor Core Active">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" strokeWidth="2">
                 <circle cx="12" cy="12" r="9" stroke="#00e5ff" />
                 <circle cx="12" cy="12" r="4" fill="#00e5ff" />
-                <path d="M12 3v3M12 18v3M3 12h3M18 12h3" stroke="#00e5ff" />
+                <path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="#00e5ff" />
               </svg>
             </div>
           </div>
@@ -465,12 +481,15 @@ export default function DigitalIdCard({
               style={{ cursor: participant.qrCodeUrl ? "pointer" : "default" }}
             >
               {participant.qrCodeUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={participant.qrCodeUrl}
-                  alt={`QR Code Pass for ${participant.name}`}
-                  className={styles.qrImage}
-                />
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={participant.qrCodeUrl}
+                    alt={`QR Code Pass for ${participant.name}`}
+                    className={styles.qrImage}
+                  />
+                  <span className={styles.qrTapHint}>TAP TO ZOOM</span>
+                </>
               ) : (
                 <div style={{ width: 96, height: 96, background: "#eee", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, color: "#333" }}>
                   QR CODE
@@ -484,13 +503,15 @@ export default function DigitalIdCard({
                 <span className={styles.statValue}>{participant.prn}</span>
               </div>
               <div className={styles.statRow}>
-                <span className={styles.statLabel}>LIVE POINTS</span>
-                <span className={styles.statPoints}>{participant.points ?? 100} PTS</span>
+                <span className={styles.statLabel}>BATTLE POINTS</span>
+                <span className={styles.statPoints}>
+                  {participant.points ?? 100} <span className={styles.ptsUnit}>PTS</span>
+                </span>
               </div>
               {participant.rank && (
                 <div className={styles.statRow}>
                   <span className={styles.statLabel}>LEADERBOARD RANK</span>
-                  <span className={styles.statValue} style={{ color: "#00e5ff" }}>
+                  <span className={styles.statRank}>
                     #{participant.rank}
                   </span>
                 </div>
@@ -521,8 +542,8 @@ export default function DigitalIdCard({
               <span className={styles.barcodeCode}>SEC-AUTH-{participant.prn}</span>
             </div>
             <div className={styles.eventDates}>
-              <span>OCT 16–17, 2026</span>
-              <span>SIES GST CAMPUS</span>
+              <span className={styles.eventDatesTitle}>OCT 16–17, 2026</span>
+              <span className={styles.eventVenue}>SIES GST CAMPUS</span>
             </div>
           </div>
         </div>
@@ -530,9 +551,9 @@ export default function DigitalIdCard({
         {/* Footer Bar */}
         <div className={styles.cardFooter}>
           <div className={styles.securityChip}>
-            <ShieldIcon size={12} /> <span>SEC-ENCRYPTED</span>
+            <ShieldIcon size={13} /> <span>SEC-ENCRYPTED</span>
           </div>
-          <span>OFFICIAL ENTRY PASS</span>
+          <span className={styles.secPassType}>OFFICIAL ENTRY PASS</span>
         </div>
       </div>
 
