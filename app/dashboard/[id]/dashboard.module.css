@@ -195,7 +195,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #ed1d24, #ffd700);
+  background: linear-gradient(90deg, var(--color-interactive, #00e5ff), var(--color-prestige, #ffd700));
 }
 
 .metricLabel {
@@ -343,30 +343,35 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 1rem;
-  background: linear-gradient(135deg, rgba(237, 29, 36, 0.2), rgba(255, 215, 0, 0.1));
-  border: 1px solid rgba(255, 215, 0, 0.35);
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.08), rgba(8, 14, 26, 0.85));
+  border: 1px solid rgba(0, 229, 255, 0.25);
   border-radius: 12px;
   padding: 1.2rem 1.5rem;
   margin-top: 1rem;
+  box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.04);
 }
 
 .ctaBtn {
-  background: linear-gradient(135deg, #ed1d24, #b31016);
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--color-interactive, #00e5ff), #00b4d8);
+  color: #020617;
   padding: 0.65rem 1.25rem;
   border-radius: 6px;
+  font-family: var(--font-orbitron), monospace;
   font-weight: 800;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   letter-spacing: 1px;
   text-decoration: none;
-  border: 1px solid #ffd700;
-  box-shadow: 0 0 15px rgba(237, 29, 36, 0.5);
+  border: 1px solid rgba(0, 229, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
   transition: transform 0.2s, box-shadow 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .ctaBtn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 25px rgba(237, 29, 36, 0.8);
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.7);
 }
 
 .loadingWrap {
