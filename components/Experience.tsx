@@ -57,7 +57,7 @@ const T = {
 export default function Experience() {
   const [mounted, setMounted] = useState(false);
   const [isRegOpen, setIsRegOpen] = useState(false);
-  const [regDomain, setRegDomain] = useState("Code Conquest");
+  const [regDomain, setRegDomain] = useState("Squabble");
   const [isMiniGamesOpen, setIsMiniGamesOpen] = useState(false);
   const [miniGamesTab, setMiniGamesTab] = useState<"ctf" | "bugblitz" | "matrix" | "quiz">("bugblitz");
   const [selectedEvent, setSelectedEvent] = useState<EventDomain | null>(null);
@@ -195,7 +195,7 @@ export default function Experience() {
   const reelVh = SCROLL.reelStrip;
   const outroVh = SCROLL.footerReveal;
 
-  const handleOpenRegistration = (domain: string = "Code Conquest") => {
+  const handleOpenRegistration = (domain: string = "Squabble") => {
     setRegDomain(domain);
     setIsRegOpen(true);
   };
@@ -218,13 +218,13 @@ export default function Experience() {
       </div>
 
       <SiteHeader
-        onRegisterClick={() => handleOpenRegistration("Code Conquest")}
+        onRegisterClick={() => handleOpenRegistration("Squabble")}
         onTerminalClick={() => handleOpenMiniGames("ctf")}
         onMiniGamesClick={() => handleOpenMiniGames("bugblitz")}
       />
 
       <HeroOverlay
-        onRegisterClick={() => handleOpenRegistration("Code Conquest")}
+        onRegisterClick={() => handleOpenRegistration("Squabble")}
         onMiniGamesClick={() => handleOpenMiniGames("bugblitz")}
       />
 
@@ -263,7 +263,7 @@ export default function Experience() {
       <div style={{ position: "relative", zIndex: 10, background: "#06070a" }}>
         <TeamSection />
         <SponsorsSection />
-        <SiteFooter onRegisterClick={() => handleOpenRegistration("Code Conquest")} />
+        <SiteFooter onRegisterClick={() => handleOpenRegistration("Squabble")} />
       </div>
     </>
   );

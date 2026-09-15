@@ -10,10 +10,10 @@ import styles from "./schedule.module.css";
 
 const TRACKS: Track[] = [
   "General",
-  "Code Conquest",
-  "Cyber Realm & CTF",
-  "Robo Blitz",
-  "Pixel Craft",
+  "Squabble",
+  "Inquisitive",
+  "Eureka",
+  "Vanguard",
   "Paper & Project Expo",
   "E-Sports Arena",
 ];

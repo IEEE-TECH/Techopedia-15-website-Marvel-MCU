@@ -18,13 +18,15 @@ interface RegistrationModalProps {
 export default function RegistrationModal({
   isOpen,
   onClose,
-  initialDomain = "Code Conquest",
+  initialDomain = "Squabble",
 }: RegistrationModalProps) {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [isExisting, setIsExisting] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [participant, setParticipant] = useState<Participant | null>(null);
   const [emailPreviewUrl, setEmailPreviewUrl] = useState<string | null>(null);
+  const [supabaseStored, setSupabaseStored] = useState<boolean | null>(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -45,6 +47,8 @@ export default function RegistrationModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return; // Guard against double-click submission
+
     setErrorMsg("");
     setLoading(true);
     sound.playBlip(650, 0.05);
@@ -63,6 +67,8 @@ export default function RegistrationModal({
       }
 
       setParticipant(data.participant);
+      setIsExisting(data.isExisting === true);
+      setSupabaseStored(data.supabaseStored === true || data.isExisting === true);
       if (data.emailPreviewUrl) {
         setEmailPreviewUrl(data.emailPreviewUrl);
       }
@@ -79,8 +85,10 @@ export default function RegistrationModal({
 
   const handleReset = () => {
     setSubmitted(false);
+    setIsExisting(false);
     setParticipant(null);
     setEmailPreviewUrl(null);
+    setSupabaseStored(null);
     setErrorMsg("");
     onClose();
   };
@@ -226,10 +234,10 @@ export default function RegistrationModal({
                         value={formData.domain}
                         onChange={(e) => setFormData({ ...formData, domain: e.target.value })}
                       >
-                        <option value="Code Conquest">Code Conquest (24-Hr Hackathon & Speed Coding)</option>
-                        <option value="Cyber Realm & CTF">Cyber Realm & CTF (Offensive Cybersecurity)</option>
-                        <option value="Robo Blitz">Robo Blitz (Robo Wars & Drone Obstacle Arena)</option>
-                        <option value="Pixel Craft">Pixel Craft (UI/UX Design Sprint & 3D Web Dev)</option>
+                        <option value="Squabble">Squabble (24-Hr Hackathon & Speed Coding)</option>
+                        <option value="Inquisitive">Inquisitive (Robo Wars & Drone Obstacle Arena)</option>
+                        <option value="Eureka">Eureka (Offensive Cybersecurity & CTF)</option>
+                        <option value="Vanguard">Vanguard (UI/UX Design Sprint & 3D Web Dev)</option>
                         <option value="Paper & Project Expo">Paper & Project Expo (National Research Symposium)</option>
                         <option value="E-Sports Arena">E-Sports Arena (Valorant & BGMI Tournament)</option>
                       </select>
@@ -249,10 +257,14 @@ export default function RegistrationModal({
               <div className={styles.success}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem" }}>
                   <CheckIcon size={32} />
-                  <h3 className={styles.successTitle}>S.H.I.E.L.D. PASS ISSUED</h3>
+                  <h3 className={styles.successTitle}>
+                    {isExisting ? "S.H.I.E.L.D. CLEARANCE RESTORED" : "S.H.I.E.L.D. PASS ISSUED"}
+                  </h3>
                 </div>
                 <p className={styles.successMsg}>
-                  Your digital delegate pass has been encrypted and synched with the Google Sheet database.
+                  {isExisting
+                    ? "Existing clearance credentials found and verified from S.H.I.E.L.D. Quantum Storage."
+                    : "Your digital delegate pass has been encrypted and saved to Supabase PostgreSQL."}
                 </p>
 
                 {/* Render the 3D Holographic ID Card */}

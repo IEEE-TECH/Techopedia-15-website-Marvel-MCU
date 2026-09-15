@@ -176,6 +176,30 @@ export default function TeamPageClient() {
           every edition. Bring an interest in tech, design, or running
           things that have a lot of moving parts.
         </p>
+
+        <div style={{ marginTop: "1.5rem", display: "flex", justifyContent: "center" }}>
+          <a
+            href="/team/login"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              background: "rgba(237, 29, 36, 0.12)",
+              border: "1px solid rgba(237, 29, 36, 0.4)",
+              color: "#ff4d4d",
+              padding: "0.6rem 1.25rem",
+              borderRadius: "6px",
+              fontSize: "0.85rem",
+              fontWeight: 700,
+              letterSpacing: "0.08em",
+              textDecoration: "none",
+              textTransform: "uppercase",
+              transition: "all 0.2s ease",
+            }}
+          >
+            🛡️ Authorized Coordinator &amp; Staff Access Portal →
+          </a>
+        </div>
       </TiltCard>
     </>
   );

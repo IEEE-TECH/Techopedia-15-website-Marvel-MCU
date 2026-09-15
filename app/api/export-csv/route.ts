@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
   if (authError) return authError;
 
   try {
-    const participants = db.getParticipants();
+    const participants = await db.getParticipants();
 
     const headers = [
       "Rank",

@@ -304,7 +304,7 @@ export default function DigitalIdCard({
       ctx.fillText("EVENT DOMAIN", 44, gridY + 22);
       ctx.fillStyle = "#ffffff";
       ctx.font = "700 13px system-ui, -apple-system, sans-serif";
-      ctx.fillText(participant.domain || "Code Conquest", 44, gridY + 44);
+      ctx.fillText(participant.domain || "Squabble", 44, gridY + 44);
 
       // Squad
       ctx.fillStyle = "rgba(0, 229, 255, 0.04)";
@@ -523,7 +523,7 @@ export default function DigitalIdCard({
           <div className={styles.detailsGrid}>
             <div className={styles.detailItem}>
               <span className={styles.detailTitle}>EVENT DOMAIN</span>
-              <span className={styles.detailText}>{participant.domain || "Code Conquest"}</span>
+              <span className={styles.detailText}>{participant.domain || "Squabble"}</span>
             </div>
             <div className={styles.detailItem}>
               <span className={styles.detailTitle}>SQUAD / TEAM</span>

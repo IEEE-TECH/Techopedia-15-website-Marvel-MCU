@@ -34,11 +34,11 @@ export const DOMAINS: EventDomain[] = [
   {
     id: "squabble",
     slug: "doom",
-    name: "Code Conquest",
+    name: "Squabble",
     mcuCodename: "Project Doomsday",
     tagline: "Algorithmic Battlegrounds & 24-Hour Hackathon",
     shortDesc: "Compete in intense speed-coding rounds and build game-changing full-stack AI applications under 24 hours.",
-    fullDesc: "Code Conquest is Techopedia's flagship hackathon & algorithmic showdown. Teams tackle real-world problem statements spanning AI/ML, Cloud Infrastructures, Web3, and Open Innovation. Features dedicated industry mentors, midnight code sprints, and direct investor evaluations.",
+    fullDesc: "Squabble is Techopedia's flagship hackathon & algorithmic showdown. Teams tackle real-world problem statements spanning AI/ML, Cloud Infrastructures, Web3, and Open Innovation. Features dedicated industry mentors, midnight code sprints, and direct investor evaluations.",
     prizePool: "₹50,000+",
     teamSize: "1 - 4 Members",
     venue: "Main Computing Hub / Lab Alpha",
@@ -69,44 +69,9 @@ export const DOMAINS: EventDomain[] = [
     ]
   },
   {
-    id: "eureka",
-    slug: "blackpanther",
-    name: "Cyber Realm & CTF",
-    mcuCodename: "Wakanda Firewall Siege",
-    tagline: "Offensive Security, Cryptography & Live Jeopardy CTF",
-    shortDesc: "Crack cryptographic ciphers, reverse engineer binaries, bypass web defenses, and conquer the live leaderboard.",
-    fullDesc: "Step into the cyber battlefield. Participants face realistic cybersecurity challenges spanning Web Exploitation, Reverse Engineering, Cryptography, Forensics, and OSINT. Race against time as points dynamically adjust on the live big-screen scoreboard.",
-    prizePool: "₹35,000+",
-    teamSize: "1 - 2 Members",
-    venue: "Cyber Defense Arena / Hall B",
-    time: "Day 01 · 12:00 PM (8 Hours)",
-    rounds: [
-      { title: "Phase 1: Recon & Web Exploitation", description: "Discover hidden endpoints, SQL injections, and auth bypasses.", duration: "2.5 Hours" },
-      { title: "Phase 2: Reverse Engineering & Binary Exploits", description: "Disassemble ELF binaries, analyze heap overflows, and decrypt payloads.", duration: "3 Hours" },
-      { title: "Phase 3: Final Matrix Siege", description: "Live king-of-the-hill attack/defense challenge for the top 5 finalists.", duration: "2.5 Hours" }
-    ],
-    rules: [
-      "Attacking the scoring infrastructure or other teams' machines is strictly forbidden.",
-      "Flag sharing or collusion between teams leads to immediate disqualification.",
-      "All captured flags follow standard format: TECH15{...}.",
-      "Brute-forcing challenge servers is prohibited unless explicitly stated."
-    ],
-    judgingCriteria: [
-      "Total Valid Flags Captured (50%)",
-      "Time of Flag Submission / Speed (30%)",
-      "Clean Exploit Write-Up Verification (20%)"
-    ],
-    accentColor: "#ff4d4d",
-    glowColor: "rgba(255, 77, 77, 0.4)",
-    coordinators: [
-      { name: "Kavya Nair", contact: "+91 98765 43212" },
-      { name: "Arjun Reddy", contact: "+91 98765 43213" }
-    ]
-  },
-  {
-    id: "inquisitve",
+    id: "inquisitive",
     slug: "cyclops",
-    name: "Robo Blitz",
+    name: "Inquisitive",
     mcuCodename: "Stark Industries Bot Wars",
     tagline: "Combat Robotics, Autonomous Line Followers & Drone Arena",
     shortDesc: "Pit customized combat robots in the steel cage, test autonomous line-followers, and pilot drones through obstacle mazes.",
@@ -139,9 +104,44 @@ export const DOMAINS: EventDomain[] = [
     ]
   },
   {
-    id: "laser-tag",
+    id: "eureka",
+    slug: "blackpanther",
+    name: "Eureka",
+    mcuCodename: "Wakanda Firewall Siege",
+    tagline: "Offensive Security, Cryptography & Live Jeopardy CTF",
+    shortDesc: "Crack cryptographic ciphers, reverse engineer binaries, bypass web defenses, and conquer the live leaderboard.",
+    fullDesc: "Step into the cyber battlefield. Participants face realistic cybersecurity challenges spanning Web Exploitation, Reverse Engineering, Cryptography, Forensics, and OSINT. Race against time as points dynamically adjust on the live big-screen scoreboard.",
+    prizePool: "₹35,000+",
+    teamSize: "1 - 2 Members",
+    venue: "Cyber Defense Arena / Hall B",
+    time: "Day 01 · 12:00 PM (8 Hours)",
+    rounds: [
+      { title: "Phase 1: Recon & Web Exploitation", description: "Discover hidden endpoints, SQL injections, and auth bypasses.", duration: "2.5 Hours" },
+      { title: "Phase 2: Reverse Engineering & Binary Exploits", description: "Disassemble ELF binaries, analyze heap overflows, and decrypt payloads.", duration: "3 Hours" },
+      { title: "Phase 3: Final Matrix Siege", description: "Live king-of-the-hill attack/defense challenge for the top 5 finalists.", duration: "2.5 Hours" }
+    ],
+    rules: [
+      "Attacking the scoring infrastructure or other teams' machines is strictly forbidden.",
+      "Flag sharing or collusion between teams leads to immediate disqualification.",
+      "All captured flags follow standard format: TECH15{...}.",
+      "Brute-forcing challenge servers is prohibited unless explicitly stated."
+    ],
+    judgingCriteria: [
+      "Total Valid Flags Captured (50%)",
+      "Time of Flag Submission / Speed (30%)",
+      "Clean Exploit Write-Up Verification (20%)"
+    ],
+    accentColor: "#ff4d4d",
+    glowColor: "rgba(255, 77, 77, 0.4)",
+    coordinators: [
+      { name: "Kavya Nair", contact: "+91 98765 43212" },
+      { name: "Arjun Reddy", contact: "+91 98765 43213" }
+    ]
+  },
+  {
+    id: "vanguard",
     slug: "mystique",
-    name: "Pixel Craft",
+    name: "Vanguard",
     mcuCodename: "Quantum Reality UI/UX",
     tagline: "Futuristic Design Sprints & Interactive 3D Web Dev",
     shortDesc: "Design breathtaking interfaces, craft micro-animations, and code interactive 3D WebGL experiences from scratch.",
@@ -175,10 +175,10 @@ export const DOMAINS: EventDomain[] = [
 
 export type Track =
   | "General"
-  | "Code Conquest"
-  | "Cyber Realm & CTF"
-  | "Robo Blitz"
-  | "Pixel Craft"
+  | "Squabble"
+  | "Inquisitive"
+  | "Eureka"
+  | "Vanguard"
   | "Paper & Project Expo"
   | "E-Sports Arena";
 
@@ -206,10 +206,10 @@ export const SCHEDULE: ScheduleDay[] = [
     items: [
       { time: "08:30 AM", title: "Registrations & Kit Distribution", detail: "Badge collection, delegate kits, NFC wristbands & team check-in", track: "General", venue: "Central Registration Foyer", status: "upcoming" },
       { time: "10:00 AM", title: "Grand Inaugural Ceremony", detail: "Keynote addresses, lighting the lamp, and the official Level 15 trailer unlock", track: "General", venue: "Main Auditorium", status: "upcoming" },
-      { time: "11:30 AM", title: "Code Conquest 24-Hr Hackathon Kickoff", detail: "Problem statement drop, repository creation, and mentor briefings", track: "Code Conquest", venue: "Lab Alpha & Beta", status: "upcoming" },
-      { time: "12:00 PM", title: "Cyber Realm CTF Gates Open", detail: "Jeopardy-style offensive security challenges go live on the main scoreboard", track: "Cyber Realm & CTF", venue: "Cyber Arena B", status: "upcoming" },
-      { time: "02:00 PM", title: "Robo Blitz Prelims & Speed Trials", detail: "Autonomous line followers and bot deathmatch qualifier heats", track: "Robo Blitz", venue: "Robotics Amphitheater", status: "upcoming" },
-      { time: "04:00 PM", title: "Pixel Craft UI/UX Design Sprint", detail: "Futuristic interface design jam and 3D web experience coding", track: "Pixel Craft", venue: "Design Center", status: "upcoming" },
+      { time: "11:30 AM", title: "Squabble 24-Hr Hackathon Kickoff", detail: "Problem statement drop, repository creation, and mentor briefings", track: "Squabble", venue: "Lab Alpha & Beta", status: "upcoming" },
+      { time: "12:00 PM", title: "Eureka CTF Gates Open", detail: "Jeopardy-style offensive security challenges go live on the main scoreboard", track: "Eureka", venue: "Cyber Arena B", status: "upcoming" },
+      { time: "02:00 PM", title: "Inquisitive Prelims & Speed Trials", detail: "Autonomous line followers and bot deathmatch qualifier heats", track: "Inquisitive", venue: "Robotics Amphitheater", status: "upcoming" },
+      { time: "04:00 PM", title: "Vanguard UI/UX Design Sprint", detail: "Futuristic interface design jam and 3D web experience coding", track: "Vanguard", venue: "Design Center", status: "upcoming" },
       { time: "07:30 PM", title: "AI & Quantum Frontiers Keynote", detail: "Special fireside chat with leading AI researchers and tech industry veterans", track: "General", venue: "Main Auditorium", status: "upcoming" },
       { time: "11:00 PM", title: "Midnight Coding Break & Energy Fuel", detail: "Snacks, Red Bull station, developer trivia, and acoustic jam session", track: "General", venue: "Open Air Quad", status: "upcoming" }
     ]
@@ -219,10 +219,10 @@ export const SCHEDULE: ScheduleDay[] = [
     date: "October 17, 2026",
     tagline: "The Climax — Project Expos, Grand Finals & Trophy Ceremony",
     items: [
-      { time: "08:00 AM", title: "Hackathon Overnight Checkpoint", detail: "Progress audit, mentor ratings, and breakfast fuel-up", track: "Code Conquest", venue: "Lab Alpha", status: "upcoming" },
-      { time: "10:00 AM", title: "Robo Blitz Championship Steel Cage", detail: "Heavyweight combat bot finals and drone obstacle race", track: "Robo Blitz", venue: "Robotics Arena", status: "upcoming" },
-      { time: "11:30 AM", title: "CTF Finals & Flag Verification", detail: "King-of-the-Hill attack defense rounds and exploit reviews", track: "Cyber Realm & CTF", venue: "Cyber Arena B", status: "upcoming" },
-      { time: "01:30 PM", title: "Code Conquest Freeze & Submissions", detail: "Code repositories lock, live prototype demo evaluations begin", track: "Code Conquest", venue: "Main Auditorium", status: "upcoming" },
+      { time: "08:00 AM", title: "Squabble Overnight Checkpoint", detail: "Progress audit, mentor ratings, and breakfast fuel-up", track: "Squabble", venue: "Lab Alpha", status: "upcoming" },
+      { time: "10:00 AM", title: "Inquisitive Championship Steel Cage", detail: "Heavyweight combat bot finals and drone obstacle race", track: "Inquisitive", venue: "Robotics Arena", status: "upcoming" },
+      { time: "11:30 AM", title: "Eureka Finals & Flag Verification", detail: "King-of-the-Hill attack defense rounds and exploit reviews", track: "Eureka", venue: "Cyber Arena B", status: "upcoming" },
+      { time: "01:30 PM", title: "Squabble Freeze & Submissions", detail: "Code repositories lock, live prototype demo evaluations begin", track: "Squabble", venue: "Main Auditorium", status: "upcoming" },
       { time: "02:30 PM", title: "National Paper & Project Expo", detail: "Research paper presentations & hardware invention exhibition", track: "Paper & Project Expo", venue: "Exhibition Hall", status: "upcoming" },
       { time: "04:00 PM", title: "E-Sports Arena Grand Finals", detail: "Valorant & BGMI tournament championship bracket deciders", track: "E-Sports Arena", venue: "E-Sports Lounge", status: "upcoming" },
       { time: "06:30 PM", title: "Grand Awards Ceremony & After-Party", detail: "Distribution of ₹2,00,000+ prize pool, trophies, certificates, and DJ night", track: "General", venue: "Grand Amphitheater", status: "upcoming" }

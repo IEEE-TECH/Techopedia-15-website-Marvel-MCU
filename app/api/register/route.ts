@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
     const cleanPhone = cleanText(phone, 20);
     const cleanCollege = cleanText(college, 120) || "SIES Graduate School of Technology";
     const cleanTeamName = cleanText(teamName, 60) || "Avengers Initiative";
-    const cleanDomain = cleanText(domain, 60) || "Code Conquest";
+    const cleanDomain = cleanText(domain, 60) || "Squabble";
 
     if (!cleanName || cleanName.length < 2) {
       return NextResponse.json(
@@ -83,12 +83,11 @@ export async function POST(req: NextRequest) {
 
     const cleanTeamSize = Math.min(10, Math.max(1, parseInt(String(teamSize), 10) || 1));
 
-    // Check if participant already registered by PRN or email — either one
-    // uniquely identifies a person, so both must be checked to stop
-    // duplicate registrations (previously only PRN was checked).
-    const existingByPrn = db.getParticipantByPrn(cleanPrn);
-    const existingByEmail = existingByPrn ? null : db.getParticipantByEmail(cleanEmail);
+    // Check if participant already registered in Supabase by PRN or email
+    const existingByPrn = await db.getParticipantByPrn(cleanPrn);
+    const existingByEmail = existingByPrn ? null : await db.getParticipantByEmail(cleanEmail);
     const existing = existingByPrn || existingByEmail;
+
     if (existing) {
       return NextResponse.json({
         success: true,
@@ -119,23 +118,38 @@ export async function POST(req: NextRequest) {
       url: dashboardUrl,
     });
 
-    // Generate QR Code
+    // Generate QR Code data URL
     const qrCodeUrl = await generateQrCodeDataUrl(qrPayload);
 
-    // Persist to Database with initial 100 PTS clearance bonus
-    const newParticipant = await db.addParticipant({
-      agentId,
-      name: cleanName,
-      prn: cleanPrn,
-      email: cleanEmail,
-      phone: cleanPhone,
-      college: cleanCollege,
-      teamName: cleanTeamName,
-      teamSize: String(cleanTeamSize),
-      domain: cleanDomain,
-      points: 100, // Starting clearance points
-      qrCodeUrl,
-    });
+    // Persist to Supabase PostgreSQL with initial 100 PTS clearance bonus
+    let newParticipant;
+    try {
+      newParticipant = await db.addParticipant({
+        agentId,
+        name: cleanName,
+        prn: cleanPrn,
+        email: cleanEmail,
+        phone: cleanPhone,
+        college: cleanCollege,
+        teamName: cleanTeamName,
+        teamSize: String(cleanTeamSize),
+        domain: cleanDomain,
+        points: 100, // Starting clearance points
+        qrCodeUrl,
+      });
+    } catch (dbErr) {
+      console.error("Supabase student insert error:", dbErr);
+      const detailMsg = dbErr instanceof Error ? dbErr.message : String(dbErr);
+      return NextResponse.json(
+        {
+          success: false,
+          supabaseStored: false,
+          error: `Registration was not saved to cloud database: ${detailMsg}`,
+          details: detailMsg,
+        },
+        { status: 500 }
+      );
+    }
 
     // Asynchronously dispatch to Google Sheets webhook (non-blocking)
     syncToGoogleSheets({
@@ -171,6 +185,7 @@ export async function POST(req: NextRequest) {
       dashboardUrl,
       emailSent: emailResult.success,
       emailPreviewUrl: emailResult.previewUrl,
+      supabaseStored: true,
     });
   } catch (err: unknown) {
     console.error("Registration error:", err);

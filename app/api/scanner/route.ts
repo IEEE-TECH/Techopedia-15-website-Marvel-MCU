@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     // Only "lookup" is safe for an unauthenticated scan (used to preview an
     // agent's card before deciding to award). Any action that mutates state
     // ("award") — and the bulk "verify" endpoint used for the same purpose —
-    // requires a valid organizer token so random visitors can't self-award.
+    // requires a valid organizer token so unauthorized visitors cannot self-award.
     if (action === "award") {
       const authError = requireOrganizerAuth(req);
       if (authError) return authError;
@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
 
     // ACTION: LOOKUP / VERIFY
     if (action === "lookup" || action === "verify") {
-      const participant = db.getParticipantById(targetId);
+      const participant = await db.getParticipantById(targetId);
       if (!participant) {
         return NextResponse.json(
           { success: false, error: `No agent found matching '${targetId}'.` },

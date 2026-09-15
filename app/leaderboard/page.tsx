@@ -16,6 +16,10 @@ interface DomainColorMap {
 }
 
 const DOMAIN_THEMES: Record<string, DomainColorMap> = {
+  "Squabble": { stroke: "#ed1d24", fill: "rgba(237, 29, 36, 0.25)", glow: "#ed1d24" },
+  "Inquisitive": { stroke: "#eab308", fill: "rgba(234, 179, 8, 0.25)", glow: "#facc15" },
+  "Eureka": { stroke: "#9333ea", fill: "rgba(147, 51, 234, 0.25)", glow: "#a855f7" },
+  "Vanguard": { stroke: "#00e5ff", fill: "rgba(0, 229, 255, 0.25)", glow: "#38bdf8" },
   "Code Conquest": { stroke: "#ed1d24", fill: "rgba(237, 29, 36, 0.25)", glow: "#ed1d24" },
   "Cyber Realm & CTF": { stroke: "#9333ea", fill: "rgba(147, 51, 234, 0.25)", glow: "#a855f7" },
   "Robo Blitz": { stroke: "#eab308", fill: "rgba(234, 179, 8, 0.25)", glow: "#facc15" },
@@ -431,10 +435,10 @@ export default function LeaderboardPage() {
               className={styles.filterSelect}
             >
               <option value="ALL">All Domains (Filter)</option>
-              <option value="Code Conquest">Code Conquest</option>
-              <option value="Cyber Realm & CTF">Cyber Realm & CTF</option>
-              <option value="Robo Blitz">Robo Blitz</option>
-              <option value="Pixel Craft">Pixel Craft</option>
+              <option value="Squabble">Squabble</option>
+              <option value="Inquisitive">Inquisitive</option>
+              <option value="Eureka">Eureka</option>
+              <option value="Vanguard">Vanguard</option>
               <option value="Paper & Project Expo">Paper & Project Expo</option>
               <option value="E-Sports Arena">E-Sports Arena</option>
             </select>

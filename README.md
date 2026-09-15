@@ -15,7 +15,7 @@
   - **Bug Blitz**: Rapid-fire 60-second code bug diagnosis game with live scoring.
   - **Tesseract Memory Matrix**: 3x3 quantum sequence recall game with sound synthesis.
   - **CTF Terminal**: Live interactive hacker console with CTF challenge flags.
-- 📜 **Complete Event Architecture**: 6 technical competition domains (Code Conquest, Cyber Realm & CTF, Robo Blitz, Pixel Craft, Paper & Project Expo, E-Sports Arena), 2-day filterable schedule, organizing committee gallery, and interactive sponsorship pedestals.
+- 📜 **Complete Event Architecture**: Technical competition domains (Squabble, Inquisitive, Eureka, Vanguard, Paper & Project Expo, E-Sports Arena), 2-day filterable schedule, organizing committee gallery, and interactive sponsorship pedestals.
 - 🔊 **Zero-Dependency Web Audio API Sound Engine**: Real-time synthesized HUD pips, ascending victory chords, and matrix notes.
 - 🛡️ **Instant Digital Pass Generator**: Interactive registration modal with real-time pass rendering, ticket ID generation, and copy-to-clipboard access.
 

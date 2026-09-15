@@ -3,8 +3,8 @@ import { db } from "@/lib/db";
 
 export async function GET() {
   try {
-    const participants = db.getParticipants();
-    const activities = db.getRecentActivities(20);
+    const participants = await db.getParticipants();
+    const activities = await db.getRecentActivities(25);
 
     // Calculate domain breakdown
     const domainStats: Record<string, number> = {};

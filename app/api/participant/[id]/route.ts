@@ -11,7 +11,7 @@ export async function GET(
       return NextResponse.json({ success: false, error: "ID is required" }, { status: 400 });
     }
 
-    const participant = db.getParticipantById(id);
+    const participant = await db.getParticipantById(id);
     if (!participant) {
       return NextResponse.json({ success: false, error: "Participant not found" }, { status: 404 });
     }
