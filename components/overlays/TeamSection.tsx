@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { TEAM, TeamMember } from "@/lib/eventData";
+import { sortTeamMembersForCouncil, TEAM, TeamMember } from "@/lib/eventData";
 import TiltCard from "@/components/ui/TiltCard";
+import Initials from "@/components/ui/Initials";
 import { sound } from "@/lib/audio";
 import { EASE_OUT, TAB_SPRING } from "@/lib/motion";
 import styles from "./teamSection.module.css";
@@ -32,8 +33,9 @@ const COUNCILS: CouncilOption[] = [
 export default function TeamSection() {
   const [active, setActive] = useState<CouncilTab>("Senior");
   const currentCouncil = COUNCILS.find((c) => c.id === active) ?? COUNCILS[0];
-  const members: TeamMember[] = TEAM.flatMap((g) =>
-    g.members.filter((m) => m.council === active)
+  const members: TeamMember[] = sortTeamMembersForCouncil(
+    TEAM.flatMap((g) => g.members.filter((m) => m.council === active)),
+    active,
   );
 
   const handleTabChange = (councilId: CouncilTab) => {
@@ -111,7 +113,7 @@ export default function TeamSection() {
                 <div className={styles.avatar}>
                   <span className={styles.radarRing} aria-hidden />
                   <span className={styles.radarRing2} aria-hidden />
-                  <span className={styles.initials}>{m.initials}</span>
+                  <Initials text={m.initials} className={styles.initials} />
                 </div>
 
                 {/* Name and Role */}

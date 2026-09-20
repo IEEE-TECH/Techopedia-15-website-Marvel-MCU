@@ -4,7 +4,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import TiltCard from "@/components/ui/TiltCard";
-import { TEAM } from "@/lib/eventData";
+import { sortTeamMembersForCouncil, TEAM } from "@/lib/eventData";
 import { sound } from "@/lib/audio";
 import { EASE_OUT, TAB_SPRING } from "@/lib/motion";
 
@@ -25,8 +25,9 @@ function initials(name: string) {
 export default function TeamPageClient({ initialActive = "Senior" }: { initialActive?: CouncilTab }) {
   const [active, setActive] = useState<CouncilTab>(initialActive);
 
-  const members = TEAM.flatMap((g) =>
-    g.members.filter((m) => m.council === active),
+  const members = sortTeamMembersForCouncil(
+    TEAM.flatMap((g) => g.members.filter((m) => m.council === active)),
+    active,
   );
 
   const handleTabChange = (tab: CouncilTab) => {

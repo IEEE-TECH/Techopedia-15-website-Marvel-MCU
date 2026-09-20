@@ -23,6 +23,7 @@ interface Panel {
   accent2?: string;
   titleColor: string;
   pos?: string;
+  isFinal?: boolean;
 }
 
 const CHAPTERS: Panel[] = [
@@ -70,6 +71,19 @@ const CHAPTERS: Panel[] = [
     accent: "#00e5ff",
     titleColor: "#ffffff",
     pos: "center",
+  },
+  {
+    n: "05",
+    img: "/story/panel-5.jpg",
+    domainId: "final-incursion",
+    kicker: "Champions Only · Winner Takes Techopedia 15",
+    title: ["The Final Incursion"],
+    desc: "The winning teams of Squabble, Inquisitive, and Eureka meet one last time on the main stage. Whoever wins The Final Incursion wins Techopedia 15.",
+    accent: "#ffd700",
+    accent2: "#ff9a3c",
+    titleColor: "#fff6dc",
+    pos: "center",
+    isFinal: true,
   },
 ];
 
@@ -175,7 +189,7 @@ export default function StoryStack({ onSelectEvent, onRegisterDomain }: StorySta
             ref={(el) => {
               panelRefs.current[i] = el;
             }}
-            className={styles.panel}
+            className={c.isFinal ? `${styles.panel} ${styles.finalPanel}` : styles.panel}
             style={{
               ...cssVars(c),
               transform: "translate3d(0, 100%, 0)",
@@ -188,6 +202,7 @@ export default function StoryStack({ onSelectEvent, onRegisterDomain }: StorySta
             <span className={styles.glow} />
             <span className={styles.vignette} />
             <span className={styles.edge} />
+            {c.isFinal && <span className={styles.finalRays} aria-hidden />}
             <span className={styles.counter}>{c.n} / 0{CHAPTERS.length}</span>
 
             <div
@@ -197,6 +212,10 @@ export default function StoryStack({ onSelectEvent, onRegisterDomain }: StorySta
               }}
               style={{ opacity: 0 }}
             >
+              {c.isFinal && (
+                <span className={styles.finalBadge}>🏆 GRAND FINALE</span>
+              )}
+
               <span className={styles.kicker}>{c.kicker}</span>
               <h2 className={styles.title}>
                 {c.title.filter(Boolean).map((line, li) => (
@@ -207,28 +226,45 @@ export default function StoryStack({ onSelectEvent, onRegisterDomain }: StorySta
               </h2>
 
               <div className={styles.metaRow}>
-                <span className={styles.teamTag}>TEAM // {matchedDomain.teamSize}</span>
+                <span className={c.isFinal ? styles.finalTeamTag : styles.teamTag}>
+                  TEAM // {matchedDomain.teamSize}
+                </span>
               </div>
 
               <span className={styles.rule} />
               <p className={styles.desc}>{c.desc}</p>
 
-              <div className={styles.buttonRow}>
-                <button
-                  className={styles.registerBtn}
-                  type="button"
-                  onClick={() => router.push(getEventRegistrationPath(matchedDomain))}
-                >
-                  ⚡ Register for {matchedDomain.name}
-                </button>
-                <button
-                  className={styles.exploreBtn}
-                  type="button"
-                  onClick={() => router.push(getEventDossierPath(matchedDomain))}
-                >
-                  ▸ Mission Dossier
-                </button>
-              </div>
+              {c.isFinal ? (
+                <div className={styles.buttonRow}>
+                  <span className={styles.winnersOnlyTag}>
+                    🔒 Winners of Squabble · Inquisitive · Eureka Only
+                  </span>
+                  <button
+                    className={styles.finalExploreBtn}
+                    type="button"
+                    onClick={() => router.push(getEventDossierPath(matchedDomain))}
+                  >
+                    ▸ Championship Dossier
+                  </button>
+                </div>
+              ) : (
+                <div className={styles.buttonRow}>
+                  <button
+                    className={styles.registerBtn}
+                    type="button"
+                    onClick={() => router.push(getEventRegistrationPath(matchedDomain))}
+                  >
+                    ⚡ Register for {matchedDomain.name}
+                  </button>
+                  <button
+                    className={styles.exploreBtn}
+                    type="button"
+                    onClick={() => router.push(getEventDossierPath(matchedDomain))}
+                  >
+                    ▸ Mission Dossier
+                  </button>
+                </div>
+              )}
             </div>
 
             <span

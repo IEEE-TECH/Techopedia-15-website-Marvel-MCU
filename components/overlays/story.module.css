@@ -617,6 +617,128 @@
 
 
 /* ============================================================
+   GRAND FINALE PANEL — distinct championship treatment
+   ============================================================ */
+
+.finalPanel {
+  background: #120b02;
+  box-shadow: 0 -34px 120px -8px rgba(255, 190, 0, 0.35);
+}
+
+.finalPanel .bg {
+  filter: saturate(1.15) contrast(1.08) brightness(0.92);
+}
+
+.finalPanel .scrim {
+  background:
+    linear-gradient(to top, rgba(20,12,0,.94) 0%, rgba(20,12,0,.5) 22%, transparent 50%),
+    linear-gradient(to left, rgba(20,12,0,.7) 0%, rgba(20,12,0,.16) 28%, transparent 50%);
+}
+
+.finalPanel .edge {
+  height: 2px;
+  opacity: 1;
+  background: linear-gradient(90deg, transparent, #ffd700 20%, #fff6dc 50%, #ffd700 80%, transparent);
+  box-shadow: 0 0 18px rgba(255, 215, 0, 0.8);
+}
+
+.finalRays {
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  background: conic-gradient(from 0deg at 72% 62%,
+    transparent 0deg, rgba(255,215,0,.16) 8deg, transparent 16deg, transparent 40deg,
+    rgba(255,215,0,.12) 48deg, transparent 56deg, transparent 90deg,
+    rgba(255,215,0,.14) 98deg, transparent 106deg);
+  animation: finalSpin 40s linear infinite;
+  mix-blend-mode: screen;
+  opacity: 0.8;
+}
+
+@keyframes finalSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.finalBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: var(--font-ui);
+  font-size: clamp(11px, 1vw, 14px);
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #1a1300;
+  background: linear-gradient(135deg, #ffe98a, #ffd700 45%, #d4a300);
+  border: 1px solid rgba(255, 246, 220, 0.8);
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 0 24px rgba(255, 215, 0, 0.6), inset 0 1px 0 rgba(255,255,255,0.6);
+  animation: finalPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes finalPulse {
+  0%, 100% { box-shadow: 0 0 18px rgba(255,215,0,.5), inset 0 1px 0 rgba(255,255,255,.6); }
+  50% { box-shadow: 0 0 34px rgba(255,215,0,.9), inset 0 1px 0 rgba(255,255,255,.6); }
+}
+
+.finalTeamTag {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #1a1300;
+  background: linear-gradient(135deg, #ffe98a, #ffd700);
+  border: 1px solid rgba(255, 246, 220, 0.7);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.winnersOnlyTag {
+  position: relative;
+  z-index: 21;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffe98a;
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  padding: 0.75rem 1.1rem;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.finalExploreBtn {
+  position: relative;
+  z-index: 21;
+  pointer-events: auto;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ffd700, #b8860b);
+  border: 1px solid rgba(255, 246, 220, 0.8);
+  color: #1a1300;
+  font-family: var(--font-ui);
+  font-weight: 800;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.4rem;
+  border-radius: 4px;
+  box-shadow: 0 0 26px rgba(255, 215, 0, 0.6);
+  transition: all 0.25s ease;
+}
+
+.finalExploreBtn:hover {
+  background: #ffd700;
+  box-shadow: 0 0 40px rgba(255, 215, 0, 0.95);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 640px) {
+  .finalBadge { font-size: 10px; padding: 0.3rem 0.7rem; }
+}
+
+/* ============================================================
    MOBILE
    ============================================================ */
 

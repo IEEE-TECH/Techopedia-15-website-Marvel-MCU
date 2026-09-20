@@ -13,6 +13,8 @@ import {
 } from "@/lib/eventData";
 import styles from "./orbit.module.css";
 
+const ORBIT_DOMAINS = DOMAINS.filter((d) => d.id !== "final-incursion");
+
 const TAU = Math.PI * 2;
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -21,10 +23,16 @@ const smoothstep = (a: number, b: number, x: number) => {
   return t * t * (3 - 2 * t);
 };
 
-const getOrbitPoster = (domain: EventDomain) =>
-  domain.slug === "vanguard"
-    ? "/story/panel-4.jpg"
-    : `/videos/char-${domain.slug}-poster.jpg`;
+const getOrbitPoster = (domain: EventDomain) => {
+  if (domain.slug === "eureka") return "/videos/finale-poster.jpg";
+  if (domain.slug === "vanguard") return "/story/panel-4.jpg";
+  return `/videos/char-${domain.slug}-poster.jpg`;
+};
+
+const getOrbitVideo = (domain: EventDomain) => {
+  if (domain.slug === "eureka") return "/videos/finale-seq.mp4";
+  return `/videos/char-${domain.slug}.mp4`;
+};
 
 interface CharacterOrbitProps {
   onSelectEvent?: (event: EventDomain) => void;
@@ -64,8 +72,8 @@ export default function CharacterOrbit({ onSelectEvent, onRegisterDomain }: Char
     const wantPlay = s > 0.006;
     const Rx = vw * 0.3;
     const Ry = vh * 0.15;
-    const base = s * TAU * 0.85 + (prefersReducedMotion() ? 0 : t * 0.045);
-    const N = DOMAINS.length;
+    const base = s * TAU * 1.25 + (prefersReducedMotion() ? 0 : t * 0.06);
+    const N = ORBIT_DOMAINS.length;
 
     for (let i = 0; i < N; i++) {
       const vid = videoRefs.current[i];
@@ -73,7 +81,7 @@ export default function CharacterOrbit({ onSelectEvent, onRegisterDomain }: Char
       if (!card) continue;
 
       const enterAt = 0.05 + i * 0.055;
-      const enter = smoothstep(enterAt, enterAt + 0.16, s);
+      const enter = smoothstep(enterAt, enterAt + 0.14, s);
       if (enter <= 0.001) {
         if (vid && !vid.paused) vid.pause();
         if (card.style.visibility !== "hidden") card.style.visibility = "hidden";
@@ -81,14 +89,15 @@ export default function CharacterOrbit({ onSelectEvent, onRegisterDomain }: Char
       }
       card.style.visibility = "visible";
 
-      const theta = base + i * (TAU / N);
-      const d = Math.cos(theta); // 1 = front, -1 = behind
+      const theta = base + i * (TAU / N) * 0.98;
+      const orbitTheta = theta * 1.08;
+      const d = Math.cos(orbitTheta); // 1 = front, -1 = behind
       const depth01 = (d + 1) / 2;
-      const x = Math.sin(theta) * Rx;
+      const x = Math.sin(orbitTheta) * Rx;
       const y = d * Ry;
-      const scale = lerp(0.6, 1.06, depth01) * lerp(0.5, 1, enter);
-      const rotY = -Math.sin(theta) * 12;
-      const enterX = (1 - enter) * (vw * 0.55);
+      const scale = lerp(0.6, 1.04, depth01) * lerp(0.48, 1, enter);
+      const rotY = -Math.sin(orbitTheta) * 11;
+      const enterX = (1 - enter) * (vw * 0.52);
 
       card.style.transform =
         `translate(-50%, -50%) perspective(1100px) translate3d(${(x + enterX).toFixed(1)}px, ${y.toFixed(1)}px, 0)` +
@@ -109,7 +118,7 @@ export default function CharacterOrbit({ onSelectEvent, onRegisterDomain }: Char
 
   return (
     <div className={styles.layer} aria-hidden>
-      {DOMAINS.map((domain, i) => (
+      {ORBIT_DOMAINS.map((domain, i) => (
         <div
           key={domain.id}
           className={styles.card}
@@ -133,7 +142,7 @@ export default function CharacterOrbit({ onSelectEvent, onRegisterDomain }: Char
               videoRefs.current[i] = el;
             }}
             className={styles.video}
-            src={`/videos/char-${domain.slug}.mp4`}
+            src={getOrbitVideo(domain)}
             poster={getOrbitPoster(domain)}
             muted
             loop

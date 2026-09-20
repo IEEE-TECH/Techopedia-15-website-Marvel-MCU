@@ -18,9 +18,6 @@ export default function NotFound() {
           <Button href="/" variant="primary">
             // RETURN TO COMMAND CENTER
           </Button>
-          <Button href="/schedule" variant="ghost">
-            VIEW TIMELINE
-          </Button>
         </div>
       </div>
     </div>

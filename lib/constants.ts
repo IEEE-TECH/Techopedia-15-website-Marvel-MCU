@@ -76,14 +76,13 @@ export const SCROLL = {
   showcaseOrbit: 360, // the 6 cards orbit the model, active card cycles to front
   showcaseOut: 70, // settle
   // ── Phase 3 · Section 3 (cinematic story stack) ──
-  storyStack: 660, // 6 fullscreen panels rise + stack sequentially (pinned)
+  storyStack: 825, // 5 fullscreen panels (incl. the Grand Finale) rise + stack sequentially 
   // ── Phase 4 · Section 4 (horizontal cinematic timeline) ──
-  reelStrip: 680, // pinned; vertical scroll drives the strip right→left
+  reelStrip: 0, // stub component (renders null) — no scroll dead-zone before Team
   // ── Ending · Outro ──
-  // A short settle on the reel's last frame before the page scrolls on into the
-  // in-flow Team / Sponsors / footer content. (Was 150vh back when the footer
-  // was a fixed overlay that needed a reveal runway here.)
-  footerReveal: 60,
+  // No settle gap remains: the stubbed reel renders nothing and the page drops
+  // straight into the in-flow Team / Sponsors / footer content.
+  footerReveal: 0,
 } as const;
 
 /**
@@ -93,7 +92,7 @@ export const SCROLL = {
  * scroll-positioned cue (e.g. the cinematic text beats) locked to its moment
  * even as sections are added.
  */
-export const SCROLL_VH_TOTAL = Object.values(SCROLL).reduce((a, b) => a + b, 0);
+export const SCROLL_VH_TOTAL = Object.values(SCROLL).reduce<number>((a, b) => a + b, 0);
 export const TIMELINE_UNITS = SCROLL_VH_TOTAL / 100;
 
 export type Phase = "loading" | "intro" | "hero";

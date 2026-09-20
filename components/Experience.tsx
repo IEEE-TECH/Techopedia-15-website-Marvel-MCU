@@ -102,6 +102,8 @@ export default function Experience() {
     useExperience.getState().setPhase("intro");
 
     const heroThreshold = T.heroEnter / T.total;
+    const marvelStartThreshold = 0.08;
+    const marvelEndThreshold = heroThreshold;
 
     const tl = gsap.timeline({
       defaults: { ease: "none" },
@@ -118,8 +120,21 @@ export default function Experience() {
           const hero = getVideoEl("hero");
           const finale = getVideoEl("finale");
           if (marvel) {
-            marvel.style.opacity = signals.marvelOp.toFixed(3);
-            if (signals.marvelOp > 0.002) scrubEl(marvel, signals.marvelT);
+            if (self.progress < marvelStartThreshold) {
+              marvel.style.opacity = "0";
+              if (marvel.readyState >= 1 && marvel.currentTime > 0.05) marvel.currentTime = 0;
+            } else if (self.progress < marvelEndThreshold) {
+              const local = Math.min(1, (self.progress - marvelStartThreshold) / Math.max(marvelEndThreshold - marvelStartThreshold, 0.0001));
+              const introTime = local * VIDEO.marvelDur;
+              const introOpacity = 0.25 + (1 - local) * 0.75;
+              signals.marvelT = introTime;
+              marvel.style.opacity = introOpacity.toFixed(3);
+              if (marvel.readyState >= 1 && Math.abs(marvel.currentTime - introTime) > 0.04) {
+                marvel.currentTime = introTime;
+              }
+            } else {
+              marvel.style.opacity = "0";
+            }
           }
           if (hero) {
             hero.style.opacity = signals.heroOp.toFixed(3);

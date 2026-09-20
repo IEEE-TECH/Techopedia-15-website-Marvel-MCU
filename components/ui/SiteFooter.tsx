@@ -17,11 +17,14 @@ import styles from "./footer.module.css";
  */
 const EXPLORE = [
   { label: "Home", href: "/" },
-  { label: "Schedule", href: "/schedule" },
   { label: "Leaderboard", href: "/leaderboard" },
   { label: "Team", href: "/team" },
 ];
-const SOCIAL = ["Instagram", "LinkedIn", "X (Twitter)", "YouTube"];
+const SOCIAL = [
+  { label: "Instagram", href: "https://www.instagram.com/ieeesiesgst/" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/ieee-gst/" },
+  { label: "YouTube", href: "https://www.youtube.com/@IEEESIESGST" },
+];
 
 const SPRING = { stiffness: 120, damping: 20, mass: 0.5 };
 
@@ -59,8 +62,6 @@ export default function SiteFooter({
     my.set(0.5);
   }
 
-  const noop = (e: React.MouseEvent) => e.preventDefault();
-
   return (
     <motion.footer
       ref={ref}
@@ -85,7 +86,7 @@ export default function SiteFooter({
             className={styles.mark}
             style={{ rotateX: rotX, rotateY: rotY, transformPerspective: 700 }}
           >
-            Techopedia XV<span>.</span>
+            Techopedia 15<span>.</span>
           </motion.span>
           <span className={styles.tag}>
             Annual National Technical Symposium · {EVENT_INFO.org}
@@ -131,9 +132,9 @@ export default function SiteFooter({
             <a href={`mailto:${EVENT_INFO.contactEmail}`}>{EVENT_INFO.contactEmail}</a>
           </div>
           <div className={styles.social}>
-            {SOCIAL.map((l) => (
-              <a key={l} href="#" onClick={noop}>
-                {l}
+            {SOCIAL.map((link) => (
+              <a key={link.label} href={link.href} target="_blank" rel="noreferrer noopener">
+                {link.label}
               </a>
             ))}
           </div>

@@ -85,8 +85,7 @@ export const DOMAINS: EventDomain[] = [
     accentColor: "#ed1d24",
     glowColor: "rgba(237, 29, 36, 0.4)",
     coordinators: [
-      { name: "Rohan Mehta", contact: "+91 98765 43210" },
-      { name: "Ishaan Verma", contact: "+91 98765 43211" }
+      { name: "Krish", contact: "+91 9819537896" }
     ]
   },
   {
@@ -155,7 +154,9 @@ export const DOMAINS: EventDomain[] = [
     ],
     accentColor: "#6f42c1",
     glowColor: "rgba(111, 66, 193, 0.4)",
-    coordinators: []
+    coordinators: [
+      { name: "Sakshi", contact: "+91 7738113784" }
+    ]
   },
   {
     id: "eureka",
@@ -187,8 +188,7 @@ export const DOMAINS: EventDomain[] = [
     accentColor: "#ff4d4d",
     glowColor: "rgba(255, 77, 77, 0.4)",
     coordinators: [
-      { name: "Kavya Nair", contact: "+91 98765 43212" },
-      { name: "Arjun Reddy", contact: "+91 98765 43213" }
+      { name: "Shankilya", contact: "+91 9326214923" }
     ]
   },
   {
@@ -243,7 +243,75 @@ export const DOMAINS: EventDomain[] = [
     ],
     accentColor: "#6f42c1",
     glowColor: "rgba(111, 66, 193, 0.4)",
-    coordinators: []
+    coordinators: [
+      { name: "Premraj", contact: "+91 7900180771" }
+    ]
+  },
+  {
+    id: "final-incursion",
+    slug: "final-incursion",
+    name: "The Final Incursion",
+    mcuCodename: "The Final Incursion",
+    tagline: "Knowledge, Coordination, Strategy & The Ultimate Web Challenge",
+    shortDesc: "A multi-stage team challenge combining rapid-fire knowledge, communication, clue solving, physical coordination, and a final web-trap showdown.",
+    fullDesc: "The Final Incursion is a multi-stage team challenge where teams compete through rapid-fire questions and mini-games, a blind path mission, and a strategic treasure hunt before facing the ultimate Spider-Man-inspired Web Trap final. Teams must combine knowledge, communication, trust, problem-solving, physical coordination, and strategy to emerge as the final winner.",
+    teamSize: "2 Members",
+    venue: "Rooms 211, 202 / EXTC Lab / ECS Lab",
+    time: "Day 01 · Final Game",
+    rounds: [
+      {
+        title: "Stage 1: Rapid Fire & Mini Games",
+        description: "Test knowledge, speed and quick decision-making through software-based rapid-fire quiz rounds followed by Paper and Ball Games.",
+        duration: "15 Minutes"
+      },
+      {
+        title: "Stage 2: Blind Path Mission",
+        description: "One teammate navigates a marked path while blindfolded and the other guides them through the challenge using communication and coordination.",
+        duration: "15 Minutes"
+      },
+      {
+        title: "Stage 3: Treasure Hunt",
+        description: "Solve a sequence of clues, communicate with your teammate, and navigate different locations to complete the hunt.",
+        duration: "15 Minutes"
+      },
+      {
+        title: "Stage 4: Spider-Man Web Trap",
+        description: "The finalists enter the Web Trap and transport four Power Cores through the web without triggering penalties.",
+        duration: "30–40 Minutes"
+      }
+    ],
+    rules: [
+      "Each team consists of exactly 2 participants.",
+      "Stage 1 consists of Rapid Fire & Mini Games, Blind Path Mission, and Treasure Hunt.",
+      "Points from all Stage 1 rounds are recorded cumulatively.",
+      "During the Blind Path Mission, one participant is blindfolded while the teammate provides instructions.",
+      "Treasure Hunt teams must follow the clue sequence provided by the coordinators.",
+      "The phone/video-call mechanic may only be used as instructed by the coordinators.",
+      "Only one player may enter the Web Trap zone at a time.",
+      "Only one Power Core may be carried during each Web Trap attempt.",
+      "Four Power Cores must be transported from the designated area to the team's base.",
+      "Web touches are counted continuously throughout the team's attempt.",
+      "1st, 4th and 7th web touch results in a 1-minute penalty to the team's time.",
+      "2nd, 5th and 8th web touch results in a 2-minute penalty to the team's time.",
+      "3rd, 6th and 9th web touch gives the opposing team a 1-minute penalty advantage; there is no elimination.",
+      "After the 9th touch, the penalty cycle continues from the beginning.",
+      "All starts, stops, penalties and scoring decisions are controlled by the judges/coordinators.",
+      "All physical activities must be performed within the designated and supervised areas."
+    ],
+    judgingCriteria: [
+      "Stage 1 Cumulative Performance",
+      "Rapid Fire & Mini Games Score",
+      "Blind Path Mission Performance",
+      "Treasure Hunt Performance",
+      "Stage 2 Web Trap Completion Time",
+      "Web Touch Penalties",
+      "Final Overall Score / Result as recorded on the official scoring sheet"
+    ],
+    accentColor: "#e62429",
+    glowColor: "rgba(230, 36, 41, 0.4)",
+    coordinators: [
+      { name: "Purva", contact: "+91 9082677683" }
+    ]
   }
 ];
 
@@ -420,6 +488,42 @@ export interface TeamGroup {
   members: TeamMember[];
 }
 
+const JUNIOR_COUNCIL_ORDER = [
+  "Joint Secretary",
+  "Operational Lead",
+  "MDO",
+  "WiE Head",
+  "CS Head",
+  "MTT-S Head",
+  "Technical Head",
+  "Media Head",
+  "Design Head",
+  "Creative Head",
+  "Publicity Head",
+  "PR & Admin Head",
+  "PR Head",
+];
+
+export function sortTeamMembersForCouncil(
+  members: TeamMember[],
+  council: "Senior" | "Junior",
+) {
+  if (council !== "Junior") return members;
+
+  return members
+    .map((member, index) => ({
+      member,
+      index,
+      order: JUNIOR_COUNCIL_ORDER.indexOf(member.role),
+    }))
+    .sort((a, b) => {
+      const aOrder = a.order === -1 ? JUNIOR_COUNCIL_ORDER.length : a.order;
+      const bOrder = b.order === -1 ? JUNIOR_COUNCIL_ORDER.length : b.order;
+      return aOrder - bOrder || a.index - b.index;
+    })
+    .map(({ member }) => member);
+}
+
 export const TEAM: TeamGroup[] = [
   {
     dept: "Leadership",
@@ -519,9 +623,7 @@ export const TEAM: TeamGroup[] = [
 ];
 
 export const EVENT_STATS = [
-  { value: "1500+", label: "Participants" },
-  { value: "04", label: "Heroic Domains" },
-  { value: "48hrs", label: "Non-Stop Action" }
+  { value: "04", label: "Heroic Domains" }
 ];
 
 /** Single source of truth for "when/where" copy reused across hero intros and the footer. */

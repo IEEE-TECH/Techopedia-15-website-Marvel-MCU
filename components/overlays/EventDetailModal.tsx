@@ -133,6 +133,22 @@ export default function EventDetailModal({
                 </div>
               </section>
 
+              {/* Domain Leads */}
+              {event.coordinators.length > 0 && (
+                <section className={styles.section}>
+                  <h3 className={styles.sectionHeading}>Domain Leads</h3>
+                  <div className={styles.leadsGrid}>
+                    {event.coordinators.map((coord, idx) => (
+                      <div key={`${coord.name}-${idx}`} className={styles.leadCard}>
+                        <span className={styles.leadName}>{coord.name}</span>
+                        <span className={styles.leadRole}>Domain Lead</span>
+                        <span className={styles.leadContact}>{coord.contact}</span>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
             </div>
 
             {/* Footer Action Bar */}
@@ -145,16 +161,22 @@ export default function EventDetailModal({
               >
                 Back to Multiverse
               </Button>
-              <Button
-                variant="primary"
-                onClick={() => {
-                  sound.playSuccess();
-                  onClose();
-                  onRegister(event.name);
-                }}
-              >
-                ▸ Initiate Registration // {event.name}
-              </Button>
+              {event.id === "final-incursion" ? (
+                <span className={styles.mcuBadge} style={{ opacity: 0.9 }}>
+                  🔒 Qualification Only — No Registration
+                </span>
+              ) : (
+                <Button
+                  variant="primary"
+                  onClick={() => {
+                    sound.playSuccess();
+                    onClose();
+                    onRegister(event.name);
+                  }}
+                >
+                  ▸ Initiate Registration // {event.name}
+                </Button>
+              )}
             </div>
           </motion.div>
         </motion.div>

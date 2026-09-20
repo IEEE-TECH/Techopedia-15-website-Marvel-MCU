@@ -22,9 +22,7 @@ export function useLenis() {
       syncTouch: true,
     });
     ref.current = lenis;
-    if (process.env.NODE_ENV !== "production") {
-      (window as unknown as Record<string, unknown>).__lenis = lenis;
-    }
+    (window as unknown as Record<string, unknown>).__lenis = lenis;
 
     lenis.on("scroll", ScrollTrigger.update);
 
@@ -35,6 +33,7 @@ export function useLenis() {
     return () => {
       gsap.ticker.remove(raf);
       lenis.destroy();
+      delete (window as unknown as Record<string, unknown>).__lenis;
       ref.current = null;
     };
   }, []);

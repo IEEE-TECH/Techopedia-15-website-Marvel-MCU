@@ -82,7 +82,7 @@ export default function VideoLayer() {
         preload="metadata"
         muted
         playsInline
-        style={{ opacity: 0, zIndex: 1 }}
+        style={{ opacity: 1, zIndex: 1 }}
       />
       <video
         ref={heroRef}

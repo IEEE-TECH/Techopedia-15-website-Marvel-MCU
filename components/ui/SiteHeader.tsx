@@ -16,9 +16,7 @@ import styles from "./ui.module.css";
 const NAV = [
   { label: "Domains", target: 0.45 },
   { label: "Dossiers", target: 0.65 },
-  { label: "Timeline", target: 0.85 },
   { label: "Leaderboard", href: "/leaderboard" },
-  { label: "Schedule", href: "/schedule" },
   { label: "Team", target: "team", href: "/team" },
 ];
 
@@ -26,6 +24,15 @@ const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
 const smoothstep = (a: number, b: number, x: number) => {
   const t = clamp01((x - a) / (b - a));
   return t * t * (3 - 2 * t);
+};
+
+const smoothScrollTo = (top: number) => {
+  const lenis = (window as unknown as { __lenis?: { scrollTo: (value: number, options?: { duration?: number }) => void } }).__lenis;
+  if (lenis) {
+    lenis.scrollTo(Math.max(0, top), { duration: 1.15 });
+    return;
+  }
+  window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
 };
 
 interface SiteHeaderProps {
@@ -69,7 +76,7 @@ export default function SiteHeader({
     if (typeof target === "string") {
       const el = document.getElementById(target);
       if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
+        smoothScrollTo(el.getBoundingClientRect().top + window.scrollY - 24);
         return;
       }
       if (fallbackHref && typeof window !== "undefined") {
@@ -87,7 +94,7 @@ export default function SiteHeader({
     }
     const maxScroll = track.getBoundingClientRect().height - window.innerHeight;
     const ratio = typeof target === "number" ? target : 0;
-    window.scrollTo({ top: Math.max(0, maxScroll * ratio), behavior: "smooth" });
+    smoothScrollTo(maxScroll * ratio);
   };
 
   const renderNavItem = (n: (typeof NAV)[number], mobile = false) => {

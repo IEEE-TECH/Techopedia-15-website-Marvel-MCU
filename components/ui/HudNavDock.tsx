@@ -29,6 +29,15 @@ const SECTIONS: SectionItem[] = [
   { id: "team", label: "05 · TEAM", elementId: "team" },
 ];
 
+const smoothScrollTo = (top: number) => {
+  const lenis = (window as unknown as { __lenis?: { scrollTo: (value: number, options?: { duration?: number }) => void } }).__lenis;
+  if (lenis) {
+    lenis.scrollTo(Math.max(0, top), { duration: 1.15 });
+    return;
+  }
+  window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+};
+
 export default function HudNavDock({ onRegisterClick, onMiniGamesClick }: HudNavDockProps) {
   const router = useRouter();
   const [activeSec, setActiveSec] = useState("intro");
@@ -67,7 +76,7 @@ export default function HudNavDock({ onRegisterClick, onMiniGamesClick }: HudNav
     if (sec.elementId) {
       const el = document.getElementById(sec.elementId);
       if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
+        smoothScrollTo(el.getBoundingClientRect().top + window.scrollY - 24);
         return;
       }
     }
@@ -75,7 +84,7 @@ export default function HudNavDock({ onRegisterClick, onMiniGamesClick }: HudNav
     if (!scrollTrack) return;
     const maxScroll = scrollTrack.getBoundingClientRect().height - window.innerHeight;
     const targetY = maxScroll * (sec.targetRatio ?? 0);
-    window.scrollTo({ top: targetY, behavior: "smooth" });
+    smoothScrollTo(targetY);
   };
 
   return (

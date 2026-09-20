@@ -22,7 +22,6 @@ const heroVariants: Variants = {
 
 const NAV = [
   { label: "Experience", href: "/" },
-  { label: "Schedule", href: "/schedule" },
   { label: "Leaderboard", href: "/leaderboard" },
   { label: "Team", href: "/team" },
 ];
