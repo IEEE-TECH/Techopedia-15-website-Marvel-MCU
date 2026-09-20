@@ -32,8 +32,8 @@ interface Props {
 export default function ParticleField({
   count = 7000,
   mode = "dust",
-  colorA = "#00ff9c",
-  colorB = "#9dffd6",
+  colorA = "#ed1d24",
+  colorB = "#ffd700",
   size = 26,
   opacity = 1,
   spread = [34, 20, 16],

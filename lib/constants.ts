@@ -76,12 +76,10 @@ export const SCROLL = {
   showcaseOrbit: 360, // the 6 cards orbit the model, active card cycles to front
   showcaseOut: 70, // settle
   // ── Phase 3 · Section 3 (cinematic story stack) ──
-  storyStack: 825, // 5 fullscreen panels (incl. the Grand Finale) rise + stack sequentially 
+  storyStack: 520, // 5 fullscreen panels (incl. the Grand Finale) rise + stack cleanly with zero dead gap
   // ── Phase 4 · Section 4 (horizontal cinematic timeline) ──
-  reelStrip: 0, // stub component (renders null) — no scroll dead-zone before Team
+  reelStrip: 0, // removed — direct flow into Team section
   // ── Ending · Outro ──
-  // No settle gap remains: the stubbed reel renders nothing and the page drops
-  // straight into the in-flow Team / Sponsors / footer content.
   footerReveal: 0,
 } as const;
 

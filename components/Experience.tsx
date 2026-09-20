@@ -27,13 +27,13 @@ import HorizontalReel from "@/components/overlays/HorizontalReel";
 import FlashOverlay from "@/components/overlays/FlashOverlay";
 import CinematicText from "@/components/overlays/CinematicText";
 import ScrollCue from "@/components/ui/ScrollCue";
-import SiteHeader from "@/components/ui/SiteHeader";
 import HeroOverlay from "@/components/ui/HeroOverlay";
 import SiteFooter from "@/components/ui/SiteFooter";
 import RegistrationModal from "@/components/ui/RegistrationModal";
 import MiniGamesModal from "@/components/games/MiniGamesModal";
 import EventDetailModal from "@/components/overlays/EventDetailModal";
 import TeamSection from "@/components/overlays/TeamSection";
+import HudNavDock from "@/components/ui/HudNavDock";
 
 // Master timeline positions (arbitrary units; ScrollTrigger scrubs scroll→time).
 const T = {
@@ -48,9 +48,9 @@ const T = {
   showcaseStart: 11.8,
   showcaseEnd: 16.5,
   storyStart: 16.8,
-  storyEnd: 23.4,
-  reelStart: 24.5,
-  reelEnd: 31.3,
+  storyEnd: 22.8,
+  reelStart: 22.8,
+  reelEnd: 22.8,
   total: TIMELINE_UNITS,
 };
 
@@ -105,13 +105,16 @@ export default function Experience() {
     const marvelStartThreshold = 0.08;
     const marvelEndThreshold = heroThreshold;
 
+    const initialMarvel = getVideoEl("marvel");
+    if (initialMarvel) initialMarvel.style.opacity = "0";
+
     const tl = gsap.timeline({
       defaults: { ease: "none" },
       scrollTrigger: {
         trigger: trackRef.current,
         start: "top top",
         end: "bottom bottom",
-        scrub: 1,
+        scrub: 0.2,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           signals.scroll = self.progress;
@@ -122,7 +125,7 @@ export default function Experience() {
           if (marvel) {
             if (self.progress < marvelStartThreshold) {
               marvel.style.opacity = "0";
-              if (marvel.readyState >= 1 && marvel.currentTime > 0.05) marvel.currentTime = 0;
+              if (marvel.readyState >= 1 && marvel.currentTime > 0.05) scrubEl(marvel, 0);
             } else if (self.progress < marvelEndThreshold) {
               const local = Math.min(1, (self.progress - marvelStartThreshold) / Math.max(marvelEndThreshold - marvelStartThreshold, 0.0001));
               const introTime = local * VIDEO.marvelDur;
@@ -130,7 +133,7 @@ export default function Experience() {
               signals.marvelT = introTime;
               marvel.style.opacity = introOpacity.toFixed(3);
               if (marvel.readyState >= 1 && Math.abs(marvel.currentTime - introTime) > 0.04) {
-                marvel.currentTime = introTime;
+                scrubEl(marvel, introTime);
               }
             } else {
               marvel.style.opacity = "0";
@@ -194,10 +197,6 @@ export default function Experience() {
     tl.to(signals, { story: 1, duration: T.storyEnd - T.storyStart, ease: "none" }, T.storyStart);
     tl.to(signals, { energy: 0.18, duration: 1.0, ease: "power1.inOut" }, T.storyStart);
 
-    // ── Section 4 · horizontal timeline ──
-    tl.to(signals, { reel: 1, duration: T.reelEnd - T.reelStart, ease: "none" }, T.reelStart);
-    tl.to(signals, { energy: 0.19, duration: 1.4, ease: "power1.out" }, T.reelStart);
-
     return () => {
       tl.scrollTrigger?.kill();
       tl.kill();
@@ -209,7 +208,6 @@ export default function Experience() {
   const heroVh = SCROLL.heroText + SCROLL.heroScrub + SCROLL.heroOutro;
   const showcaseVh = SCROLL.showcaseRise + SCROLL.showcaseOrbit + SCROLL.showcaseOut;
   const storyVh = SCROLL.storyStack;
-  const reelVh = SCROLL.reelStrip;
   const outroVh = SCROLL.footerReveal;
 
   const handleOpenRegistration = (domain: string = "Squabble", lock: boolean = false) => {
@@ -248,9 +246,8 @@ export default function Experience() {
         <CinematicText />
       </div>
 
-      <SiteHeader
+      <HudNavDock
         onRegisterClick={() => handleOpenRegistration("Squabble", false)}
-        onTerminalClick={() => handleOpenMiniGames("ctf")}
         onMiniGamesClick={() => handleOpenMiniGames("bugblitz")}
       />
 
@@ -287,7 +284,6 @@ export default function Experience() {
         <section style={{ height: `${heroVh}vh` }} aria-label="Hero" />
         <section style={{ height: `${showcaseVh}vh` }} aria-label="Characters" />
         <section style={{ height: `${storyVh}vh` }} aria-label="Story" />
-        <section style={{ height: `${reelVh}vh` }} aria-label="Timeline" />
         <section style={{ height: `${outroVh}vh` }} aria-label="Outro" />
       </div>
 

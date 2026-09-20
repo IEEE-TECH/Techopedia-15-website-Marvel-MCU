@@ -529,12 +529,17 @@ export const TEAM: TeamGroup[] = [
     dept: "Leadership",
     blurb: "The leadership council steering IEEE SIESGST through vision, administration, and strategic direction.",
     members: [
-      { name: "Prathmesh Palve", role: "Chairperson", detail: "Chairperson", mcuTitle: "Chairperson", initials: "PP", council: "Senior", linkedin: "https://www.linkedin.com/in/prathmesh-palve-7565822b7" },
-      { name: "Abhang Rane", role: "Vice Chairperson", detail: "Vice Chairperson", mcuTitle: "Vice Chairperson", initials: "AR", council: "Senior", linkedin: "https://www.linkedin.com/in/abhang-rane-414a24344" },
-      { name: "Mukul Wani", role: "Secretary", detail: "Secretary", mcuTitle: "Secretary", initials: "MW", council: "Senior", linkedin: "https://www.linkedin.com/in/mukul-wani-1a2ba82b7" },
-      { name: "Aditi Dhanawade", role: "Treasurer", detail: "Treasurer", mcuTitle: "Treasurer", initials: "AD", council: "Senior", linkedin: "https://www.linkedin.com/in/aditi-dhanawade-0675812b7" },
-      { name: "Prathamesh Bhagwat", role: "MDO", detail: "MDO", mcuTitle: "MDO", initials: "PB", council: "Junior", linkedin: "https://www.linkedin.com/in/prathamesh-bhagwat-191409298" },
-      { name: "Ayush Bhadane", role: "Joint Secretary", detail: "Joint Secretary", mcuTitle: "Joint Secretary", initials: "AB", council: "Junior", linkedin: "https://www.linkedin.com/in/ayush-bhadane-b38a71353" },
+      { name: "Prathmesh Palve", photo: "/team/prathmesh-palve.jpg", role: "Chairperson", detail: "Chairperson", mcuTitle: "Chairperson", initials: "PP", council: "Senior", linkedin: "https://www.linkedin.com/in/prathmesh-palve-7565822b7" },
+      { name: "Abhang Rane", photo: "/team/abhang-rane.jpg",
+        role: "Vice Chairperson", detail: "Vice Chairperson", mcuTitle: "Vice Chairperson", initials: "AR", council: "Senior", linkedin: "https://www.linkedin.com/in/abhang-rane-414a24344" },
+      { name: "Mukul Wani", photo: "/team/mukul-wani.jpg",
+        role: "Secretary", detail: "Secretary", mcuTitle: "Secretary", initials: "MW", council: "Senior", linkedin: "https://www.linkedin.com/in/mukul-wani-1a2ba82b7" },
+      { name: "Aditi Dhanawade", photo: "/team/aditi-dhanawade.jpg",
+        role: "Treasurer", detail: "Treasurer", mcuTitle: "Treasurer", initials: "AD", council: "Senior", linkedin: "https://www.linkedin.com/in/aditi-dhanawade-0675812b7" },
+      { name: "Prathamesh Bhagwat", photo: "/team/prathamesh-bhagwat.jpg",
+        role: "MDO", detail: "MDO", mcuTitle: "MDO", initials: "PB", council: "Junior", linkedin: "https://www.linkedin.com/in/prathamesh-bhagwat-191409298" },
+      { name: "Ayush Bhadane", photo: "/team/ayush-bhadane.jpg",
+        role: "Joint Secretary", detail: "Joint Secretary", mcuTitle: "Joint Secretary", initials: "AB", council: "Junior", linkedin: "https://www.linkedin.com/in/ayush-bhadane-b38a71353" },
       { name: "Vaishnavi Iyer", role: "Joint Secretary", detail: "Joint Secretary", mcuTitle: "Joint Secretary", initials: "VI", council: "Junior", linkedin: "https://www.linkedin.com/in/vaishnavi-iyer-503460350" }
     ]
   },
@@ -542,12 +547,16 @@ export const TEAM: TeamGroup[] = [
     dept: "Technical",
     blurb: "The technical team driving IEEE SIESGST technology initiatives and development.",
     members: [
-      { name: "Janmanjay Verma", role: "Tech Mentor", detail: "Tech Mentor", mcuTitle: "Tech Mentor", initials: "JV", council: "Senior", linkedin: "https://www.linkedin.com/in/janmanjay-verma-64585927b" },
-      { name: "Chirayu Marathe", role: "Tech Mentor", detail: "Tech Mentor", mcuTitle: "Tech Mentor", initials: "CM", council: "Senior", linkedin: "https://www.linkedin.com/in/chirayu-marathe69/" },
-      { name: "Aditya Sharma", role: "Tech Mentor", detail: "Tech Mentor", mcuTitle: "Tech Mentor", initials: "AS", council: "Senior", linkedin: "https://www.linkedin.com/in/aditya-sharma-3625732a8" },
+      { name: "Janmanjay Verma", photo: "/team/janmanjay-verma.jpg",
+        role: "Tech Mentor", detail: "Tech Mentor", mcuTitle: "Tech Mentor", initials: "JV", council: "Senior", linkedin: "https://www.linkedin.com/in/janmanjay-verma-64585927b" },
+      { name: "Chirayu Marathe", photo: "/team/chirayu-marathe.jpg",
+        role: "Tech Mentor", detail: "Tech Mentor", mcuTitle: "Tech Mentor", initials: "CM", council: "Senior", linkedin: "https://www.linkedin.com/in/chirayu-marathe69/" },
+      { name: "Aditya Sharma", photo: "/team/aditya-sharma.jpg",
+        role: "Tech Mentor", detail: "Tech Mentor", mcuTitle: "Tech Mentor", initials: "AS", council: "Senior", linkedin: "https://www.linkedin.com/in/aditya-sharma-3625732a8" },
       { name: "Dakshata Dalvi", role: "Technical Head", detail: "Technical Head", mcuTitle: "Technical Head", initials: "DD", council: "Junior", linkedin: "https://www.linkedin.com/in/dakshata-dalvi-475864344" },
       { name: "Arya Muthukrishnan", role: "Technical Head", detail: "Technical Head", mcuTitle: "Technical Head", initials: "AM", council: "Junior", linkedin: "https://www.linkedin.com/in/arya-muthukrishnan-pandaram-a2264430a" },
-      { name: "Nanmathi Balachandran", role: "Technical Head", detail: "Technical Head", mcuTitle: "Technical Head", initials: "NB", council: "Junior", linkedin: "https://www.linkedin.com/in/nanmathi-balachandran-11038b32b/" },
+      { name: "Nanmathi Balachandran", photo: "/team/nanmathi-balachandran.jpg",
+        role: "Technical Head", detail: "Technical Head", mcuTitle: "Technical Head", initials: "NB", council: "Junior", linkedin: "https://www.linkedin.com/in/nanmathi-balachandran-11038b32b/" },
       { name: "Siddharth Patil", role: "Technical Head", detail: "Technical Head", mcuTitle: "Technical Head", initials: "SP", council: "Junior", linkedin: "https://www.linkedin.com/in/siddharth-patil-763635426/" },
       { name: "Akilesh K", role: "Technical Head", detail: "Technical Head", mcuTitle: "Technical Head", initials: "AK", council: "Junior", linkedin: "https://www.linkedin.com/in/akilesh-kalyanakumar-7901b9255" },
       { name: "Anoushka Rajesh", role: "Technical Head", detail: "Technical Head", mcuTitle: "Technical Head", initials: "AR", council: "Junior", linkedin: "https://www.linkedin.com/in/anoushka-rajesh-181a85422" }
@@ -557,23 +566,28 @@ export const TEAM: TeamGroup[] = [
     dept: "CS",
     blurb: "The Computer Society team supporting technical communities and initiatives.",
     members: [
-      { name: "Gaurav Patil", role: "CS Representative", detail: "CS Representative", mcuTitle: "CS Representative", initials: "GP", council: "Senior", linkedin: "https://www.linkedin.com/in/gauravpatil2515" },
-      { name: "Atharva Matale", role: "CS Head", detail: "CS Head", mcuTitle: "CS Head", initials: "AM", council: "Junior", linkedin: "https://www.linkedin.com/in/atharvamatale/" }
+      { name: "Gaurav Patil", photo: "/team/gaurav-patil.jpg",
+        role: "CS Representative", detail: "CS Representative", mcuTitle: "CS Representative", initials: "GP", council: "Senior", linkedin: "https://www.linkedin.com/in/gauravpatil2515" },
+      { name: "Atharva Matale", photo: "/team/atharva-matale.jpg",
+        role: "CS Head", detail: "CS Head", mcuTitle: "CS Head", initials: "AM", council: "Junior", linkedin: "https://www.linkedin.com/in/atharvamatale/" }
     ]
   },
   {
     dept: "MTT-S",
     blurb: "The MTT-S team supporting microwave, RF, and emerging technology initiatives.",
     members: [
-      { name: "Payal Wagh", role: "MTT-S Representative", detail: "MTT-S Representative", mcuTitle: "MTT-S Representative", initials: "PW", council: "Senior", linkedin: "https://www.linkedin.com/in/payal-wagh-4395842b7" },
-      { name: "Siddhesh Murkute", role: "MTT-S Head", detail: "MTT-S Head", mcuTitle: "MTT-S Head", initials: "SM", council: "Junior", linkedin: "https://www.linkedin.com/in/siddhesh-murkute-9025332a4" }
+      { name: "Payal Wagh", photo: "/team/payal-wagh.jpg",
+        role: "MTT-S Representative", detail: "MTT-S Representative", mcuTitle: "MTT-S Representative", initials: "PW", council: "Senior", linkedin: "https://www.linkedin.com/in/payal-wagh-4395842b7" },
+      { name: "Siddhesh Murkute", photo: "/team/siddhesh-murkute.jpg",
+        role: "MTT-S Head", detail: "MTT-S Head", mcuTitle: "MTT-S Head", initials: "SM", council: "Junior", linkedin: "https://www.linkedin.com/in/siddhesh-murkute-9025332a4" }
     ]
   },
   {
     dept: "Design",
     blurb: "The design team shaping the visual identity and creative direction.",
     members: [
-      { name: "Divya Hindurao", role: "Design Mentor", detail: "Design Mentor", mcuTitle: "Design Mentor", initials: "DH", council: "Senior", linkedin: "https://www.linkedin.com/in/divya-hindurao-895a992a7" },
+      { name: "Divya Hindurao", photo: "/team/divya-hindurao.jpg",
+        role: "Design Mentor", detail: "Design Mentor", mcuTitle: "Design Mentor", initials: "DH", council: "Senior", linkedin: "https://www.linkedin.com/in/divya-hindurao-895a992a7" },
       { name: "Antara Kadam", role: "Design Head", detail: "Design Head", mcuTitle: "Design Head", initials: "AK", council: "Junior", linkedin: "https://www.linkedin.com/in/antarakadam2006/" },
       { name: "Trushna Mhatre", role: "Design Head", detail: "Design Head", mcuTitle: "Design Head", initials: "TM", council: "Junior", linkedin: "https://www.linkedin.com/in/trushna-mhatre-88930b354" },
       { name: "Riya Parab", role: "Creative Head", detail: "Creative Head", mcuTitle: "Creative Head", initials: "RP", council: "Junior", linkedin: "https://www.linkedin.com/in/riya-parab-bb712333" }

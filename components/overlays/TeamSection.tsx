@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useState, useRef } from "react";
+import { motion } from "framer-motion";
 import { sortTeamMembersForCouncil, TEAM, TeamMember } from "@/lib/eventData";
 import TiltCard from "@/components/ui/TiltCard";
 import Initials from "@/components/ui/Initials";
 import { sound } from "@/lib/audio";
-import { EASE_OUT, TAB_SPRING } from "@/lib/motion";
+import { TAB_SPRING } from "@/lib/motion";
 import styles from "./teamSection.module.css";
 
-type CouncilTab = "Senior" | "Junior";
+type CouncilTab = "Senior" | "Junior" | "All";
 
 interface CouncilOption {
   id: CouncilTab;
@@ -28,15 +28,39 @@ const COUNCILS: CouncilOption[] = [
     label: "JUNIOR COUNCIL",
     blurb: "The junior council powers the event’s execution across development, design, media, and operations with energy and ownership.",
   },
+  {
+    id: "All",
+    label: "FULL SQUAD",
+    blurb: "The complete IEEE student branch assembly powering Techopedia Level 15.",
+  },
 ];
 
 export default function TeamSection() {
   const [active, setActive] = useState<CouncilTab>("Senior");
+  const [isPaused, setIsPaused] = useState(false);
+  const viewportRef = useRef<HTMLDivElement>(null);
+
   const currentCouncil = COUNCILS.find((c) => c.id === active) ?? COUNCILS[0];
-  const members: TeamMember[] = sortTeamMembersForCouncil(
-    TEAM.flatMap((g) => g.members.filter((m) => m.council === active)),
-    active,
+
+  const seniorMembers = sortTeamMembersForCouncil(
+    TEAM.flatMap((g) => g.members.filter((m) => m.council === "Senior")),
+    "Senior",
   );
+
+  const juniorMembers = sortTeamMembersForCouncil(
+    TEAM.flatMap((g) => g.members.filter((m) => m.council === "Junior")),
+    "Junior",
+  );
+
+  const activeMembers: TeamMember[] =
+    active === "Senior"
+      ? seniorMembers
+      : active === "Junior"
+        ? juniorMembers
+        : [...seniorMembers, ...juniorMembers];
+
+  // Duplicate list to create seamless infinite train scroll loop
+  const trainCards = [...activeMembers, ...activeMembers];
 
   const handleTabChange = (councilId: CouncilTab) => {
     if (councilId !== active) {
@@ -45,9 +69,23 @@ export default function TeamSection() {
     }
   };
 
+  const scrollLeft = () => {
+    sound.playBlip(620, 0.02);
+    viewportRef.current?.scrollBy({ left: -320, behavior: "smooth" });
+  };
+
+  const scrollRight = () => {
+    sound.playBlip(620, 0.02);
+    viewportRef.current?.scrollBy({ left: 320, behavior: "smooth" });
+  };
+
+  const togglePause = () => {
+    sound.playBlip(700, 0.02);
+    setIsPaused((p) => !p);
+  };
+
   return (
     <section className={styles.section} id="team">
-      {/* 3D Cyber Grid Horizon & Light Beam */}
       <div className={styles.cyberGridFloor} aria-hidden />
       <div className={styles.horizonGlow} aria-hidden />
 
@@ -60,7 +98,7 @@ export default function TeamSection() {
           </p>
         </div>
 
-        {/* High-tech holographic filter tabs */}
+        {/* Council Filter Tabs */}
         <div className={styles.tabs}>
           {COUNCILS.map((c) => (
             <button
@@ -84,87 +122,119 @@ export default function TeamSection() {
 
         <p className={styles.deptBlurb}>{currentCouncil.blurb}</p>
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={active}
-            className={styles.grid}
-            initial={{ opacity: 0, y: 22, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -22, scale: 0.98 }}
-            transition={{ duration: 0.35, ease: EASE_OUT }}
-          >
-            {members.map((m, idx) => (
-              <TiltCard key={m.name} className={`${styles.card} hud-panel`} maxTilt={14} glow glowColor="0, 229, 255">
-                {/* 3D Sci-Fi HUD Corner Brackets */}
-                <span className={styles.cardCornerTL} aria-hidden />
-                <span className={styles.cardCornerTR} aria-hidden />
-                <span className={styles.cardCornerBL} aria-hidden />
-                <span className={styles.cardCornerBR} aria-hidden />
+        {/* Moving Train Horizontal Section */}
+        <div className={styles.trainContainer}>
+          {/* Train Telemetry & Interactive Controls Bar */}
+          <div className={styles.trainControlsBar}>
+            <div className={styles.trainStatus}>
+              <span className={styles.trainPulse} />
+              <span>
+                TRAIN TELEMETRY // {active.toUpperCase()} ({activeMembers.length} AGENTS)
+              </span>
+            </div>
 
-                {/* Telemetry Header Row */}
-                <div className={styles.cardHeaderRow}>
-                  <span className={styles.cardTelemetry}>[SYS: {String(idx + 1).padStart(2, "0")}]</span>
-                  <span className={styles.councilBadge}>
-                    {m.council ? `${m.council.toUpperCase()} COUNCIL` : "ORGANIZER"}
-                  </span>
-                </div>
+            <div className={styles.trainActions}>
+              <button
+                type="button"
+                className={styles.pauseToggleBtn}
+                onClick={togglePause}
+                title={isPaused ? "Resume auto-scroll" : "Pause auto-scroll"}
+              >
+                {isPaused ? "▶ RESUME TRAIN" : "⏸ PAUSE TRAIN"}
+              </button>
+              <button
+                type="button"
+                className={styles.navArrowBtn}
+                onClick={scrollLeft}
+                aria-label="Scroll left"
+              >
+                <span>‹</span> PREV
+              </button>
+              <button
+                type="button"
+                className={styles.navArrowBtn}
+                onClick={scrollRight}
+                aria-label="Scroll right"
+              >
+                NEXT <span>›</span>
+              </button>
+            </div>
+          </div>
 
-                {/* 3D Floating Stark Arc Reactor Avatar */}
-                <div className={styles.avatar}>
-                  <span className={styles.radarRing} aria-hidden />
-                  <span className={styles.radarRing2} aria-hidden />
-                  <Initials text={m.initials} className={styles.initials} />
-                </div>
+          {/* Infinite Horizontal Train Viewport */}
+          <div ref={viewportRef} className={styles.trainViewport}>
+            <div
+              className={`${styles.trainTrack} ${isPaused ? styles.trainTrackPaused : ""}`}
+            >
+              {trainCards.map((m, idx) => (
+                <TiltCard
+                  key={`${m.name}-${idx}`}
+                  className={styles.card}
+                  maxTilt={6}
+                  glow
+                  glowColor="0, 229, 255"
+                >
+                  {/* Telemetry Header Row */}
+                  <div className={styles.cardHeaderRow}>
+                    <span className={styles.cardTelemetry}>
+                      [SYS // {String((idx % activeMembers.length) + 1).padStart(2, "0")}]
+                    </span>
+                    <span className={styles.councilBadge}>
+                      {m.council ? `${m.council.toUpperCase()} COUNCIL` : "ORGANIZER"}
+                    </span>
+                  </div>
 
-                {/* Name and Role */}
-                <h3 className={styles.name}>{m.name}</h3>
-                <div>
-                  <span className={styles.role}>{m.role}</span>
-                </div>
+                  {/* 3D Arc Reactor Avatar (Photo / Initials) */}
+                  <div className={styles.avatar}>
+                    <span className={styles.arcRing} aria-hidden />
+                    <span className={styles.arcGlow} aria-hidden />
+                    {m.photo ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={m.photo}
+                        alt={m.name}
+                        className={styles.photo}
+                        loading="lazy"
+                      />
+                    ) : (
+                      <Initials text={m.initials} className={styles.initials} />
+                    )}
+                  </div>
 
-                {/* Social Links */}
-                <div className={styles.socialsRow}>
-                  {m.linkedin && (
-                    <a
-                      href={m.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={styles.socialLink}
-                      aria-label={`${m.name} LinkedIn`}
-                      onMouseEnter={() => sound.playBlip(640, 0.02)}
-                    >
-                      LinkedIn ↗
-                    </a>
-                  )}
-                  {m.github && (
-                    <a
-                      href={m.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={styles.socialLink}
-                      aria-label={`${m.name} GitHub`}
-                      onMouseEnter={() => sound.playBlip(640, 0.02)}
-                    >
-                      GitHub ↗
-                    </a>
-                  )}
-                  {m.instagram && (
-                    <a
-                      href={m.instagram}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={styles.socialLink}
-                      aria-label={`${m.name} Instagram`}
-                      onMouseEnter={() => sound.playBlip(640, 0.02)}
-                    >
-                      Instagram ↗
-                    </a>
-                  )}
-                </div>
-              </TiltCard>
-            ))}
-          </motion.div>
-        </AnimatePresence>
+                  {/* Name and Role */}
+                  <div style={{ width: "100%" }}>
+                    <h3 className={styles.name} title={m.name}>{m.name}</h3>
+                    <span className={styles.role}>{m.role}</span>
+                    {m.detail && m.detail !== m.role && (
+                      <div className={styles.deptBadge}>{m.detail}</div>
+                    )}
+                  </div>
+
+                  {/* LinkedIn Connect Button */}
+                  <div className={styles.socialsRow}>
+                    {m.linkedin ? (
+                      <a
+                        href={m.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.socialLink}
+                        aria-label={`${m.name} LinkedIn`}
+                        onMouseEnter={() => sound.playBlip(640, 0.02)}
+                      >
+                        <span>LinkedIn</span>
+                        <span className={styles.linkArrow}>↗</span>
+                      </a>
+                    ) : (
+                      <span className={styles.socialLink} style={{ opacity: 0.4, cursor: "default" }}>
+                        <span>IEEE TEAM</span>
+                      </span>
+                    )}
+                  </div>
+                </TiltCard>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

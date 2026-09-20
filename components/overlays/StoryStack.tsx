@@ -119,13 +119,12 @@ export default function StoryStack({ onSelectEvent, onRegisterDomain }: StorySta
   useRaf(() => {
     const layer = layerRef.current;
     if (layer) {
-      const fade = smoothstep(0, 0.09, signals.reel);
-      layer.style.opacity = (1 - fade).toFixed(3);
-      if (fade >= 1) {
+      if (signals.story <= 0.002) {
         if (layer.style.visibility !== "hidden") layer.style.visibility = "hidden";
-        return;
+      } else {
+        if (layer.style.visibility !== "visible") layer.style.visibility = "visible";
+        layer.style.opacity = "1";
       }
-      layer.style.visibility = "visible";
     }
 
     const s = signals.story;

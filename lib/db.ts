@@ -1,4 +1,4 @@
-import { supabaseAdmin, StudentRow, PointTransactionRow } from "./supabase";
+import { supabaseAdmin, StudentRow, PointTransactionRow, isSupabaseConfigured } from "./supabase";
 
 export interface ActivityLog {
   id: string;
@@ -212,6 +212,15 @@ export const INITIAL_SEED_PARTICIPANTS: Participant[] = [
   },
 ];
 
+// Persistent in-memory store for local development, tests, or Supabase downtime
+const localParticipants: Participant[] = JSON.parse(JSON.stringify(INITIAL_SEED_PARTICIPANTS));
+
+function getLocalParticipantsSorted(): Participant[] {
+  return [...localParticipants]
+    .sort((a, b) => b.points - a.points)
+    .map((p, idx) => ({ ...p, rank: idx + 1 }));
+}
+
 export function mapStudentToParticipant(
   row: StudentRow,
   activities: ActivityLog[] = []
@@ -263,187 +272,168 @@ function buildStudentLookupFilter(clean: string): string {
 
 export const db = {
   /**
-   * Fetch all participants from Supabase, sorted by points descending with calculated rank
+   * Fetch all participants from Supabase (or fallback to local store), sorted by points descending with calculated rank
    */
   async getParticipants(): Promise<Participant[]> {
-    try {
-      const { data, error } = await supabaseAdmin
-        .from("students")
-        .select("*")
-        .order("points", { ascending: false });
+    if (isSupabaseConfigured) {
+      try {
+        const { data, error } = await supabaseAdmin
+          .from("students")
+          .select("*")
+          .order("points", { ascending: false });
 
-      if (error) {
-        console.error("Supabase getParticipants error:", error);
-        return INITIAL_SEED_PARTICIPANTS.map((p, idx) => ({ ...p, rank: idx + 1 }));
+        if (!error && data && data.length > 0) {
+          return (data as StudentRow[]).map((row, idx) => ({
+            ...mapStudentToParticipant(row),
+            rank: idx + 1,
+          }));
+        }
+      } catch (err) {
+        console.warn("Supabase getParticipants failed, using local store:", err);
       }
-
-      if (!data || data.length === 0) {
-        return INITIAL_SEED_PARTICIPANTS.map((p, idx) => ({ ...p, rank: idx + 1 }));
-      }
-
-      return (data as StudentRow[]).map((row, idx) => ({
-        ...mapStudentToParticipant(row),
-        rank: idx + 1,
-      }));
-    } catch (err) {
-      console.error("getParticipants exception:", err);
-      return INITIAL_SEED_PARTICIPANTS.map((p, idx) => ({ ...p, rank: idx + 1 }));
     }
+    return getLocalParticipantsSorted();
   },
 
   /**
-   * Fetch single participant by ID, Agent ID, or PRN from Supabase with activities & rank
+   * Fetch single participant by ID, Agent ID, or PRN
    */
   async getParticipantById(idOrAgentId: string): Promise<Participant | null> {
-    try {
-      const clean = idOrAgentId.trim();
-      if (!clean) return null;
+    const clean = idOrAgentId.trim();
+    if (!clean) return null;
 
-      // Query student by agent_id, prn, email, or id
-      const { data: students, error } = await supabaseAdmin
-        .from("students")
-        .select("*")
-        .or(buildStudentLookupFilter(clean))
-        .limit(1);
+    if (isSupabaseConfigured) {
+      try {
+        const { data: students, error } = await supabaseAdmin
+          .from("students")
+          .select("*")
+          .or(buildStudentLookupFilter(clean))
+          .limit(1);
 
-      if (error) {
-        console.error("Supabase getParticipantById error:", error);
-      }
+        if (!error && students && students.length > 0) {
+          const studentRow = students[0] as StudentRow;
 
-      let studentRow: StudentRow | null = students && students.length > 0 ? (students[0] as StudentRow) : null;
+          // Fetch transaction activities for this agent
+          const { data: transactions } = await supabaseAdmin
+            .from("point_transactions")
+            .select("*")
+            .eq("agent_id", studentRow.agent_id)
+            .order("created_at", { ascending: false })
+            .limit(50);
 
-      // If not found in Supabase, check initial seed for graceful development fallback
-      if (!studentRow) {
-        const seedIndex = INITIAL_SEED_PARTICIPANTS.findIndex(
-          (p) =>
-            p.id.toLowerCase() === clean.toLowerCase() ||
-            p.agentId.toLowerCase() === clean.toLowerCase() ||
-            p.prn.toLowerCase() === clean.toLowerCase()
-        );
-        if (seedIndex !== -1) {
+          const activities: ActivityLog[] = (transactions || []).map((t: PointTransactionRow) => ({
+            id: t.id,
+            agentId: t.agent_id,
+            prn: studentRow.prn,
+            name: studentRow.name,
+            type: t.reason.toLowerCase().includes("activation") || t.reason.toLowerCase().includes("registration")
+              ? "registration"
+              : "game_played",
+            title: t.reason,
+            pointsEarned: t.points,
+            totalPoints: studentRow.points,
+            timestamp: t.created_at,
+          }));
+
+          if (activities.length === 0) {
+            activities.push({
+              id: `act-${studentRow.agent_id}`,
+              agentId: studentRow.agent_id,
+              prn: studentRow.prn,
+              name: studentRow.name,
+              type: "registration",
+              title: "S.H.I.E.L.D. Clearance Activation",
+              pointsEarned: 100,
+              totalPoints: studentRow.points,
+              timestamp: studentRow.registered_at,
+            });
+          }
+
+          const { count } = await supabaseAdmin
+            .from("students")
+            .select("*", { count: "exact", head: true })
+            .gt("points", studentRow.points);
+
+          const rank = (count || 0) + 1;
+
           return {
-            ...INITIAL_SEED_PARTICIPANTS[seedIndex],
-            rank: seedIndex + 1,
+            ...mapStudentToParticipant(studentRow, activities),
+            rank,
           };
         }
-        return null;
+      } catch (err) {
+        console.warn("Supabase getParticipantById failed, checking local store:", err);
       }
-
-      // Fetch transaction activities for this agent
-      const { data: transactions } = await supabaseAdmin
-        .from("point_transactions")
-        .select("*")
-        .eq("agent_id", studentRow.agent_id)
-        .order("created_at", { ascending: false })
-        .limit(50);
-
-      const activities: ActivityLog[] = (transactions || []).map((t: PointTransactionRow) => ({
-        id: t.id,
-        agentId: t.agent_id,
-        prn: studentRow!.prn,
-        name: studentRow!.name,
-        type: t.reason.toLowerCase().includes("activation") || t.reason.toLowerCase().includes("registration")
-          ? "registration"
-          : "game_played",
-        title: t.reason,
-        pointsEarned: t.points,
-        totalPoints: studentRow!.points,
-        timestamp: t.created_at,
-      }));
-
-      // If no transactions exist, synthesize the registration clearance activity
-      if (activities.length === 0) {
-        activities.push({
-          id: `act-${studentRow.agent_id}`,
-          agentId: studentRow.agent_id,
-          prn: studentRow.prn,
-          name: studentRow.name,
-          type: "registration",
-          title: "S.H.I.E.L.D. Clearance Activation",
-          pointsEarned: 100,
-          totalPoints: studentRow.points,
-          timestamp: studentRow.registered_at,
-        });
-      }
-
-      // Calculate dynamic rank: count how many students have more points
-      const { count } = await supabaseAdmin
-        .from("students")
-        .select("*", { count: "exact", head: true })
-        .gt("points", studentRow.points);
-
-      const rank = (count || 0) + 1;
-
-      return {
-        ...mapStudentToParticipant(studentRow, activities),
-        rank,
-      };
-    } catch (err) {
-      console.error("getParticipantById exception:", err);
-      return null;
     }
+
+    // Local in-memory fallback lookup
+    const sorted = getLocalParticipantsSorted();
+    const found = sorted.find(
+      (p) =>
+        p.id.toLowerCase() === clean.toLowerCase() ||
+        p.agentId.toLowerCase() === clean.toLowerCase() ||
+        p.prn.toLowerCase() === clean.toLowerCase()
+    );
+
+    return found || null;
   },
 
   /**
-   * Fetch participant by PRN from Supabase
+   * Fetch participant by PRN
    */
   async getParticipantByPrn(prn: string): Promise<Participant | null> {
-    try {
-      const clean = prn.trim();
-      if (!clean) return null;
+    const clean = prn.trim();
+    if (!clean) return null;
 
-      const { data, error } = await supabaseAdmin
-        .from("students")
-        .select("*")
-        .ilike("prn", clean)
-        .limit(1);
+    if (isSupabaseConfigured) {
+      try {
+        const { data, error } = await supabaseAdmin
+          .from("students")
+          .select("*")
+          .ilike("prn", clean)
+          .limit(1);
 
-      if (error) {
-        console.error("Supabase getParticipantByPrn error:", error);
-        return null;
+        if (!error && data && data.length > 0) {
+          return mapStudentToParticipant(data[0] as StudentRow);
+        }
+      } catch (err) {
+        console.warn("Supabase getParticipantByPrn failed, checking local store:", err);
       }
-
-      if (data && data.length > 0) {
-        return mapStudentToParticipant(data[0] as StudentRow);
-      }
-      return null;
-    } catch (err) {
-      console.error("getParticipantByPrn exception:", err);
-      return null;
     }
+
+    const found = localParticipants.find((p) => p.prn.toLowerCase() === clean.toLowerCase());
+    return found || null;
   },
 
   /**
-   * Fetch participant by Email from Supabase
+   * Fetch participant by Email
    */
   async getParticipantByEmail(email: string): Promise<Participant | null> {
-    try {
-      const clean = email.trim().toLowerCase();
-      if (!clean) return null;
+    const clean = email.trim().toLowerCase();
+    if (!clean) return null;
 
-      const { data, error } = await supabaseAdmin
-        .from("students")
-        .select("*")
-        .ilike("email", clean)
-        .limit(1);
+    if (isSupabaseConfigured) {
+      try {
+        const { data, error } = await supabaseAdmin
+          .from("students")
+          .select("*")
+          .ilike("email", clean)
+          .limit(1);
 
-      if (error) {
-        console.error("Supabase getParticipantByEmail error:", error);
-        return null;
+        if (!error && data && data.length > 0) {
+          return mapStudentToParticipant(data[0] as StudentRow);
+        }
+      } catch (err) {
+        console.warn("Supabase getParticipantByEmail failed, checking local store:", err);
       }
-
-      if (data && data.length > 0) {
-        return mapStudentToParticipant(data[0] as StudentRow);
-      }
-      return null;
-    } catch (err) {
-      console.error("getParticipantByEmail exception:", err);
-      return null;
     }
+
+    const found = localParticipants.find((p) => p.email.toLowerCase() === clean);
+    return found || null;
   },
 
   /**
-   * Add a new participant directly into Supabase PostgreSQL
+   * Add a new participant into Supabase or fallback to local in-memory store
    */
   async addParticipant(
     participant: Omit<Participant, "id" | "registeredAt" | "activities">
@@ -451,38 +441,11 @@ export const db = {
     const registeredAt = new Date().toISOString();
     const initialPoints = participant.points || 100;
 
-    const { data, error } = await supabaseAdmin
-      .from("students")
-      .insert({
-        agent_id: participant.agentId,
-        name: participant.name,
-        prn: participant.prn,
-        email: participant.email,
-        phone: participant.phone || null,
-        college: participant.college || "SIES Graduate School of Technology",
-        team_name: participant.teamName || "Avengers Initiative",
-        team_size: participant.teamSize || "1",
-        domain: participant.domain,
-        points: initialPoints,
-        qr_code_url: participant.qrCodeUrl || null,
-        registered_at: registeredAt,
-      })
-      .select()
-      .single();
-
-    if (error) {
-      console.error("Supabase addParticipant error:", error);
-      throw new Error(`Cloud database insert failed: ${error.message}`);
-    }
-
-    const createdStudent = data as StudentRow;
-
-    // Log initial activation point transaction
     const initialActivity: ActivityLog = {
       id: `act-${Date.now()}`,
-      agentId: createdStudent.agent_id,
-      prn: createdStudent.prn,
-      name: createdStudent.name,
+      agentId: participant.agentId,
+      prn: participant.prn,
+      name: participant.name,
       type: "registration",
       title: "S.H.I.E.L.D. Protocol Clearance Activated",
       pointsEarned: initialPoints,
@@ -490,26 +453,72 @@ export const db = {
       timestamp: registeredAt,
     };
 
-    try {
-      await supabaseAdmin
-        .from("point_transactions")
-        .insert({
-          agent_id: createdStudent.agent_id,
-          event_id: "REGISTRATION",
-          points: initialPoints,
-          reason: "S.H.I.E.L.D. Protocol Clearance Activated",
-          awarded_by: "Command Center Auto-Clearance",
-          created_at: registeredAt,
-        });
-    } catch (txErr) {
-      console.warn("Initial transaction log warning:", txErr);
+    if (isSupabaseConfigured) {
+      try {
+        const { data, error } = await supabaseAdmin
+          .from("students")
+          .insert({
+            agent_id: participant.agentId,
+            name: participant.name,
+            prn: participant.prn,
+            email: participant.email,
+            phone: participant.phone || null,
+            college: participant.college || "SIES Graduate School of Technology",
+            team_name: participant.teamName || "Avengers Initiative",
+            team_size: participant.teamSize || "1",
+            domain: participant.domain,
+            points: initialPoints,
+            qr_code_url: participant.qrCodeUrl || null,
+            registered_at: registeredAt,
+          })
+          .select()
+          .single();
+
+        if (!error && data) {
+          const createdStudent = data as StudentRow;
+          try {
+            await supabaseAdmin.from("point_transactions").insert({
+              agent_id: createdStudent.agent_id,
+              event_id: "REGISTRATION",
+              points: initialPoints,
+              reason: "S.H.I.E.L.D. Protocol Clearance Activated",
+              awarded_by: "Command Center Auto-Clearance",
+              created_at: registeredAt,
+            });
+          } catch (txErr) {
+            console.warn("Initial transaction log warning:", txErr);
+          }
+          return mapStudentToParticipant(createdStudent, [initialActivity]);
+        }
+      } catch (err) {
+        console.warn("Supabase addParticipant failed, falling back to in-memory store:", err);
+      }
     }
 
-    return mapStudentToParticipant(createdStudent, [initialActivity]);
+    // Fallback: save to local memory store
+    const localNew: Participant = {
+      id: `agent-${Date.now().toString(36)}`,
+      agentId: participant.agentId,
+      name: participant.name,
+      prn: participant.prn,
+      email: participant.email,
+      phone: participant.phone || "",
+      college: participant.college || "SIES Graduate School of Technology",
+      teamName: participant.teamName || "Avengers Initiative",
+      teamSize: participant.teamSize || "1",
+      domain: participant.domain,
+      points: initialPoints,
+      qrCodeUrl: participant.qrCodeUrl,
+      registeredAt,
+      activities: [initialActivity],
+    };
+
+    localParticipants.unshift(localNew);
+    return localNew;
   },
 
   /**
-   * Award battle points to an agent in Supabase PostgreSQL
+   * Award battle points to an agent
    */
   async awardPoints(
     identifier: string,
@@ -522,129 +531,161 @@ export const db = {
 
     const clean = identifier.trim();
     if (!clean) return null;
-
-    // Find student in Supabase
-    const { data: students, error: findError } = await supabaseAdmin
-      .from("students")
-      .select("*")
-      .or(buildStudentLookupFilter(clean))
-      .limit(1);
-
-    if (findError || !students || students.length === 0) {
-      console.error("awardPoints student lookup failed:", findError);
-      return null;
-    }
-
-    const currentStudent = students[0] as StudentRow;
-    const newTotalPoints = (currentStudent.points || 0) + safePoints;
     const timestamp = new Date().toISOString();
-
-    // Update points in Supabase students table
-    const { data: updatedData, error: updateError } = await supabaseAdmin
-      .from("students")
-      .update({ points: newTotalPoints })
-      .eq("id", currentStudent.id)
-      .select()
-      .single();
-
-    if (updateError || !updatedData) {
-      console.error("awardPoints update failed:", updateError);
-      throw new Error(`Failed to update points in cloud database: ${updateError?.message}`);
-    }
-
-    const updatedStudent = updatedData as StudentRow;
-
-    // Insert transaction log in Supabase point_transactions table
     const fullReason = `${activityTitle} (+${safePoints} PTS · via ${scannedBy})`;
-    const { data: transData, error: transError } = await supabaseAdmin
-      .from("point_transactions")
-      .insert({
-        agent_id: updatedStudent.agent_id,
-        event_id: activityTitle.replace(/[^a-zA-Z0-9]/g, "-").toUpperCase().slice(0, 30),
-        points: safePoints,
-        reason: fullReason,
-        awarded_by: scannedBy,
-        created_at: timestamp,
-      })
-      .select()
-      .single();
 
-    if (transError) {
-      console.warn("Point transaction log warning:", transError);
+    if (isSupabaseConfigured) {
+      try {
+        const { data: students, error: findError } = await supabaseAdmin
+          .from("students")
+          .select("*")
+          .or(buildStudentLookupFilter(clean))
+          .limit(1);
+
+        if (!findError && students && students.length > 0) {
+          const currentStudent = students[0] as StudentRow;
+          const newTotalPoints = (currentStudent.points || 0) + safePoints;
+
+          const { data: updatedData, error: updateError } = await supabaseAdmin
+            .from("students")
+            .update({ points: newTotalPoints })
+            .eq("id", currentStudent.id)
+            .select()
+            .single();
+
+          if (!updateError && updatedData) {
+            const updatedStudent = updatedData as StudentRow;
+            const { data: transData } = await supabaseAdmin
+              .from("point_transactions")
+              .insert({
+                agent_id: updatedStudent.agent_id,
+                event_id: activityTitle.replace(/[^a-zA-Z0-9]/g, "-").toUpperCase().slice(0, 30),
+                points: safePoints,
+                reason: fullReason,
+                awarded_by: scannedBy,
+                created_at: timestamp,
+              })
+              .select()
+              .single();
+
+            const newActivity: ActivityLog = {
+              id: transData?.id || `act-${Date.now()}`,
+              agentId: updatedStudent.agent_id,
+              prn: updatedStudent.prn,
+              name: updatedStudent.name,
+              type: "game_played",
+              title: fullReason,
+              pointsEarned: safePoints,
+              totalPoints: newTotalPoints,
+              timestamp,
+            };
+
+            return {
+              participant: mapStudentToParticipant(updatedStudent, [newActivity]),
+              activity: newActivity,
+            };
+          }
+        }
+      } catch (err) {
+        console.warn("Supabase awardPoints failed, falling back to local store:", err);
+      }
     }
 
+    // Local in-memory fallback update
+    const target = localParticipants.find(
+      (p) =>
+        p.id.toLowerCase() === clean.toLowerCase() ||
+        p.agentId.toLowerCase() === clean.toLowerCase() ||
+        p.prn.toLowerCase() === clean.toLowerCase() ||
+        p.email.toLowerCase() === clean.toLowerCase()
+    );
+
+    if (!target) return null;
+
+    target.points += safePoints;
     const newActivity: ActivityLog = {
-      id: transData?.id || `act-${Date.now()}`,
-      agentId: updatedStudent.agent_id,
-      prn: updatedStudent.prn,
-      name: updatedStudent.name,
+      id: `act-${Date.now()}`,
+      agentId: target.agentId,
+      prn: target.prn,
+      name: target.name,
       type: "game_played",
       title: fullReason,
       pointsEarned: safePoints,
-      totalPoints: newTotalPoints,
+      totalPoints: target.points,
       timestamp,
     };
 
+    if (!target.activities) target.activities = [];
+    target.activities.unshift(newActivity);
+
     return {
-      participant: mapStudentToParticipant(updatedStudent, [newActivity]),
+      participant: { ...target },
       activity: newActivity,
     };
   },
 
   /**
-   * Fetch recent activity transactions from Supabase
+   * Fetch recent activity transactions
    */
   async getRecentActivities(limit: number = 20): Promise<ActivityLog[]> {
-    try {
-      const { data, error } = await supabaseAdmin
-        .from("point_transactions")
-        .select("id, agent_id, event_id, points, reason, awarded_by, created_at")
-        .order("created_at", { ascending: false })
-        .limit(limit);
+    if (isSupabaseConfigured) {
+      try {
+        const { data, error } = await supabaseAdmin
+          .from("point_transactions")
+          .select("id, agent_id, event_id, points, reason, awarded_by, created_at")
+          .order("created_at", { ascending: false })
+          .limit(limit);
 
-      if (error || !data) {
-        console.error("getRecentActivities Supabase error:", error);
-        return [];
-      }
+        if (!error && data && data.length > 0) {
+          const rows = data as PointTransactionRow[];
+          const agentIds = Array.from(new Set(rows.map((d) => d.agent_id)));
+          const studentMap = new Map<string, { name: string; prn: string }>();
 
-      const rows = data as PointTransactionRow[];
+          if (agentIds.length > 0) {
+            const { data: studentList } = await supabaseAdmin
+              .from("students")
+              .select("agent_id, name, prn")
+              .in("agent_id", agentIds);
 
-      // Fetch student details for these agent_ids to include names and prns
-      const agentIds = Array.from(new Set(rows.map((d) => d.agent_id)));
-      const studentMap = new Map<string, { name: string; prn: string }>();
+            if (studentList) {
+              studentList.forEach((s: { agent_id: string; name: string; prn: string }) => {
+                studentMap.set(s.agent_id, { name: s.name, prn: s.prn });
+              });
+            }
+          }
 
-      if (agentIds.length > 0) {
-        const { data: studentList } = await supabaseAdmin
-          .from("students")
-          .select("agent_id, name, prn")
-          .in("agent_id", agentIds);
-
-        if (studentList) {
-          studentList.forEach((s: { agent_id: string; name: string; prn: string }) => {
-            studentMap.set(s.agent_id, { name: s.name, prn: s.prn });
+          return rows.map((t) => {
+            const student = studentMap.get(t.agent_id);
+            return {
+              id: t.id,
+              agentId: t.agent_id,
+              prn: student?.prn || "",
+              name: student?.name || t.agent_id,
+              type: (t.reason.toLowerCase().includes("activation") || t.reason.toLowerCase().includes("registration")
+                ? "registration"
+                : "game_played") as "registration" | "game_played",
+              title: t.reason,
+              pointsEarned: t.points,
+              totalPoints: 0,
+              timestamp: t.created_at,
+            };
           });
         }
+      } catch (err) {
+        console.warn("Supabase getRecentActivities failed, using local activities:", err);
       }
-
-      return rows.map((t) => {
-        const student = studentMap.get(t.agent_id);
-        return {
-          id: t.id,
-          agentId: t.agent_id,
-          prn: student?.prn || "",
-          name: student?.name || t.agent_id,
-          type: (t.reason.toLowerCase().includes("activation") || t.reason.toLowerCase().includes("registration")
-            ? "registration"
-            : "game_played") as "registration" | "game_played",
-          title: t.reason,
-          pointsEarned: t.points,
-          totalPoints: 0,
-          timestamp: t.created_at,
-        };
-      });
-    } catch (err) {
-      console.error("getRecentActivities exception:", err);
-      return [];
     }
+
+    // Local in-memory fallback
+    const allActs: ActivityLog[] = [];
+    localParticipants.forEach((p) => {
+      if (p.activities && p.activities.length > 0) {
+        allActs.push(...p.activities);
+      }
+    });
+
+    return allActs
+      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+      .slice(0, limit);
   },
 };

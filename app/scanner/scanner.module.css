@@ -7,7 +7,7 @@
 }
 
 .scannerInner {
-  max-width: 1100px;
+  max-width: 1240px;
   margin: 0 auto;
 }
 
@@ -253,13 +253,46 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: min(180px, 65%);
-  height: min(180px, 65%);
+  width: min(200px, 65%);
+  height: min(200px, 65%);
   border: 2px dashed #00e5ff;
   border-radius: 12px;
   box-shadow: 0 0 20px rgba(0, 229, 255, 0.4), inset 0 0 15px rgba(0, 229, 255, 0.2);
   pointer-events: none;
   animation: scanSweep 2s ease-in-out infinite alternate;
+  overflow: hidden;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.reticleLocked {
+  border-color: #10b981 !important;
+  border-style: solid !important;
+  box-shadow: 0 0 35px rgba(16, 185, 129, 0.8), inset 0 0 25px rgba(16, 185, 129, 0.4) !important;
+  animation: lockPulse 0.4s ease-out !important;
+}
+
+@keyframes lockPulse {
+  0% { transform: translate(-50%, -50%) scale(1.12); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+.scanLaser {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00e5ff, transparent);
+  box-shadow: 0 0 12px #00e5ff;
+  animation: laserSweep 2s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes laserSweep {
+  0% { top: 0%; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
 }
 
 @keyframes scanSweep {

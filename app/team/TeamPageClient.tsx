@@ -1,16 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
+import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-
 import TiltCard from "@/components/ui/TiltCard";
-import { sortTeamMembersForCouncil, TEAM } from "@/lib/eventData";
+import { sortTeamMembersForCouncil, TEAM, TeamMember } from "@/lib/eventData";
 import { sound } from "@/lib/audio";
-import { EASE_OUT, TAB_SPRING } from "@/lib/motion";
-
+import { TAB_SPRING } from "@/lib/motion";
 import styles from "./team.module.css";
 
-type CouncilTab = "Senior" | "Junior";
+type CouncilTab = "Senior" | "Junior" | "All";
 
 function initials(name: string) {
   return name
@@ -24,11 +23,28 @@ function initials(name: string) {
 
 export default function TeamPageClient({ initialActive = "Senior" }: { initialActive?: CouncilTab }) {
   const [active, setActive] = useState<CouncilTab>(initialActive);
+  const [isPaused, setIsPaused] = useState(false);
+  const viewportRef = useRef<HTMLDivElement>(null);
 
-  const members = sortTeamMembersForCouncil(
-    TEAM.flatMap((g) => g.members.filter((m) => m.council === active)),
-    active,
+  const seniorMembers = sortTeamMembersForCouncil(
+    TEAM.flatMap((g) => g.members.filter((m) => m.council === "Senior")),
+    "Senior",
   );
+
+  const juniorMembers = sortTeamMembersForCouncil(
+    TEAM.flatMap((g) => g.members.filter((m) => m.council === "Junior")),
+    "Junior",
+  );
+
+  const activeMembers: TeamMember[] =
+    active === "Senior"
+      ? seniorMembers
+      : active === "Junior"
+        ? juniorMembers
+        : [...seniorMembers, ...juniorMembers];
+
+  // Duplicate for seamless infinite loop
+  const trainCards = [...activeMembers, ...activeMembers];
 
   const handleTabChange = (tab: CouncilTab) => {
     if (tab !== active) {
@@ -37,10 +53,25 @@ export default function TeamPageClient({ initialActive = "Senior" }: { initialAc
     }
   };
 
+  const scrollLeft = () => {
+    sound.playBlip(620, 0.02);
+    viewportRef.current?.scrollBy({ left: -320, behavior: "smooth" });
+  };
+
+  const scrollRight = () => {
+    sound.playBlip(620, 0.02);
+    viewportRef.current?.scrollBy({ left: 320, behavior: "smooth" });
+  };
+
+  const togglePause = () => {
+    sound.playBlip(700, 0.02);
+    setIsPaused((p) => !p);
+  };
+
   return (
     <>
       <div className={styles.tabs}>
-        {(["Senior", "Junior"] as const).map((tab) => (
+        {(["Senior", "Junior", "All"] as const).map((tab) => (
           <button
             key={tab}
             type="button"
@@ -57,111 +88,132 @@ export default function TeamPageClient({ initialActive = "Senior" }: { initialAc
             )}
 
             <span className={styles.tabLabel}>
-              {tab === "Senior" ? "SENIOR COUNCIL" : "JUNIOR COUNCIL"}
+              {tab === "Senior"
+                ? "SENIOR COUNCIL"
+                : tab === "Junior"
+                  ? "JUNIOR COUNCIL"
+                  : "FULL SQUAD"}
             </span>
           </button>
         ))}
+
+        <Link href="/team/portal" className={styles.portalTabBtn}>
+          ⚡ Team Ops Portal →
+        </Link>
       </div>
 
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={active}
-          initial={false}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -18 }}
-          transition={{
-            duration: 0.35,
-            ease: EASE_OUT,
-          }}
-        >
-          {members.length > 0 ? (
-            <div className={styles.grid}>
-              {members.map((m) => (
-                <TiltCard
-                  key={m.name}
-                  className={`${styles.card} hud-panel`}
-                  maxTilt={8}
-                  glow
-                >
-                  <div className={styles.photoWrap}>
-                    <span
-                      className={styles.radarRing}
-                      aria-hidden
+      {/* Moving Train Horizontal Scroll Container */}
+      <div className={styles.trainContainer}>
+        {/* Controls Bar */}
+        <div className={styles.trainControlsBar}>
+          <div className={styles.trainStatus}>
+            <span className={styles.trainPulse} />
+            <span>
+              TRAIN TELEMETRY // {active.toUpperCase()} ({activeMembers.length} AGENTS)
+            </span>
+          </div>
+
+          <div className={styles.trainActions}>
+            <button
+              type="button"
+              className={styles.pauseToggleBtn}
+              onClick={togglePause}
+              title={isPaused ? "Resume train" : "Pause train"}
+            >
+              {isPaused ? "▶ RESUME TRAIN" : "⏸ PAUSE TRAIN"}
+            </button>
+            <button
+              type="button"
+              className={styles.navArrowBtn}
+              onClick={scrollLeft}
+              aria-label="Scroll left"
+            >
+              <span>‹</span> PREV
+            </button>
+            <button
+              type="button"
+              className={styles.navArrowBtn}
+              onClick={scrollRight}
+              aria-label="Scroll right"
+            >
+              NEXT <span>›</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Continuous Marquee Viewport */}
+        <div ref={viewportRef} className={styles.trainViewport}>
+          <div
+            className={`${styles.trainTrack} ${isPaused ? styles.trainTrackPaused : ""}`}
+          >
+            {trainCards.map((m, idx) => (
+              <TiltCard
+                key={`${m.name}-${idx}`}
+                className={styles.card}
+                maxTilt={6}
+                glow
+                glowColor="0, 229, 255"
+              >
+                <div className={styles.cardHeaderRow}>
+                  <span className={styles.cardTelemetry}>
+                    [SYS // {String((idx % activeMembers.length) + 1).padStart(2, "0")}]
+                  </span>
+                  <span className={styles.councilBadge}>
+                    {m.council ? `${m.council.toUpperCase()} COUNCIL` : "ORGANIZER"}
+                  </span>
+                </div>
+
+                <div className={styles.avatar}>
+                  <span className={styles.arcRing} aria-hidden />
+                  <span className={styles.arcGlow} aria-hidden />
+
+                  {m.photo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={m.photo}
+                      alt={m.name}
+                      className={styles.photo}
+                      loading="lazy"
                     />
+                  ) : (
+                    <span className={styles.initials} aria-hidden>
+                      {initials(m.name)}
+                    </span>
+                  )}
+                </div>
 
-                    {m.photo ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={m.photo}
-                        alt={m.name}
-                        className={styles.photo}
-                      />
-                    ) : (
-                      <span
-                        className={styles.initials}
-                        aria-hidden
-                      >
-                        {initials(m.name)}
-                      </span>
-                    )}
-
-                    <span
-                      className={styles.ring}
-                      aria-hidden
-                    />
-                  </div>
-
-                  <h3 className={styles.name}>{m.name}</h3>
-
-                  <div className={styles.role}>{m.role}</div>
-
+                <div style={{ width: "100%" }}>
+                  <h3 className={styles.name} title={m.name}>{m.name}</h3>
+                  <span className={styles.role}>{m.role}</span>
                   {m.detail && m.detail.toLowerCase() !== m.role.toLowerCase() && (
-                    <div className={styles.detail}>{m.detail}</div>
+                    <div className={styles.deptBadge}>{m.detail}</div>
                   )}
+                </div>
 
-                  {(m.instagram || m.linkedin || m.github) && (
-                    <div className={styles.links}>
-                      {m.linkedin && (
-                        <a
-                          href={m.linkedin}
-                          target="_blank"
-                          rel="noreferrer noopener"
-                        >
-                          LinkedIn
-                        </a>
-                      )}
-
-                      {m.instagram && (
-                        <a
-                          href={m.instagram}
-                          target="_blank"
-                          rel="noreferrer noopener"
-                        >
-                          Instagram
-                        </a>
-                      )}
-
-                      {m.github && (
-                        <a
-                          href={m.github}
-                          target="_blank"
-                          rel="noreferrer noopener"
-                        >
-                          GitHub
-                        </a>
-                      )}
-                    </div>
+                <div className={styles.socialsRow}>
+                  {m.linkedin ? (
+                    <a
+                      href={m.linkedin}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className={styles.socialLink}
+                      aria-label={`${m.name} LinkedIn`}
+                      onMouseEnter={() => sound.playBlip(640, 0.02)}
+                    >
+                      <span>LinkedIn</span>
+                      <span className={styles.linkArrow}>↗</span>
+                    </a>
+                  ) : (
+                    <span className={styles.socialLink} style={{ opacity: 0.4, cursor: "default" }}>
+                      <span>IEEE TEAM</span>
+                    </span>
                   )}
-                </TiltCard>
-              ))}
-            </div>
-          ) : (
-            <div style={{ color: "rgba(255,255,255,0.7)", textAlign: "center", padding: "2rem 0" }}>
-              No members found in this council.
-            </div>
-          )}
-        </motion.div>
-      </AnimatePresence>
+                </div>
+              </TiltCard>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* JOIN SECTION */}
       <TiltCard className={styles.join} maxTilt={5}>
@@ -178,24 +230,9 @@ export default function TeamPageClient({ initialActive = "Senior" }: { initialAc
         <div style={{ marginTop: "1.5rem", display: "flex", justifyContent: "center" }}>
           <a
             href="/team/login"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              background: "rgba(237, 29, 36, 0.12)",
-              border: "1px solid rgba(237, 29, 36, 0.4)",
-              color: "#ff4d4d",
-              padding: "0.6rem 1.25rem",
-              borderRadius: "6px",
-              fontSize: "0.85rem",
-              fontWeight: 700,
-              letterSpacing: "0.08em",
-              textDecoration: "none",
-              textTransform: "uppercase",
-              transition: "all 0.2s ease",
-            }}
+            className={styles.portalBtn}
           >
-            🛡️ Authorized Coordinator &amp; Staff Access Portal →
+            Team Ops Portal Login →
           </a>
         </div>
       </TiltCard>

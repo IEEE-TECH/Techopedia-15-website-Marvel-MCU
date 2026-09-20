@@ -3,6 +3,8 @@
 import { useEffect, useRef } from "react";
 import { ASSETS } from "@/lib/constants";
 import { primeElement, setVideoEl } from "@/lib/videos";
+import { signals } from "@/lib/signals";
+import { useRaf } from "@/lib/useRaf";
 
 /**
  * The trailers, rendered as REAL fullscreen `<video>` elements (object-fit:cover)
@@ -12,9 +14,19 @@ import { primeElement, setVideoEl } from "@/lib/videos";
  * sits on top as a transparent layer.
  */
 export default function VideoLayer() {
+  const backdropRef = useRef<HTMLDivElement>(null);
   const marvelRef = useRef<HTMLVideoElement>(null);
   const heroRef = useRef<HTMLVideoElement>(null);
   const finaleRef = useRef<HTMLVideoElement>(null);
+
+  useRaf(() => {
+    const el = backdropRef.current;
+    if (!el) return;
+    const s = signals.scroll;
+    const op = Math.max(0, Math.min(1, 1 - (s - 0.03) / 0.07));
+    el.style.opacity = (op * 0.9).toFixed(3);
+    el.style.visibility = op <= 0.005 ? "hidden" : "visible";
+  });
 
   useEffect(() => {
     const m = marvelRef.current;
@@ -59,16 +71,19 @@ export default function VideoLayer() {
 
   return (
     <div className="video-layer" aria-hidden>
-      {/* Faded Marvel Cinematic Multiverse Backdrop */}
+      {/* Spider-Man Multiverse Backdrop */}
       <div
+        ref={backdropRef}
         className="marvel-bg-backdrop"
         style={{
           position: "absolute",
           inset: 0,
-          backgroundImage: "radial-gradient(circle at 68% 34%, rgba(237, 29, 36, 0.42), transparent 30%), radial-gradient(circle at 28% 70%, rgba(255, 215, 0, 0.14), transparent 25%), repeating-linear-gradient(60deg, transparent 0 38px, rgba(0, 229, 255, 0.08) 39px 40px), repeating-linear-gradient(-60deg, transparent 0 38px, rgba(237, 29, 36, 0.08) 39px 40px), linear-gradient(135deg, #030408, #16070b 52%, #05070c)",
-          backgroundSize: "cover, cover, 80px 140px, 80px 140px, cover",
-          backgroundPosition: "center",
-          opacity: 0.58,
+          backgroundImage:
+            "radial-gradient(circle at 50% 45%, rgba(0, 0, 0, 0.18) 0%, rgba(7, 9, 14, 0.72) 68%, #07090e 100%), url(/marvel-bg.jpg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center 18%",
+          backgroundRepeat: "no-repeat",
+          opacity: 0.9,
           mixBlendMode: "normal",
           pointerEvents: "none",
           zIndex: 0,
@@ -82,7 +97,7 @@ export default function VideoLayer() {
         preload="metadata"
         muted
         playsInline
-        style={{ opacity: 1, zIndex: 1 }}
+        style={{ opacity: 0, zIndex: 1 }}
       />
       <video
         ref={heroRef}

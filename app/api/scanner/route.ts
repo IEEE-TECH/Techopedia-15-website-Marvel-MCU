@@ -47,19 +47,23 @@ export async function POST(req: NextRequest) {
       if (limited) return limited;
     }
 
-    // Parse identifier from raw QR data if provided
-    let targetId = typeof identifier === "string" ? identifier : "";
-    if (typeof qrData === "string" && qrData) {
+    // Parse identifier from raw QR data or identifier string
+    const rawInput = (typeof qrData === "string" && qrData.trim())
+      ? qrData.trim()
+      : (typeof identifier === "string" ? identifier.trim() : "");
+
+    let targetId = rawInput;
+    if (rawInput) {
       try {
-        const parsed = JSON.parse(qrData);
-        targetId = parsed.id || parsed.prn || qrData;
+        const parsed = JSON.parse(rawInput);
+        targetId = parsed.id || parsed.prn || rawInput;
       } catch {
         // If not JSON, it might be URL or direct agentId
-        const match = qrData.match(/TECH15-[A-Z]+-\d+/i) || qrData.match(/dashboard\/([^/?#]+)/i);
+        const match = rawInput.match(/TECH15-[A-Z]+-\d+/i) || rawInput.match(/dashboard\/([^/?#]+)/i);
         if (match) {
           targetId = match[1] || match[0];
         } else {
-          targetId = qrData;
+          targetId = rawInput;
         }
       }
     }

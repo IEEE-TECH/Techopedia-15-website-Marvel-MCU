@@ -7,7 +7,13 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  padding: clamp(5rem, 12vh, 9rem) 6vw clamp(2rem, 4vh, 3rem);
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: clamp(5.5rem, 10vh, 8rem) 6vw clamp(2.5rem, 5vh, 4rem);
   background: linear-gradient(180deg, #12151c 0%, #08090c 100%);
   box-shadow: 0 -40px 90px -30px rgba(0, 0, 0, 0.9);
   will-change: transform, opacity;
@@ -90,6 +96,7 @@
   gap: 3vw;
   align-items: start;
   max-width: 1400px;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -239,7 +246,8 @@
   position: relative;
   z-index: 2;
   max-width: 1400px;
-  margin: clamp(2.4rem, 5vh, 3.6rem) auto 0;
+  width: 100%;
+  margin: clamp(2rem, 4vh, 3rem) auto 0;
   height: 1px;
   background: rgba(237, 29, 36, 0.2);
 }
@@ -248,7 +256,8 @@
   position: relative;
   z-index: 2;
   max-width: 1400px;
-  margin: 1.6rem auto 0;
+  width: 100%;
+  margin: 1.4rem auto 0;
   display: flex;
   justify-content: space-between;
   align-items: center;

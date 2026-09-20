@@ -14,6 +14,7 @@ import { EASE_OUT } from "@/lib/motion";
 import styles from "./ui.module.css";
 
 const NAV = [
+  { label: "Schedule", href: "/schedule" },
   { label: "Domains", target: 0.45 },
   { label: "Dossiers", target: 0.65 },
   { label: "Leaderboard", href: "/leaderboard" },
@@ -131,11 +132,10 @@ export default function SiteHeader({
         {NAV.map((n) => renderNavItem(n))}
       </nav>
       <div className={styles.headerActions}>
-        <SoundToggle />
         <Button variant="cyan" size="sm" onClick={onMiniGamesClick}>
           ▸ ARCADE HUB
         </Button>
-        <Button variant="primary" size="sm" onClick={handleRegister}>
+        <Button variant="alert" size="sm" onClick={handleRegister}>
           REGISTER NOW
         </Button>
       </div>

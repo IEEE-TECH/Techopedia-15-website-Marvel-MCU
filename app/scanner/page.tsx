@@ -7,6 +7,7 @@ import { enqueueAward, flushQueue, getQueue } from "@/lib/scanQueue";
 import { LockIcon, WarningIcon, ShieldIcon, CameraIcon, TargetIcon, ScanIcon, SyncIcon } from "@/components/ui/HudIcon";
 import type { Participant } from "@/lib/db";
 import PageShell from "@/components/ui/PageShell";
+import jsQR from "jsqr";
 import styles from "./scanner.module.css";
 
 const TOKEN_STORAGE_KEY = "techopedia15_organizer_token";
@@ -169,6 +170,11 @@ function ScannerTerminal({ orgToken }: { orgToken: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [cameraActive, setCameraActive] = useState(false);
   const streamRef = useRef<MediaStream | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const scanLoopRef = useRef<number | null>(null);
+  const lastScannedTimeRef = useRef<number>(0);
+  const lastScannedCodeRef = useRef<string>("");
+  const [scanLock, setScanLock] = useState(false);
 
   const attachStream = (stream: MediaStream) => {
     streamRef.current = stream;
@@ -216,11 +222,16 @@ function ScannerTerminal({ orgToken }: { orgToken: string }) {
   };
 
   const stopCamera = () => {
+    if (scanLoopRef.current) {
+      cancelAnimationFrame(scanLoopRef.current);
+      scanLoopRef.current = null;
+    }
     if (streamRef.current) {
       streamRef.current.getTracks().forEach((track) => track.stop());
       streamRef.current = null;
     }
     setCameraActive(false);
+    setScanLock(false);
   };
 
   useEffect(() => {
@@ -228,6 +239,99 @@ function ScannerTerminal({ orgToken }: { orgToken: string }) {
       stopCamera();
     };
   }, []);
+
+  // Continuous Camera QR Decode Loop via jsQR
+  useEffect(() => {
+    if (!cameraActive) {
+      if (scanLoopRef.current) {
+        cancelAnimationFrame(scanLoopRef.current);
+        scanLoopRef.current = null;
+      }
+      return;
+    }
+
+    let lastFrameCheck = 0;
+    const frameIntervalMs = 120; // Check ~8 times/sec to conserve battery & CPU
+
+    const scanFrame = (timestamp: number) => {
+      if (!cameraActive) return;
+
+      if (timestamp - lastFrameCheck >= frameIntervalMs) {
+        lastFrameCheck = timestamp;
+        const video = videoRef.current;
+
+        if (video && video.readyState >= 2 && video.videoWidth > 0 && video.videoHeight > 0) {
+          if (!canvasRef.current) {
+            canvasRef.current = document.createElement("canvas");
+          }
+          const canvas = canvasRef.current;
+          const ctx = canvas.getContext("2d", { willReadFrequently: true });
+
+          if (ctx) {
+            // Downscale frame to max 640px for ultra-fast QR decoding
+            const maxDim = 640;
+            const scale = Math.min(1, maxDim / Math.max(video.videoWidth, video.videoHeight));
+            const w = Math.floor(video.videoWidth * scale);
+            const h = Math.floor(video.videoHeight * scale);
+
+            if (canvas.width !== w || canvas.height !== h) {
+              canvas.width = w;
+              canvas.height = h;
+            }
+
+            ctx.drawImage(video, 0, 0, w, h);
+            const imageData = ctx.getImageData(0, 0, w, h);
+            const qrCode = jsQR(imageData.data, imageData.width, imageData.height, {
+              inversionAttempts: "dontInvert",
+            });
+
+            if (qrCode && qrCode.data) {
+              const detected = qrCode.data.trim();
+              const now = Date.now();
+
+              // Avoid re-scanning same payload within 3 seconds
+              if (
+                detected !== lastScannedCodeRef.current ||
+                now - lastScannedTimeRef.current > 3000
+              ) {
+                lastScannedCodeRef.current = detected;
+                lastScannedTimeRef.current = now;
+
+                // Visual lock-on + audio confirmation
+                setScanLock(true);
+                sound.playSuccess();
+                setTimeout(() => setScanLock(false), 1400);
+
+                // Extract human-friendly agent ID or PRN if JSON/URL
+                let displayId = detected;
+                try {
+                  const parsed = JSON.parse(detected);
+                  displayId = parsed.id || parsed.prn || detected;
+                } catch {
+                  const match = detected.match(/TECH15-[A-Z]+-\d+/i) || detected.match(/dashboard\/([^/?#]+)/i);
+                  if (match) displayId = match[1] || match[0];
+                }
+
+                setIdentifier(displayId);
+                handleLookup(detected);
+              }
+            }
+          }
+        }
+      }
+
+      scanLoopRef.current = requestAnimationFrame(scanFrame);
+    };
+
+    scanLoopRef.current = requestAnimationFrame(scanFrame);
+
+    return () => {
+      if (scanLoopRef.current) {
+        cancelAnimationFrame(scanLoopRef.current);
+        scanLoopRef.current = null;
+      }
+    };
+  }, [cameraActive]);
 
   // Lookup Agent
   const handleLookup = async (lookupId: string) => {
@@ -403,7 +507,30 @@ function ScannerTerminal({ orgToken }: { orgToken: string }) {
               {cameraActive ? (
                 <>
                   <video ref={videoRef} className={styles.cameraVideo} playsInline muted />
-                  <div className={styles.reticle} />
+                  <div className={`${styles.reticle} ${scanLock ? styles.reticleLocked : ""}`}>
+                    <div className={styles.scanLaser} />
+                  </div>
+                  {scanLock && (
+                    <div style={{
+                      position: "absolute",
+                      bottom: "12px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      background: "rgba(16, 185, 129, 0.95)",
+                      color: "#000000",
+                      fontWeight: 800,
+                      fontSize: "0.75rem",
+                      letterSpacing: "1.5px",
+                      padding: "4px 12px",
+                      borderRadius: "999px",
+                      fontFamily: "var(--font-orbitron)",
+                      boxShadow: "0 0 15px rgba(16, 185, 129, 0.6)",
+                      zIndex: 10,
+                      pointerEvents: "none"
+                    }}>
+                      TARGET LOCKED ✓
+                    </div>
+                  )}
                 </>
               ) : (
                 <div className={styles.cameraPlaceholder}>

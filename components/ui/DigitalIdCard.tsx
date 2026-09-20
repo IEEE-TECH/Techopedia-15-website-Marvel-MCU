@@ -132,18 +132,14 @@ export default function DigitalIdCard({
       ctx.scale(2, 2);
 
       // 1. Base dark background
-      const bgGrad = ctx.createLinearGradient(0, 0, width, height);
-      bgGrad.addColorStop(0, "#080b12");
-      bgGrad.addColorStop(0.5, "#0e131d");
-      bgGrad.addColorStop(1, "#06070a");
-      ctx.fillStyle = bgGrad;
+      ctx.fillStyle = "#090c13";
       ctx.beginPath();
-      ctx.roundRect(0, 0, width, height, 16);
+      ctx.roundRect(0, 0, width, height, 14);
       ctx.fill();
 
-      // 2. Outer border with Stark gold & cyan accents
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = "rgba(255, 215, 0, 0.7)";
+      // 2. Outer border with crisp cyan hairline
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = "rgba(0, 229, 255, 0.5)";
       ctx.stroke();
 
       // Corner accent brackets

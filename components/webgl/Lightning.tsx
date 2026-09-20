@@ -154,7 +154,7 @@ export default function Lightning() {
         }
       }
       bolt.seg.geometry.setDrawRange(0, used / 3);
-      bolt.mat.uniforms.uColor.value.set(detail.mega ? "#eafff5" : "#a8ffcf");
+      bolt.mat.uniforms.uColor.value.set(detail.mega ? "#fff0f3" : "#ff2233");
       bolt.life = 1;
       bolt.ttl = detail.mega ? 0.5 : 0.16 + Math.random() * 0.12;
       bolt.reflickAt = bolt.ttl * (0.4 + Math.random() * 0.3);

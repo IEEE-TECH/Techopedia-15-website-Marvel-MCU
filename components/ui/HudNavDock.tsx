@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
 import { signals } from "@/lib/signals";
 import { useRaf } from "@/lib/useRaf";
 import { sound } from "@/lib/audio";
@@ -14,19 +16,21 @@ interface HudNavDockProps {
   onMiniGamesClick: () => void;
 }
 
-interface SectionItem {
+interface NavItem {
   id: string;
   label: string;
+  href?: string;
   targetRatio?: number;
   elementId?: string;
 }
 
-const SECTIONS: SectionItem[] = [
-  { id: "intro", label: "01 · INTRO", targetRatio: 0.05 },
+const NAV_ITEMS: NavItem[] = [
+  { id: "intro", label: "01 · INTRO", targetRatio: 0.03 },
   { id: "domains", label: "02 · DOMAINS", targetRatio: 0.45 },
   { id: "story", label: "03 · DOSSIERS", targetRatio: 0.65 },
-  { id: "timeline", label: "04 · TIMELINE", targetRatio: 0.85 },
-  { id: "team", label: "05 · TEAM", elementId: "team" },
+  { id: "schedule", label: "04 · SCHEDULE", href: "/schedule" },
+  { id: "leaderboard", label: "05 · LEADERBOARD", href: "/leaderboard" },
+  { id: "team", label: "06 · TEAM", elementId: "team", href: "/team" },
 ];
 
 const smoothScrollTo = (top: number) => {
@@ -42,8 +46,21 @@ export default function HudNavDock({ onRegisterClick, onMiniGamesClick }: HudNav
   const router = useRouter();
   const [activeSec, setActiveSec] = useState("intro");
   const [scrollPct, setScrollPct] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [audioActive, setAudioActive] = useState(sound.enabled);
+
+  const handleAudioAction = () => {
+    if (!sound.enabled) {
+      sound.toggle();
+      setAudioActive(true);
+    }
+    sound.playMarvelFanfare(true);
+    sound.startAmbient();
+    setAudioActive(true);
+  };
 
   const handleRegister = () => {
+    setMobileMenuOpen(false);
     if (onRegisterClick) {
       onRegisterClick();
       return;
@@ -67,67 +84,174 @@ export default function HudNavDock({ onRegisterClick, onMiniGamesClick }: HudNav
     } else if (s < 0.75) {
       if (activeSec !== "story") setActiveSec("story");
     } else {
-      if (activeSec !== "timeline") setActiveSec("timeline");
+      if (activeSec !== "schedule") setActiveSec("schedule");
     }
   });
 
-  const jumpTo = (sec: SectionItem) => {
+  const jumpTo = (item: NavItem) => {
     sound.playBlip(780, 0.03);
-    if (sec.elementId) {
-      const el = document.getElementById(sec.elementId);
+    setMobileMenuOpen(false);
+
+    // If an element exists on the page (e.g. #team on the home page), scroll to it
+    if (item.elementId) {
+      const el = document.getElementById(item.elementId);
       if (el) {
-        smoothScrollTo(el.getBoundingClientRect().top + window.scrollY - 24);
+        smoothScrollTo(el.getBoundingClientRect().top + window.scrollY - 70);
+        return;
+      }
+      if (item.href) {
+        router.push(item.href);
         return;
       }
     }
-    const scrollTrack = document.querySelector(".scroll-track");
-    if (!scrollTrack) return;
-    const maxScroll = scrollTrack.getBoundingClientRect().height - window.innerHeight;
-    const targetY = maxScroll * (sec.targetRatio ?? 0);
-    smoothScrollTo(targetY);
+
+    // Scroll track ratio jump (intro, domains, dossiers)
+    if (item.targetRatio !== undefined) {
+      const scrollTrack = document.querySelector(".scroll-track");
+      if (scrollTrack) {
+        const maxScroll = scrollTrack.getBoundingClientRect().height - window.innerHeight;
+        const targetY = maxScroll * item.targetRatio;
+        smoothScrollTo(targetY);
+        return;
+      }
+    }
+
+    // Direct route link (schedule, leaderboard, team)
+    if (item.href) {
+      router.push(item.href);
+    }
   };
 
   return (
-    <aside className={styles.dockWrap} aria-label="Quick Section Navigation">
+    <aside className={styles.dockWrap} aria-label="HUD Top Navigation">
       <div className={styles.dockBar}>
-        <div className={styles.telemetryTag}>
-          <span className={styles.dot} />
-          <span>NAV HUD // {scrollPct}%</span>
+        {/* Left: Brand & Telemetry */}
+        <div className={styles.leftGroup}>
+          <button
+            type="button"
+            className={styles.brand}
+            onClick={() => jumpTo({ id: "intro", label: "01 · INTRO", targetRatio: 0.02 })}
+            title="Techopedia Level 15"
+          >
+            <span className={styles.mark} aria-hidden />
+            <span className={styles.brandText}>
+              TECHOPEDIA<b>LEVEL 15</b>
+            </span>
+          </button>
+
+          <div className={styles.telemetryTag}>
+            <span className={styles.dot} />
+            <span>NAV HUD // {scrollPct}%</span>
+          </div>
         </div>
 
-        <div className={styles.sectionBtns}>
-          {SECTIONS.map((sec) => (
+        {/* Center: Connected Page/Section Nav Pills */}
+        <nav className={styles.sectionBtns} aria-label="Page Navigation">
+          {NAV_ITEMS.map((item) => (
             <button
-              key={sec.id}
+              key={item.id}
               type="button"
-              className={`${styles.secBtn} ${activeSec === sec.id ? styles.secBtnActive : ""}`}
-              onClick={() => jumpTo(sec)}
+              className={`${styles.secBtn} ${activeSec === item.id ? styles.secBtnActive : ""}`}
+              onClick={() => jumpTo(item)}
               onMouseEnter={() => sound.playBlip(520, 0.02)}
             >
-              {sec.label}
+              {item.label}
             </button>
           ))}
-        </div>
+        </nav>
 
-        <div className={styles.actionBtns}>
-          <Button
-            size="sm"
-            radius="pill"
-            variant="ghost"
-            onClick={() => onMiniGamesClick()}
+        {/* Right: Sound, Arcade Hub, Register & Mobile Toggle */}
+        <div className={styles.rightGroup}>
+          <button
+            type="button"
+            className={`${styles.fanfareBtn} ${audioActive ? styles.fanfareBtnActive : ""}`}
+            onClick={handleAudioAction}
+            title="Play Marvel Fanfare Theme & Continuous Ambient Audio"
           >
-            ▸ MINI-GAMES
-          </Button>
+            🔊 {audioActive ? "SOUND: ON" : "SOUND: OFF"}
+          </button>
+
           <Button
             size="sm"
             radius="pill"
-            variant="primary"
+            variant="cyan"
+            onClick={() => {
+              sound.playBlip(600, 0.03);
+              onMiniGamesClick();
+            }}
+          >
+            ▸ ARCADE HUB
+          </Button>
+
+          <Button
+            size="sm"
+            radius="pill"
+            variant="alert"
             onClick={handleRegister}
           >
-            ▸ REGISTER
+            REGISTER NOW
           </Button>
+
+          <button
+            type="button"
+            className={styles.menuBtn}
+            onClick={() => setMobileMenuOpen((o) => !o)}
+            aria-label={mobileMenuOpen ? "Close menu" : "Open navigation menu"}
+            aria-expanded={mobileMenuOpen}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
         </div>
       </div>
+
+      {/* Mobile Drawer */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            className={styles.mobileDrawer}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            {NAV_ITEMS.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                className={`${styles.mobileItem} ${activeSec === item.id ? styles.mobileItemActive : ""}`}
+                onClick={() => jumpTo(item)}
+              >
+                {item.label}
+              </button>
+            ))}
+            <div className={styles.mobileActions}>
+              <button
+                type="button"
+                className={styles.fanfareBtn}
+                onClick={() => {
+                  handleAudioAction();
+                  setMobileMenuOpen(false);
+                }}
+              >
+                🔊 {audioActive ? "SOUND: ON" : "PLAY SOUND"}
+              </button>
+              <Button
+                variant="cyan"
+                size="sm"
+                radius="pill"
+                onClick={() => {
+                  onMiniGamesClick();
+                  setMobileMenuOpen(false);
+                }}
+              >
+                ▸ ARCADE HUB
+              </Button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </aside>
   );
 }
