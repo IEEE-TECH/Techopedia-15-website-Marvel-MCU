@@ -2,13 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import { gsap } from "@/lib/gsap";
 import { useLenis } from "@/lib/useLenis";
 import { useExperience } from "@/lib/store";
 import { signals } from "@/lib/signals";
 import { getVideoEl, scrubEl } from "@/lib/videos";
 import { VIDEO, SCROLL, TIMELINE_UNITS } from "@/lib/constants";
-import { EventDomain } from "@/lib/eventData";
+import { EventDomain, getEventRegistrationPath } from "@/lib/eventData";
 import { sound } from "@/lib/audio";
 
 // The Three.js/R3F/postprocessing stack is the single heaviest chunk on
@@ -33,7 +34,6 @@ import RegistrationModal from "@/components/ui/RegistrationModal";
 import MiniGamesModal from "@/components/games/MiniGamesModal";
 import EventDetailModal from "@/components/overlays/EventDetailModal";
 import TeamSection from "@/components/overlays/TeamSection";
-import SponsorsSection from "@/components/overlays/SponsorsSection";
 
 // Master timeline positions (arbitrary units; ScrollTrigger scrubs scroll→time).
 const T = {
@@ -58,9 +58,11 @@ export default function Experience() {
   const [mounted, setMounted] = useState(false);
   const [isRegOpen, setIsRegOpen] = useState(false);
   const [regDomain, setRegDomain] = useState("Squabble");
+  const [lockDomain, setLockDomain] = useState(false);
   const [isMiniGamesOpen, setIsMiniGamesOpen] = useState(false);
   const [miniGamesTab, setMiniGamesTab] = useState<"ctf" | "bugblitz" | "matrix" | "quiz">("bugblitz");
   const [selectedEvent, setSelectedEvent] = useState<EventDomain | null>(null);
+  const router = useRouter();
 
   useLenis();
   const trackRef = useRef<HTMLDivElement>(null);
@@ -195,8 +197,16 @@ export default function Experience() {
   const reelVh = SCROLL.reelStrip;
   const outroVh = SCROLL.footerReveal;
 
-  const handleOpenRegistration = (domain: string = "Squabble") => {
-    setRegDomain(domain);
+  const handleOpenRegistration = (domain: string = "Squabble", lock: boolean = false) => {
+    const event = domain && typeof domain === "string" ? domain : "Squabble";
+
+    if (lock) {
+      router.push(getEventRegistrationPath(event));
+      return;
+    }
+
+    setRegDomain(event);
+    setLockDomain(false);
     setIsRegOpen(true);
   };
 
@@ -209,22 +219,28 @@ export default function Experience() {
     <>
       <div className="stage">
         <VideoLayer />
-        <StoryStack onSelectEvent={(ev) => setSelectedEvent(ev)} />
+        <StoryStack
+          onSelectEvent={(ev) => setSelectedEvent(ev)}
+          onRegisterDomain={(domain) => handleOpenRegistration(domain, true)}
+        />
         <HorizontalReel />
-        <CharacterOrbit onSelectEvent={(ev) => setSelectedEvent(ev)} />
+        <CharacterOrbit
+          onSelectEvent={(ev) => setSelectedEvent(ev)}
+          onRegisterDomain={(domain) => handleOpenRegistration(domain, true)}
+        />
         {mounted && <CinematicCanvas />}
         <FlashOverlay />
         <CinematicText />
       </div>
 
       <SiteHeader
-        onRegisterClick={() => handleOpenRegistration("Squabble")}
+        onRegisterClick={() => handleOpenRegistration("Squabble", false)}
         onTerminalClick={() => handleOpenMiniGames("ctf")}
         onMiniGamesClick={() => handleOpenMiniGames("bugblitz")}
       />
 
       <HeroOverlay
-        onRegisterClick={() => handleOpenRegistration("Squabble")}
+        onRegisterClick={() => handleOpenRegistration("Squabble", false)}
         onMiniGamesClick={() => handleOpenMiniGames("bugblitz")}
       />
 
@@ -234,6 +250,7 @@ export default function Experience() {
         isOpen={isRegOpen}
         onClose={() => setIsRegOpen(false)}
         initialDomain={regDomain}
+        lockDomain={lockDomain}
       />
 
       <MiniGamesModal
@@ -246,7 +263,7 @@ export default function Experience() {
         event={selectedEvent}
         isOpen={!!selectedEvent}
         onClose={() => setSelectedEvent(null)}
-        onRegister={(domain) => handleOpenRegistration(domain)}
+        onRegister={(domain) => handleOpenRegistration(domain, true)}
       />
 
       {/* invisible scroll track */}
@@ -262,8 +279,7 @@ export default function Experience() {
       {/* In-page single-page flow sections */}
       <div style={{ position: "relative", zIndex: 10, background: "#06070a" }}>
         <TeamSection />
-        <SponsorsSection />
-        <SiteFooter onRegisterClick={() => handleOpenRegistration("Squabble")} />
+        <SiteFooter onRegisterClick={() => handleOpenRegistration("Squabble", false)} />
       </div>
     </>
   );

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "sync:sheets": "node scripts/sync-sheets.mjs"
   },
   "engines": {
     "node": ">=20.9"

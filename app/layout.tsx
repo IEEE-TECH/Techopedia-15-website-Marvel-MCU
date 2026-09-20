@@ -69,7 +69,7 @@ const orbitron = Orbitron({
 // social image correctly. Falls back to a sensible default otherwise.
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://techopedia15.vercel.app";
 const description =
-  "Techopedia Level 15 — The ultimate annual national technical symposium featuring hackathons, CTF cybersecurity challenges, robotics arena, paper presentations, and e-sports.";
+  "Techopedia Level 15 — IEEE SIESGST's annual technical fest featuring Squabble (debate), Inquisitive (quiz), Eureka (PPT presentation) and Vanguard (IR laser tag).";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -80,14 +80,11 @@ export const metadata: Metadata = {
     "Techopedia Level 15",
     "Techopedia 15.0",
     "Technical Fest",
-    "Hackathon",
-    "Cybersecurity CTF",
-    "Robotics",
-    "Paper Presentation",
     "IEEE",
-    "Next.js",
-    "Three.js",
-    "GSAP",
+    "Debate Competition",
+    "Quiz Competition",
+    "PPT Presentation",
+    "Laser Tag",
   ],
   openGraph: {
     title: "TECHOPEDIA LEVEL 15 — Decoding The Future",

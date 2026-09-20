@@ -16,7 +16,7 @@ export default function TeamPage() {
       title="Core Team"
       intro={`Techopedia is run entirely by ${EVENT_INFO.org} volunteers. These are the people who spent months turning an idea into ${EVENT_INFO.duration.toLowerCase()} of competition.`}
     >
-      <TeamPageClient />
+      <TeamPageClient initialActive="Senior" />
     </PageShell>
   );
 }

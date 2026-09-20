@@ -50,7 +50,6 @@ export default function EventDetailModal({
             >
               <div className={styles.headerBadgeRow}>
                 <span className={styles.mcuBadge}>{event.mcuCodename}</span>
-                <span className={styles.prizeBadge}>PRIZE // {event.prizePool}</span>
               </div>
 
               <h2 className={styles.title}>{event.name}</h2>
@@ -81,12 +80,6 @@ export default function EventDetailModal({
               <div className={styles.statItem}>
                 <span className={styles.statLabel}>SCHEDULE</span>
                 <span className={styles.statValue}>{event.time}</span>
-              </div>
-              <div className={styles.statItem}>
-                <span className={styles.statLabel}>PRIZE POOL</span>
-                <span className={styles.statValue} style={{ color: event.accentColor }}>
-                  {event.prizePool}
-                </span>
               </div>
             </div>
 
@@ -140,18 +133,6 @@ export default function EventDetailModal({
                 </div>
               </section>
 
-              {/* Coordinators */}
-              <section className={styles.section}>
-                <h3 className={styles.sectionHeading}>Domain Leads</h3>
-                <div className={styles.coordinatorsList}>
-                  {event.coordinators.map((c, idx) => (
-                    <div key={idx} className={styles.coordinator}>
-                      <span className={styles.coordName}>{c.name}</span>
-                      <span className={styles.coordContact}>{c.contact}</span>
-                    </div>
-                  ))}
-                </div>
-              </section>
             </div>
 
             {/* Footer Action Bar */}

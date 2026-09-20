@@ -13,12 +13,14 @@ interface RegistrationModalProps {
   isOpen: boolean;
   onClose: () => void;
   initialDomain?: string;
+  lockDomain?: boolean;
 }
 
 export default function RegistrationModal({
   isOpen,
   onClose,
   initialDomain = "Squabble",
+  lockDomain = false,
 }: RegistrationModalProps) {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -43,7 +45,16 @@ export default function RegistrationModal({
     if (initialDomain) {
       setFormData((f) => ({ ...f, domain: initialDomain }));
     }
-  }, [initialDomain]);
+  }, [initialDomain, isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isOpen, onClose]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -147,6 +158,7 @@ export default function RegistrationModal({
                       <label>Team Lead / Full Name *</label>
                       <input
                         type="text"
+                        autoComplete="name"
                         required
                         placeholder="e.g. Tony Stark"
                         value={formData.name}
@@ -171,6 +183,7 @@ export default function RegistrationModal({
                       <label>Email Address (Pass Sent Here) *</label>
                       <input
                         type="email"
+                        autoComplete="email"
                         required
                         placeholder="tony@starkindustries.com"
                         value={formData.email}
@@ -179,9 +192,11 @@ export default function RegistrationModal({
                     </div>
 
                     <div className={styles.field}>
-                      <label>WhatsApp / Mobile Number</label>
+                      <label>WhatsApp / Mobile Number *</label>
                       <input
                         type="tel"
+                        inputMode="tel"
+                        autoComplete="tel"
                         required
                         placeholder="+91 98765 43210"
                         value={formData.phone}
@@ -192,9 +207,10 @@ export default function RegistrationModal({
 
                   <div className={styles.row}>
                     <div className={styles.field}>
-                      <label>College / Institution</label>
+                      <label>College / Institution *</label>
                       <input
                         type="text"
+                        autoComplete="organization"
                         required
                         placeholder="SIES Graduate School of Technology"
                         value={formData.college}
@@ -203,7 +219,7 @@ export default function RegistrationModal({
                     </div>
 
                     <div className={styles.field}>
-                      <label>Squad / Team Name</label>
+                      <label>Squad / Team Name *</label>
                       <input
                         type="text"
                         required
@@ -230,17 +246,25 @@ export default function RegistrationModal({
 
                     <div className={styles.field}>
                       <label>Select Domain</label>
-                      <select
-                        value={formData.domain}
-                        onChange={(e) => setFormData({ ...formData, domain: e.target.value })}
-                      >
-                        <option value="Squabble">Squabble (24-Hr Hackathon & Speed Coding)</option>
-                        <option value="Inquisitive">Inquisitive (Robo Wars & Drone Obstacle Arena)</option>
-                        <option value="Eureka">Eureka (Offensive Cybersecurity & CTF)</option>
-                        <option value="Vanguard">Vanguard (UI/UX Design Sprint & 3D Web Dev)</option>
-                        <option value="Paper & Project Expo">Paper & Project Expo (National Research Symposium)</option>
-                        <option value="E-Sports Arena">E-Sports Arena (Valorant & BGMI Tournament)</option>
-                      </select>
+                      {lockDomain ? (
+                        <select
+                          value={formData.domain}
+                          disabled
+                          style={{ cursor: "default", opacity: 0.95 }}
+                        >
+                          <option value={formData.domain}>{formData.domain}</option>
+                        </select>
+                      ) : (
+                        <select
+                          value={formData.domain}
+                          onChange={(e) => setFormData({ ...formData, domain: e.target.value })}
+                        >
+                          <option value="Squabble">Squabble (Debate Competition)</option>
+                          <option value="Inquisitive">Inquisitive (Quiz Competition)</option>
+                          <option value="Eureka">Eureka (PPT Presentation Competition)</option>
+                          <option value="Vanguard">Vanguard (IR Laser Tag / Gun Game)</option>
+                        </select>
+                      )}
                     </div>
                   </div>
 
@@ -263,8 +287,8 @@ export default function RegistrationModal({
                 </div>
                 <p className={styles.successMsg}>
                   {isExisting
-                    ? "Existing clearance credentials found and verified from S.H.I.E.L.D. Quantum Storage."
-                    : "Your digital delegate pass has been encrypted and saved to Supabase PostgreSQL."}
+                    ? "Existing clearance credentials found and verified."
+                    : "Your digital delegate pass has been issued. Save or screenshot it for check-in."}
                 </p>
 
                 {/* Render the 3D Holographic ID Card */}

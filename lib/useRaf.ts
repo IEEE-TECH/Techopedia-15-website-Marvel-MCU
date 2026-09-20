@@ -13,6 +13,11 @@ let raf = 0;
 let running = false;
 
 function tick(t: number) {
+  if (document.hidden) {
+    raf = 0;
+    running = false;
+    return;
+  }
   callbacks.forEach((cb) => cb(t));
   raf = requestAnimationFrame(tick);
 }
@@ -28,10 +33,16 @@ export function useRaf(cb: Cb) {
   ref.current = cb;
   useEffect(() => {
     const fn: Cb = (t) => ref.current(t);
+    const onVisibilityChange = () => {
+      if (!document.hidden) ensure();
+    };
+
     callbacks.add(fn);
+    document.addEventListener("visibilitychange", onVisibilityChange);
     ensure();
     return () => {
       callbacks.delete(fn);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       if (callbacks.size === 0) {
         cancelAnimationFrame(raf);
         running = false;

@@ -1,10 +1,16 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { signals } from "@/lib/signals";
 import { useRaf } from "@/lib/useRaf";
 import { prefersReducedMotion } from "@/lib/reducedMotion";
-import { DOMAINS, EventDomain } from "@/lib/eventData";
+import {
+  DOMAINS,
+  EventDomain,
+  getEventDossierPath,
+  getEventRegistrationPath,
+} from "@/lib/eventData";
 import styles from "./orbit.module.css";
 
 const TAU = Math.PI * 2;
@@ -15,11 +21,18 @@ const smoothstep = (a: number, b: number, x: number) => {
   return t * t * (3 - 2 * t);
 };
 
+const getOrbitPoster = (domain: EventDomain) =>
+  domain.slug === "vanguard"
+    ? "/story/panel-4.jpg"
+    : `/videos/char-${domain.slug}-poster.jpg`;
+
 interface CharacterOrbitProps {
   onSelectEvent?: (event: EventDomain) => void;
+  onRegisterDomain?: (domainName: string) => void;
 }
 
-export default function CharacterOrbit({ onSelectEvent }: CharacterOrbitProps) {
+export default function CharacterOrbit({ onSelectEvent, onRegisterDomain }: CharacterOrbitProps) {
+  const router = useRouter();
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
@@ -104,7 +117,10 @@ export default function CharacterOrbit({ onSelectEvent }: CharacterOrbitProps) {
             cardRefs.current[i] = el;
           }}
           style={{ visibility: "hidden" }}
-          onClick={() => onSelectEvent?.(domain)}
+          onClick={() => {
+            onSelectEvent?.(domain);
+            router.push(getEventDossierPath(domain));
+          }}
           role="button"
           tabIndex={0}
         >
@@ -118,7 +134,7 @@ export default function CharacterOrbit({ onSelectEvent }: CharacterOrbitProps) {
             }}
             className={styles.video}
             src={`/videos/char-${domain.slug}.mp4`}
-            poster={`/videos/char-${domain.slug}-poster.jpg`}
+            poster={getOrbitPoster(domain)}
             muted
             loop
             playsInline
@@ -133,14 +149,24 @@ export default function CharacterOrbit({ onSelectEvent }: CharacterOrbitProps) {
               <span className={styles.dot} />
               {`0${i + 1} · ${domain.mcuCodename}`}
             </div>
-            <span className={styles.orbitPrizeBadge}>PRIZE: {domain.prizePool}</span>
           </div>
 
           <div className={styles.info}>
             <div className={styles.name}>{domain.name}</div>
             <div className={styles.desc}>{domain.shortDesc}</div>
             <div className={styles.ctaRow}>
-              <span className={styles.ctaPrompt}>[ ACCESS MISSION DOSSIER → ]</span>
+              <button
+                type="button"
+                className={styles.orbitRegisterBtn}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRegisterDomain?.(domain.name);
+                  router.push(getEventRegistrationPath(domain));
+                }}
+              >
+                ⚡ REGISTER
+              </button>
+              <span className={styles.ctaPrompt}>[ MISSION DOSSIER → ]</span>
             </div>
           </div>
         </div>

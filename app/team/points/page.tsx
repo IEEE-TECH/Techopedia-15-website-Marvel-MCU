@@ -18,7 +18,7 @@ export default function PointsPage() {
   const [identifier, setIdentifier] = useState("");
   const [points, setPoints] = useState(100);
   const [reason, setReason] = useState("");
-  const [eventId, setEventId] = useState("SQUABBLE-DUEL");
+  const [eventId, setEventId] = useState("DEBATE-COMP");
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<{ type: "success" | "error"; message: string } | null>(null);
 
@@ -148,14 +148,11 @@ export default function PointsPage() {
                   value={eventId}
                   onChange={(e) => setEventId(e.target.value)}
                 >
-                  <option value="SQUABBLE-DUEL">Squabble Hackathon Duel</option>
-                  <option value="INQUISITIVE-ROBO">Inquisitive Robo Wars</option>
-                  <option value="EUREKA-CTF">Eureka CTF Flag Capture</option>
-                  <option value="VANGUARD-SPRINT">Vanguard Design Sprint</option>
-                  <option value="EXPO-RESEARCH">Paper &amp; Project Expo</option>
-                  <option value="ESPORTS-FINAL">E-Sports Championship</option>
-                  <option value="BUG-BLITZ">Bug Blitz Mini-Game</option>
-                  <option value="MATRIX-MEM">Matrix Memory Stall</option>
+                  <option value="DEBATE-COMP">Debate Competition</option>
+                  <option value="QUIZ-COMP">Quiz Competition</option>
+                  <option value="GUN-GAME">Gun Game Tournament</option>
+                  <option value="NAT-SYMPOSIUM">National Technical Symposium</option>
+                  <option value="ARCADE-GAMES">Arcade Hub Mini-Games</option>
                 </select>
               </div>
             </div>

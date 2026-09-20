@@ -10,12 +10,10 @@ import styles from "./schedule.module.css";
 
 const TRACKS: Track[] = [
   "General",
-  "Squabble",
-  "Inquisitive",
-  "Eureka",
-  "Vanguard",
-  "Paper & Project Expo",
-  "E-Sports Arena",
+  "Debate Competition",
+  "Quiz Competition",
+  "Gun Game",
+  "National Symposium",
 ];
 
 export default function SchedulePage() {
@@ -23,9 +21,9 @@ export default function SchedulePage() {
 
   return (
     <PageShell
-      kicker="Two Days · Six Domains"
+      kicker="Two Days · Three Events"
       title="Event Schedule"
-      intro="Every hour of Level 15, from the opening keynote to the final award. Filter by domain to see only the track you are competing in."
+      intro="Every hour of Level 15, from the opening keynote to the final award. Filter by event to see only the track you are competing in."
     >
       <div className={styles.ambientBg} aria-hidden />
       <div className={styles.filters}>

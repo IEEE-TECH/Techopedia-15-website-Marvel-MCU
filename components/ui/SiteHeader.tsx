@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { signals } from "@/lib/signals";
 import { useRaf } from "@/lib/useRaf";
 import { sound } from "@/lib/audio";
+import { getDefaultEvent, getEventRegistrationPath } from "@/lib/eventData";
 import SoundToggle from "./SoundToggle";
 import Button from "./Button";
 import { EASE_OUT } from "@/lib/motion";
@@ -18,7 +20,6 @@ const NAV = [
   { label: "Leaderboard", href: "/leaderboard" },
   { label: "Schedule", href: "/schedule" },
   { label: "Team", target: "team", href: "/team" },
-  { label: "Sponsors", target: "sponsors", href: "/sponsors" },
 ];
 
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
@@ -38,8 +39,17 @@ export default function SiteHeader({
   onTerminalClick,
   onMiniGamesClick,
 }: SiteHeaderProps) {
+  const router = useRouter();
   const ref = useRef<HTMLElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleRegister = () => {
+    if (onRegisterClick) {
+      onRegisterClick();
+      return;
+    }
+    router.push(getEventRegistrationPath(getDefaultEvent()));
+  };
 
   useRaf(() => {
     const el = ref.current;
@@ -118,7 +128,7 @@ export default function SiteHeader({
         <Button variant="cyan" size="sm" onClick={onMiniGamesClick}>
           ▸ ARCADE HUB
         </Button>
-        <Button variant="primary" size="sm" onClick={onRegisterClick}>
+        <Button variant="primary" size="sm" onClick={handleRegister}>
           REGISTER NOW
         </Button>
       </div>
@@ -163,7 +173,7 @@ export default function SiteHeader({
               style={{ margin: "0.8rem 0 1.2rem" }}
               onClick={() => {
                 setMenuOpen(false);
-                onRegisterClick?.();
+                handleRegister();
               }}
             >
               REGISTER NOW

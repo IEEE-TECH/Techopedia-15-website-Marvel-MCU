@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireRole, requireTeamUser, logTeamAudit } from "@/lib/teamAuth";
 import { supabaseAdmin, type StudentRow } from "@/lib/supabase";
 import { cleanText, getClientIp, isValidEmail, isValidPhone, isValidPrn } from "@/lib/security";
+import { syncToGoogleSheets } from "@/lib/sheets";
 
 export async function GET(req: NextRequest) {
   try {
@@ -165,6 +166,25 @@ export async function POST(req: NextRequest) {
       details: { updatedFields: Object.keys(updatePayload) },
       ip,
     });
+
+    // Real-time synchronization to Google Sheets
+    syncToGoogleSheets({
+      action: "register",
+      agentId: updated.agent_id,
+      name: updated.name,
+      prn: updated.prn,
+      email: updated.email,
+      phone: updated.phone || "",
+      college: updated.college || "SIES Graduate School of Technology",
+      teamName: updated.team_name || "Avengers Initiative",
+      teamSize: updated.team_size || "1",
+      domain: updated.domain,
+      points: updated.points,
+      checkedIn: Boolean(updated.checked_in),
+      checkedInAt: updated.checked_in_at || null,
+      checkedInBy: updated.checked_in_by || null,
+      dashboardUrl: `/dashboard/${updated.agent_id}`,
+    }).catch((err) => console.error("Sheets update sync error:", err));
 
     return NextResponse.json({
       success: true,

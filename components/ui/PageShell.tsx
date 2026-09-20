@@ -25,7 +25,6 @@ const NAV = [
   { label: "Schedule", href: "/schedule" },
   { label: "Leaderboard", href: "/leaderboard" },
   { label: "Team", href: "/team" },
-  { label: "Sponsors", href: "/sponsors" },
 ];
 
 /**
@@ -51,6 +50,10 @@ export default function PageShell({
   const [isRegOpen, setIsRegOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
+
+  const handleRegister = () => {
+    setIsRegOpen(true);
+  };
 
   return (
     <div className={styles.page}>
@@ -90,7 +93,7 @@ export default function PageShell({
         <div className={styles.headerActions}>
           {headerExtra}
           <SoundToggle />
-          <Button variant="primary" size="sm" onClick={() => setIsRegOpen(true)}>
+          <Button variant="primary" size="sm" onClick={handleRegister}>
             Register Now
           </Button>
         </div>
@@ -139,7 +142,7 @@ export default function PageShell({
               type="button"
               onClick={() => {
                 setMenuOpen(false);
-                setIsRegOpen(true);
+                handleRegister();
               }}
             >
               Register Now
@@ -192,7 +195,7 @@ export default function PageShell({
         </div>
       </main>
 
-      <SiteFooter onRegisterClick={() => setIsRegOpen(true)} />
+      <SiteFooter onRegisterClick={handleRegister} />
 
       <RegistrationModal isOpen={isRegOpen} onClose={() => setIsRegOpen(false)} />
     </div>

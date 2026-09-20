@@ -43,7 +43,7 @@ const BEATS: Beat[] = [
   // ── Hero · text sequence ──
   {
     id: "domains",
-    lines: ["04 HEROIC DOMAINS", "₹1,50,000+ PRIZE POOL"],
+    lines: ["04 HEROIC DOMAINS"],
     startU: 5.35,
     endU: 6.0,
     variant: "rise",
@@ -51,7 +51,7 @@ const BEATS: Beat[] = [
   },
   {
     id: "multiverse",
-    lines: ["WHERE TITANS OF", "CODE & ROBOTICS COLLIDE"],
+    lines: ["WHERE WIT, SKILL", "& STRATEGY COLLIDE"],
     startU: 6.05,
     endU: 6.7,
     variant: "chroma",
@@ -59,7 +59,7 @@ const BEATS: Beat[] = [
   },
   {
     id: "coming",
-    lines: ["CODE. CREATE. CONQUER."],
+    lines: ["THINK. COMPETE. CONQUER."],
     startU: 6.75,
     endU: 7.25,
     variant: "loom",

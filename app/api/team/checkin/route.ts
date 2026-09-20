@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireRole, logTeamAudit } from "@/lib/teamAuth";
 import { supabaseAdmin, type StudentRow } from "@/lib/supabase";
 import { cleanText, getClientIp } from "@/lib/security";
+import { syncToGoogleSheets } from "@/lib/sheets";
 
 export async function POST(req: NextRequest) {
   try {
@@ -88,6 +89,16 @@ export async function POST(req: NextRequest) {
       },
       ip,
     });
+
+    // Real-time synchronization to Google Sheets Check-in Log & Registrations tab
+    syncToGoogleSheets({
+      action: "check_in",
+      agentId: student.agent_id,
+      prn: student.prn,
+      name: student.name,
+      domain: student.domain,
+      checkedInBy: `${user.name} (${user.role})`,
+    }).catch((err) => console.error("Sheets checkin sync error:", err));
 
     return NextResponse.json({
       success: true,

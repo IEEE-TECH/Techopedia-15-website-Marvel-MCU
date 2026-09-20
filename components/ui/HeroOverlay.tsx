@@ -1,9 +1,11 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { signals } from "@/lib/signals";
 import { VIDEO } from "@/lib/constants";
 import { useRaf } from "@/lib/useRaf";
+import { getDefaultEvent, getEventRegistrationPath } from "@/lib/eventData";
 import styles from "./ui.module.css";
 
 interface HeroOverlayProps {
@@ -12,8 +14,17 @@ interface HeroOverlayProps {
 }
 
 export default function HeroOverlay({ onRegisterClick, onMiniGamesClick }: HeroOverlayProps) {
+  const router = useRouter();
   const wrapRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLSpanElement>(null);
+
+  const handleRegister = () => {
+    if (onRegisterClick) {
+      onRegisterClick();
+      return;
+    }
+    router.push(getEventRegistrationPath(getDefaultEvent()));
+  };
 
   useRaf(() => {
     const el = wrapRef.current;
@@ -35,9 +46,9 @@ export default function HeroOverlay({ onRegisterClick, onMiniGamesClick }: HeroO
           <span className={styles.heroKicker}>IEEE TECHOPEDIA 15.0</span>
           <span className={styles.heroStatus}>[ SYSTEM STATUS: ACTIVE ]</span>
         </div>
-        <h1 className={styles.heroTitleText}>Decoding The Future</h1>
+        <h1 className={styles.heroTitleText}>DECODING THE FUTURE</h1>
         <p className={styles.heroSubText}>
-          04 Heroic Domains · 24-Hr Hackathon · Offensive CTF · Combat Robotics · ₹1.5L+ Prize Pool
+          04 Heroic Events · Debate · Quiz · PPT Presentation · IR Laser Tag
         </p>
 
         <div className={styles.heroActions}>
@@ -51,7 +62,7 @@ export default function HeroOverlay({ onRegisterClick, onMiniGamesClick }: HeroO
           <button
             type="button"
             className={styles.heroRegisterBtn}
-            onClick={onRegisterClick}
+            onClick={handleRegister}
           >
             // INITIATE REGISTRATION
           </button>

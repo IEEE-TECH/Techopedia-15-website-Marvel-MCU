@@ -234,10 +234,21 @@ a {
   pointer-events: none;
 }
 
+.story-layer .content,
+.story-layer .content * {
+  pointer-events: auto;
+}
+
+.layer,
+.layer * {
+  pointer-events: auto;
+}
+
 .canvas-layer {
   position: absolute;
   inset: 0;
   z-index: 3;
+  pointer-events: none;
 }
 
 .overlay {

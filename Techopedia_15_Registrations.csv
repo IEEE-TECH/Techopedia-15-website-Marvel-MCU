@@ -1,0 +1,4 @@
+Timestamp,Agent ID,Full Name,PRN,Email Address,Phone,College,Team Name,Team Size,Domain,Total Points,Checked In,Checked In At,Checked In By,Digital Pass URL
+"2026-09-15T12:45:36.161+00:00","TECH15-STARK-2026","Policy Test","POLICY-TEST-2026","policy-test-2026@example.com","+919876543210","SIES Graduate School of Technology","Policy Test Squad","1","Code Conquest",100,NO,"","","https://techopedia15.vercel.app/dashboard/TECH15-STARK-2026"
+"2026-09-15T13:12:05.31+00:00","TECH15-THOR-ATIL","Siddharth","PATIL","sidp4336456@gmail.com","+918451983942","SIES Graduate School of Technology","hydra","2","E-Sports Arena",100,NO,"","","https://techopedia15.vercel.app/dashboard/TECH15-THOR-ATIL"
+"2026-09-15T13:40:52.842+00:00","TECH15-WARMACHINE-4453","hi","225524453","h@gmail.com","35568756598","SIES Graduate School of Technology","corp","2","Robo Blitz",100,NO,"","","https://techopedia15.vercel.app/dashboard/TECH15-WARMACHINE-4453"

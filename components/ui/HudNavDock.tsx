@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { signals } from "@/lib/signals";
 import { useRaf } from "@/lib/useRaf";
 import { sound } from "@/lib/audio";
+import { getDefaultEvent, getEventRegistrationPath } from "@/lib/eventData";
 import Button from "./Button";
 import styles from "./hudDock.module.css";
 
@@ -25,24 +27,29 @@ const SECTIONS: SectionItem[] = [
   { id: "story", label: "03 · DOSSIERS", targetRatio: 0.65 },
   { id: "timeline", label: "04 · TIMELINE", targetRatio: 0.85 },
   { id: "team", label: "05 · TEAM", elementId: "team" },
-  { id: "sponsors", label: "06 · SPONSORS", elementId: "sponsors" },
 ];
 
 export default function HudNavDock({ onRegisterClick, onMiniGamesClick }: HudNavDockProps) {
+  const router = useRouter();
   const [activeSec, setActiveSec] = useState("intro");
   const [scrollPct, setScrollPct] = useState(0);
+
+  const handleRegister = () => {
+    if (onRegisterClick) {
+      onRegisterClick();
+      return;
+    }
+    router.push(getEventRegistrationPath(getDefaultEvent()));
+  };
 
   useRaf(() => {
     const s = signals.scroll;
     setScrollPct(Math.round(s * 100));
 
-    const sponsorsEl = document.getElementById("sponsors");
     const teamEl = document.getElementById("team");
     const scrollY = window.scrollY;
 
-    if (sponsorsEl && scrollY >= sponsorsEl.offsetTop - 350) {
-      if (activeSec !== "sponsors") setActiveSec("sponsors");
-    } else if (teamEl && scrollY >= teamEl.offsetTop - 350) {
+    if (teamEl && scrollY >= teamEl.offsetTop - 350) {
       if (activeSec !== "team") setActiveSec("team");
     } else if (s < 0.35) {
       if (activeSec !== "intro") setActiveSec("intro");
@@ -106,7 +113,7 @@ export default function HudNavDock({ onRegisterClick, onMiniGamesClick }: HudNav
             size="sm"
             radius="pill"
             variant="primary"
-            onClick={() => onRegisterClick()}
+            onClick={handleRegister}
           >
             ▸ REGISTER
           </Button>

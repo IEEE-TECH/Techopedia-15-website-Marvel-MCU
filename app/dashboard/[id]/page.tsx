@@ -210,7 +210,7 @@ export default function ParticipantDashboard({
                   <div className={styles.missionIcon}><SwordIcon size={20} /></div>
                   <div className={styles.missionText}>
                     <h4>Domain Round Clears</h4>
-                    <p>Advance through CTF, Hackathon & Robo rounds for +150 to +250 PTS.</p>
+                    <p>Advance through your event rounds for +150 to +250 PTS.</p>
                   </div>
                 </div>
 
@@ -218,7 +218,7 @@ export default function ParticipantDashboard({
                   <div className={styles.missionIcon}><TrophyIcon size={20} /></div>
                   <div className={styles.missionText}>
                     <h4>Podium Finish</h4>
-                    <p>Top agents take home cash prize pools and IEEE certificates.</p>
+                    <p>Top agents take home IEEE certificates and legendary recognition.</p>
                   </div>
                 </div>
               </div>

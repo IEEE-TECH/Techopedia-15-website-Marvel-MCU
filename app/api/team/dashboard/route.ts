@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireTeamUser } from "@/lib/teamAuth";
 import { supabaseAdmin, type StudentRow, type PointTransactionRow } from "@/lib/supabase";
+import { getGoogleSheetsWebhookUrl } from "@/lib/sheets";
 
 export async function GET(req: NextRequest) {
   try {
@@ -36,16 +37,14 @@ export async function GET(req: NextRequest) {
 
     // 2. Domain breakdown
     const domainCounts: Record<string, number> = {
-      Squabble: 0,
-      Inquisitive: 0,
-      Eureka: 0,
-      Vanguard: 0,
-      "Paper & Project Expo": 0,
-      "E-Sports Arena": 0,
+      "Debate Competition": 0,
+      "Quiz Competition": 0,
+      "Gun Game": 0,
+      "National Symposium": 0,
     };
 
     studentList.forEach((s) => {
-      const d = s.domain || "Squabble";
+      const d = s.domain || "Debate Competition";
       domainCounts[d] = (domainCounts[d] || 0) + 1;
     });
 
@@ -64,7 +63,7 @@ export async function GET(req: NextRequest) {
 
     // 5. System Health Telemetry
     const dbConnected = !studentsError;
-    const sheetsConfigured = Boolean(process.env.GOOGLE_SHEETS_SCRIPT_URL);
+    const sheetsConfigured = Boolean(getGoogleSheetsWebhookUrl());
     const mailerConfigured = Boolean(process.env.SMTP_USER || process.env.EMAIL_SERVER);
 
     return NextResponse.json({

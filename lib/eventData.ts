@@ -11,7 +11,6 @@ export interface EventDomain {
   tagline: string;
   shortDesc: string;
   fullDesc: string;
-  prizePool: string;
   teamSize: string;
   venue: string;
   time: string;
@@ -36,30 +35,52 @@ export const DOMAINS: EventDomain[] = [
     slug: "doom",
     name: "Squabble",
     mcuCodename: "Project Doomsday",
-    tagline: "Algorithmic Battlegrounds & 24-Hour Hackathon",
-    shortDesc: "Compete in intense speed-coding rounds and build game-changing full-stack AI applications under 24 hours.",
-    fullDesc: "Squabble is Techopedia's flagship hackathon & algorithmic showdown. Teams tackle real-world problem statements spanning AI/ML, Cloud Infrastructures, Web3, and Open Innovation. Features dedicated industry mentors, midnight code sprints, and direct investor evaluations.",
-    prizePool: "₹50,000+",
-    teamSize: "1 - 4 Members",
-    venue: "Main Computing Hub / Lab Alpha",
-    time: "Day 01 · 11:30 AM (24 Hours)",
+    tagline: "Where Wit, Skill & Strategy Collide",
+    shortDesc: "A fast-paced face-to-face debate competition where teams battle through rapid arguments, rebuttals, and the ultimate Topic Swap challenge.",
+    fullDesc: "Squabble is Techopedia 15's high-energy debate competition designed to test logic, communication, adaptability, and stage presence. Teams face off in intense debate rounds where topics are revealed at the start, and the moderator can trigger a Topic Swap mid-round, forcing participants to defend the opposite stance. From preliminary rounds to the grand final, every argument, rebuttal, and strategic shift can change the outcome.",
+    teamSize: "2 Members per Team",
+    venue: "To Be Announced",
+    time: "Event Day · Preliminary → Semi-final → Final",
     rounds: [
-      { title: "Round 1: Rapid Algorithmic Duel", description: "60-minute intense competitive coding round testing DSA and optimization.", duration: "1 Hour" },
-      { title: "Round 2: Problem Statement Drop", description: "Teams choose domain tracks and begin architectural development.", duration: "12 Hours" },
-      { title: "Round 3: Midnight Pitch & Prototype Demo", description: "Mid-way mentor check-in and code review.", duration: "2 Hours" },
-      { title: "Round 4: Grand Finale Presentations", description: "Top 8 teams pitch functional prototypes to industry judges.", duration: "3 Hours" }
+      {
+        title: "Round 1: Topic Reveal",
+        description: "The debate motion is revealed from a sealed set. Teams receive their preparation time and are assigned their initial stances.",
+        duration: "1 Minute Reveal"
+      },
+      {
+        title: "Round 2: Opening Statements",
+        description: "Both teams prepare their arguments and deliver their opening statements before the opposing side begins its case.",
+        duration: "5 Min Prep + 3 Min Speaking"
+      },
+      {
+        title: "Round 3: Rapid Rebuttal",
+        description: "Teams engage in alternating 30-second rebuttal bursts, challenging opposing arguments under intense time pressure.",
+        duration: "4 Minutes"
+      },
+      {
+        title: "Round 4: The Topic Swap",
+        description: "At the moderator's discretion, the Topic Swap can be triggered once during the rebuttal phase, forcing teams to adapt and defend the opposite stance.",
+        duration: "During Rebuttal"
+      },
+      {
+        title: "Round 5: Closing Statements",
+        description: "Teams deliver their final closing statements, summarizing their strongest arguments and responding to the direction of the debate.",
+        duration: "1 Minute Each"
+      }
     ],
     rules: [
-      "All code must be written during the hackathon period. Pre-built templates must be declared.",
-      "Open-source libraries and public APIs are permitted with proper attribution.",
-      "Git repositories will be audited for commit frequency and authenticity.",
-      "Decisions of the jury and technical coordinators will be final."
+      "No personal attacks — arguments must target the motion, not the opponent.",
+      "The timekeeper's buzzer or bell is final. Speaking after time expires results in a point deduction.",
+      "Topics are selected blindly from a sealed set and cannot be repeated across rounds.",
+      "The Topic Swap can only be triggered once per round by the moderator and only during the rebuttal phase.",
+      "Judges' scores are final. On-spot disputes are not permitted and concerns may only be flagged through the scorekeeper."
     ],
     judgingCriteria: [
-      "Innovation & Technical Complexity (30%)",
-      "Functionality & Code Quality (25%)",
-      "UI/UX & User Experience (20%)",
-      "Real-World Impact & Feasibility (25%)"
+      "Argument Strength & Logic (30%)",
+      "Rebuttal Quality (25%)",
+      "Adaptability After Topic Swap (20%)",
+      "Delivery & Stage Presence (15%)",
+      "Audience Response — Optional Live Poll (10%)"
     ],
     accentColor: "#ed1d24",
     glowColor: "rgba(237, 29, 36, 0.4)",
@@ -70,48 +91,80 @@ export const DOMAINS: EventDomain[] = [
   },
   {
     id: "inquisitive",
-    slug: "cyclops",
+    slug: "blackpanther",
     name: "Inquisitive",
-    mcuCodename: "Stark Industries Bot Wars",
-    tagline: "Combat Robotics, Autonomous Line Followers & Drone Arena",
-    shortDesc: "Pit customized combat robots in the steel cage, test autonomous line-followers, and pilot drones through obstacle mazes.",
-    fullDesc: "The ultimate physical engineering colosseum. High-torque motors, custom PCBs, weapon mechanisms, and precision autonomous navigation collide in a multi-round tournament. Witness sparks fly in the reinforced battle cage!",
-    prizePool: "₹40,000+",
-    teamSize: "2 - 4 Members",
-    venue: "Outdoor Tech Amphitheater / Robo Cage",
-    time: "Day 01 & Day 02 · 02:00 PM",
+    mcuCodename: "Project Black Panther",
+    tagline: "The Ultimate Multiverse Quiz Showdown",
+    shortDesc: "A high-energy Marvel-themed quiz where teams battle through three rounds of questions, characters, images, Infinity Stone powers, and Chaos Cards.",
+    fullDesc: "Inquisitive is Techopedia 15's Marvel Cinematic Universe themed quiz competition designed to test knowledge, speed, teamwork, strategy, and adaptability. Teams of two compete across three rounds. Round I, Multiverse Scan, introduces the Infinity Stones mechanic, where each team blindly selects one of six stones and receives a unique power. Round II, Wakanda Who?, challenges teams to identify famous personalities, characters, or scientists through yes-or-no questions and buzzer-based competition. Round III, Civil War, brings the remaining teams together for an image-based final where teams discuss and simultaneously reveal their answers. Chaos Cards add another strategic layer, allowing teams to disrupt opponents or modify their own scoring and answers.",
+    teamSize: "2 Members per Team",
+    venue: "To Be Announced",
+    time: "Event Day · 3 Rounds",
     rounds: [
-      { title: "Stage 1: Autonomous Speed Run", description: "Line follower and grid navigator speed trials.", duration: "2 Hours" },
-      { title: "Stage 2: Drone Obstacle Course", description: "FPV drone time-attack obstacle navigation.", duration: "2 Hours" },
-      { title: "Stage 3: Robo-Wars Steel Cage Deathmatch", description: "1v1 combat robot knockouts in the enclosed arena.", duration: "3 Hours" }
+      {
+        title: "Round I: Multiverse Scan",
+        description: "A typical quiz round where teams answer questions one by one. Each team blindly selects one of the six Infinity Stones before the game and receives its corresponding power for the round. The power must be activated before the opposing team answers a question and can only be used once during the round. Each question has a 10-second answering limit.",
+        duration: "10 Seconds per Question"
+      },
+      {
+        title: "Infinity Stones: Round I Powers",
+        description: "TIME: Extra 5 seconds. SPACE: Skip one question and still receive points. REALITY: Get a second chance. POWER: Double points for one question only. MIND: Receive one clue. SOUL: Receive the same points as the opposing team for one question only.",
+        duration: "One Power per Team"
+      },
+      {
+        title: "Round II: Wakanda Who?",
+        description: "Teams identify a famous personality, character, or scientist. Each team receives 20 questions using only yes-or-no answers. The first team to click the buzzer and answer correctly moves forward. A wrong answer results in the team losing one question.",
+        duration: "20 Questions per Team"
+      },
+      {
+        title: "Round III: Civil War",
+        description: "The remaining five teams compete in the final round. Four images are displayed. Teams are given time to discuss and write their answers on paper. After the discussion period ends, every team reveals its answer simultaneously. Only correct answers receive points, and the team with the highest score wins.",
+        duration: "Final Round"
+      }
     ],
     rules: [
-      "Robots must comply with weight class specifications (Max 15kg for combat bots).",
-      "Wireless controllers must operate on 2.4GHz with fail-safe cutoff.",
-      "Liquid projectiles, electrical tasers, or toxic smoke weapons are prohibited.",
-      "Safety goggles must be worn in the pit area at all times."
+      "Each team consists of 2 members.",
+      "The competition consists of 3 rounds.",
+      "In Round I, 6 Infinity Stones are placed inside an opaque box and each team blindly selects one stone.",
+      "The selected Infinity Stone determines the team's power for Round I.",
+      "An Infinity Stone power can be activated only once during the entire round.",
+      "The Infinity Stone power must be activated before the opposing team answers the question.",
+      "Round I questions have a 10-second answering limit.",
+      "In Round II, teams identify famous personalities, characters, or scientists using yes-or-no questions.",
+      "Each team receives 20 questions in Round II.",
+      "The first team to click the buzzer and answer correctly moves forward.",
+      "A wrong answer in Round II causes the team to lose one question.",
+      "In Round III, teams discuss the displayed images and write their answers on paper.",
+      "All teams reveal their answers simultaneously after the discussion period.",
+      "Only correct answers receive points in Round III.",
+      "The team with the highest final score wins.",
+      "Each team picks one Chaos Card before the game.",
+      "A Chaos Card can be activated once before a question is displayed.",
+      "SNAP: Select another team to lose points worth one question.",
+      "NO WAY HOME: Choose another team that cannot answer the next question.",
+      "STARK OVERRIDE: If the team answers the next question correctly, they receive double points.",
+      "LOKI'S BETRAYAL: Select one member from another team to leave the room for one question.",
+      "DR. STRANGE: Change the team's answer after everyone reveals their answer and before the final answer reveal."
     ],
     judgingCriteria: [
-      "Combat Damage & Aggression Points (40%)",
-      "Autonomous Course Time & Accuracy (30%)",
-      "Mechanical & Electrical Engineering Design (30%)"
+      "Correct Answers",
+      "Final Score",
+      "Speed & Buzzer Response",
+      "Strategic Use of Infinity Stone Powers",
+      "Strategic Use of Chaos Cards"
     ],
-    accentColor: "#ffd700",
-    glowColor: "rgba(255, 215, 0, 0.4)",
-    coordinators: [
-      { name: "Aditya Joshi", contact: "+91 98765 43214" },
-      { name: "Kabir Singh", contact: "+91 98765 43215" }
-    ]
+    accentColor: "#6f42c1",
+    glowColor: "rgba(111, 66, 193, 0.4)",
+    coordinators: []
   },
   {
     id: "eureka",
-    slug: "blackpanther",
+    slug: "eureka",
     name: "Eureka",
     mcuCodename: "Wakanda Firewall Siege",
     tagline: "Offensive Security, Cryptography & Live Jeopardy CTF",
     shortDesc: "Crack cryptographic ciphers, reverse engineer binaries, bypass web defenses, and conquer the live leaderboard.",
     fullDesc: "Step into the cyber battlefield. Participants face realistic cybersecurity challenges spanning Web Exploitation, Reverse Engineering, Cryptography, Forensics, and OSINT. Race against time as points dynamically adjust on the live big-screen scoreboard.",
-    prizePool: "₹35,000+",
     teamSize: "1 - 2 Members",
     venue: "Cyber Defense Arena / Hall B",
     time: "Day 01 · 12:00 PM (8 Hours)",
@@ -140,47 +193,99 @@ export const DOMAINS: EventDomain[] = [
   },
   {
     id: "vanguard",
-    slug: "mystique",
+    slug: "vanguard",
     name: "Vanguard",
-    mcuCodename: "Quantum Reality UI/UX",
-    tagline: "Futuristic Design Sprints & Interactive 3D Web Dev",
-    shortDesc: "Design breathtaking interfaces, craft micro-animations, and code interactive 3D WebGL experiences from scratch.",
-    fullDesc: "Where art meets deep engineering. Designers and frontend architects are tasked with solving complex user-journey problems, prototyping futuristic design systems in Figma, and coding live interactive web experiences using modern frameworks and Three.js.",
-    prizePool: "₹25,000+",
-    teamSize: "1 - 2 Members",
-    venue: "Design & Media Lab 3",
-    time: "Day 01 · 04:00 PM (4 Hours)",
+    mcuCodename: "Project Sentinel",
+    tagline: "IR Laser Tag — Enter. Aim. Survive.",
+    shortDesc: "A fast-paced team laser-tag battle where players use IR-based laser guns and receiver-equipped vests to eliminate the opposing team.",
+    fullDesc: "Vanguard is a high-energy IR-based laser tag game where two teams of two players compete inside a designated battlefield. Each player is equipped with an electronic laser-tag gun and a receiver-equipped vest. Successful hits are registered by the electronic system and reduce the player's health until they are eliminated. The game ends when the allotted time expires or all players on one team are eliminated.",
+    teamSize: "2 Members per Team",
+    venue: "Designated Laser Tag Playing Area",
+    time: "Event Day · Fixed Time Limit",
     rounds: [
-      { title: "Sprint 1: UI/UX Rapid Prototyping", description: "Design a futuristic spatial OS or tech interface in Figma.", duration: "2 Hours" },
-      { title: "Sprint 2: Code Implementation", description: "Bring the design alive using HTML/CSS/JS/React with motion.", duration: "2 Hours" }
+      {
+        title: "Phase 1: Briefing & Equipment Check",
+        description: "Participants receive a short demonstration, game rules, safety instructions, and their laser-tag equipment. All guns and receiver-equipped vests are tested before gameplay.",
+        duration: "Pre-Game"
+      },
+      {
+        title: "Phase 2: Battlefield Deployment",
+        description: "Two teams of two players enter the designated playing area and take their assigned positions before the referee gives the start signal.",
+        duration: "Setup"
+      },
+      {
+        title: "Phase 3: Vanguard Battle",
+        description: "Players aim their IR-based laser-tag guns at opponents' receiver-equipped vests. Registered hits automatically reduce the opponent's health.",
+        duration: "Fixed Time Limit"
+      },
+      {
+        title: "Phase 4: Elimination & Scoring",
+        description: "Players whose health reaches zero are eliminated. The game concludes when the time expires or all players of one team are eliminated, with the winner determined by the agreed scoring or elimination format.",
+        duration: "Final Phase"
+      }
     ],
     rules: [
-      "Design systems must be created from scratch during the sprint.",
-      "Accessibility (WCAG) and responsive mobile layouts are required.",
-      "Code must run cleanly with zero console errors."
+      "Each team consists of 2 players.",
+      "Players must use only the equipment provided by the organizers.",
+      "Physical hitting, pushing, or intentionally obstructing opponents is not permitted.",
+      "Players must not tamper with or remove their receiver-equipped vest during gameplay.",
+      "Players must remain within the designated playing area.",
+      "Only hits registered by the electronic system will be counted.",
+      "A player whose health reaches zero will be eliminated.",
+      "The game follows a fixed time limit decided by the organizers.",
+      "Referee and volunteer decisions regarding gameplay are final."
     ],
     judgingCriteria: [
-      "Visual Aesthetics & Creativity (35%)",
-      "Interaction Design & Micro-animations (30%)",
-      "Code Quality & Performance (35%)"
+      "Opponent Eliminations",
+      "Health/Score Remaining",
+      "Registered Hits",
+      "Final Team Score"
     ],
-    accentColor: "#00e5ff",
-    glowColor: "rgba(0, 229, 255, 0.4)",
-    coordinators: [
-      { name: "Ananya Iyer", contact: "+91 98765 43216" },
-      { name: "Vihaan Rao", contact: "+91 98765 43217" }
-    ]
-  },
+    accentColor: "#6f42c1",
+    glowColor: "rgba(111, 66, 193, 0.4)",
+    coordinators: []
+  }
 ];
+
+export function findEventBySlug(value: string): EventDomain | undefined {
+  const key = value.trim().toLowerCase();
+
+  return DOMAINS.find(
+    (event) =>
+      event.id.toLowerCase() === key ||
+      event.slug.toLowerCase() === key ||
+      event.name.toLowerCase() === key
+  );
+}
+
+export function getDefaultEvent(): EventDomain {
+  return DOMAINS.find((event) => event.id === "squabble") ?? DOMAINS[0];
+}
+
+export function getEventRegistrationPath(value: EventDomain | string): string {
+  const event = typeof value === "string" ? findEventBySlug(value) : value;
+  const slug = event?.slug ?? (typeof value === "string" ? value.trim().toLowerCase() : "squabble");
+
+  return `/register?event=${encodeURIComponent(slug)}`;
+}
+
+export function getEventDossierPath(value: EventDomain | string): string {
+  const event = typeof value === "string" ? findEventBySlug(value) : value;
+  const slug = event?.slug ?? (typeof value === "string" ? value.trim().toLowerCase() : "squabble");
+
+  return `/events/${encodeURIComponent(slug)}`;
+}
 
 export type Track =
   | "General"
+  | "Debate Competition"
+  | "Quiz Competition"
+  | "Gun Game"
   | "Squabble"
   | "Inquisitive"
   | "Eureka"
   | "Vanguard"
-  | "Paper & Project Expo"
-  | "E-Sports Arena";
+  | "National Symposium";
 
 export interface ScheduleItem {
   time: string;
@@ -202,30 +307,28 @@ export const SCHEDULE: ScheduleDay[] = [
   {
     day: "Day 01",
     date: "October 16, 2026",
-    tagline: "The Multiverse Awakens — Hackathon, CTF & Robot Arenas",
+    tagline: "The Grand Opening — Debates, Quiz Arena & Tech Showcases",
     items: [
       { time: "08:30 AM", title: "Registrations & Kit Distribution", detail: "Badge collection, delegate kits, NFC wristbands & team check-in", track: "General", venue: "Central Registration Foyer", status: "upcoming" },
-      { time: "10:00 AM", title: "Grand Inaugural Ceremony", detail: "Keynote addresses, lighting the lamp, and the official Level 15 trailer unlock", track: "General", venue: "Main Auditorium", status: "upcoming" },
-      { time: "11:30 AM", title: "Squabble 24-Hr Hackathon Kickoff", detail: "Problem statement drop, repository creation, and mentor briefings", track: "Squabble", venue: "Lab Alpha & Beta", status: "upcoming" },
-      { time: "12:00 PM", title: "Eureka CTF Gates Open", detail: "Jeopardy-style offensive security challenges go live on the main scoreboard", track: "Eureka", venue: "Cyber Arena B", status: "upcoming" },
-      { time: "02:00 PM", title: "Inquisitive Prelims & Speed Trials", detail: "Autonomous line followers and bot deathmatch qualifier heats", track: "Inquisitive", venue: "Robotics Amphitheater", status: "upcoming" },
-      { time: "04:00 PM", title: "Vanguard UI/UX Design Sprint", detail: "Futuristic interface design jam and 3D web experience coding", track: "Vanguard", venue: "Design Center", status: "upcoming" },
-      { time: "07:30 PM", title: "AI & Quantum Frontiers Keynote", detail: "Special fireside chat with leading AI researchers and tech industry veterans", track: "General", venue: "Main Auditorium", status: "upcoming" },
-      { time: "11:00 PM", title: "Midnight Coding Break & Energy Fuel", detail: "Snacks, Red Bull station, developer trivia, and acoustic jam session", track: "General", venue: "Open Air Quad", status: "upcoming" }
+      { time: "10:00 AM", title: "Grand Inaugural Ceremony", detail: "Keynote addresses, lighting the lamp, and the official Level 15 kickoff", track: "General", venue: "Main Auditorium", status: "upcoming" },
+      { time: "10:30 AM", title: "Debate Competition Prelims", detail: "Round 1 Lincoln-Douglas intellectual clashes on emerging tech frontiers", track: "Debate Competition", venue: "Main Seminar Hall", status: "upcoming" },
+      { time: "11:30 AM", title: "Squabble Debate Kickoff", detail: "Motion reveal, team briefing, and round structure setup for the opening clash", track: "Squabble", venue: "Main Computing Hub", status: "upcoming" },
+      { time: "02:00 PM", title: "Quiz Competition Screening & Prelims", detail: "Written grid qualifier & rapid-fire screening rounds", track: "Quiz Competition", venue: "Central Auditorium", status: "upcoming" },
+      { time: "04:30 PM", title: "Debate Competition Semi-Finals", detail: "Cross-examination rounds and direct cross-questioning showdowns", track: "Debate Competition", venue: "Main Seminar Hall", status: "upcoming" },
+      { time: "06:30 PM", title: "Quiz Competition Audio-Visual Finals", detail: "Live buzzer frenzy and multimedia clue battles on the main stage", track: "Quiz Competition", venue: "Central Auditorium", status: "upcoming" },
+      { time: "08:00 PM", title: "Technology Frontiers Keynote & Networking", detail: "Fireside chat with industry leaders and evening developer mixer", track: "General", venue: "Open Air Quad", status: "upcoming" }
     ]
   },
   {
     day: "Day 02",
     date: "October 17, 2026",
-    tagline: "The Climax — Project Expos, Grand Finals & Trophy Ceremony",
+    tagline: "The Championship — Gun Game LAN, Grand Finals & Trophy Ceremony",
     items: [
-      { time: "08:00 AM", title: "Squabble Overnight Checkpoint", detail: "Progress audit, mentor ratings, and breakfast fuel-up", track: "Squabble", venue: "Lab Alpha", status: "upcoming" },
-      { time: "10:00 AM", title: "Inquisitive Championship Steel Cage", detail: "Heavyweight combat bot finals and drone obstacle race", track: "Inquisitive", venue: "Robotics Arena", status: "upcoming" },
-      { time: "11:30 AM", title: "Eureka Finals & Flag Verification", detail: "King-of-the-Hill attack defense rounds and exploit reviews", track: "Eureka", venue: "Cyber Arena B", status: "upcoming" },
-      { time: "01:30 PM", title: "Squabble Freeze & Submissions", detail: "Code repositories lock, live prototype demo evaluations begin", track: "Squabble", venue: "Main Auditorium", status: "upcoming" },
-      { time: "02:30 PM", title: "National Paper & Project Expo", detail: "Research paper presentations & hardware invention exhibition", track: "Paper & Project Expo", venue: "Exhibition Hall", status: "upcoming" },
-      { time: "04:00 PM", title: "E-Sports Arena Grand Finals", detail: "Valorant & BGMI tournament championship bracket deciders", track: "E-Sports Arena", venue: "E-Sports Lounge", status: "upcoming" },
-      { time: "06:30 PM", title: "Grand Awards Ceremony & After-Party", detail: "Distribution of ₹2,00,000+ prize pool, trophies, certificates, and DJ night", track: "General", venue: "Grand Amphitheater", status: "upcoming" }
+      { time: "09:30 AM", title: "National Technical Paper Symposium", detail: "Research presentations & innovative student project displays", track: "National Symposium", venue: "Exhibition Hall", status: "upcoming" },
+      { time: "11:00 AM", title: "Gun Game Qualifier Heats", detail: "16-player free-for-all tactical LAN heats and bracket deciders", track: "Gun Game", venue: "E-Sports Gaming Lounge", status: "upcoming" },
+      { time: "02:00 PM", title: "Debate Competition Grand Parliamentary Finale", detail: "Top finalists clash on an unannounced crisis motion for the trophy", track: "Debate Competition", venue: "Main Auditorium", status: "upcoming" },
+      { time: "03:30 PM", title: "Gun Game Championship Showdown", detail: "Top 8 finalists in the ultimate weapon ladder tournament", track: "Gun Game", venue: "E-Sports Gaming Lounge", status: "upcoming" },
+      { time: "06:00 PM", title: "Grand Awards Ceremony & After-Party", detail: "Distribution of trophies, cash prizes, certificates, and music night", track: "General", venue: "Grand Amphitheater", status: "upcoming" }
     ]
   }
 ];
@@ -322,7 +425,7 @@ export const TEAM: TeamGroup[] = [
     dept: "Leadership",
     blurb: "The leadership council steering IEEE SIESGST through vision, administration, and strategic direction.",
     members: [
-      { name: "Prathamesh Palve", role: "Chairperson", detail: "Chairperson", mcuTitle: "Chairperson", initials: "PP", council: "Senior", linkedin: "https://www.linkedin.com/in/prathmesh-palve-7565822b7" },
+      { name: "Prathmesh Palve", role: "Chairperson", detail: "Chairperson", mcuTitle: "Chairperson", initials: "PP", council: "Senior", linkedin: "https://www.linkedin.com/in/prathmesh-palve-7565822b7" },
       { name: "Abhang Rane", role: "Vice Chairperson", detail: "Vice Chairperson", mcuTitle: "Vice Chairperson", initials: "AR", council: "Senior", linkedin: "https://www.linkedin.com/in/abhang-rane-414a24344" },
       { name: "Mukul Wani", role: "Secretary", detail: "Secretary", mcuTitle: "Secretary", initials: "MW", council: "Senior", linkedin: "https://www.linkedin.com/in/mukul-wani-1a2ba82b7" },
       { name: "Aditi Dhanawade", role: "Treasurer", detail: "Treasurer", mcuTitle: "Treasurer", initials: "AD", council: "Senior", linkedin: "https://www.linkedin.com/in/aditi-dhanawade-0675812b7" },
@@ -335,7 +438,7 @@ export const TEAM: TeamGroup[] = [
     dept: "Technical",
     blurb: "The technical team driving IEEE SIESGST technology initiatives and development.",
     members: [
-      { name: "Janmanjay Verma", role: "Tech Mentor", detail: "Tech Mentor", mcuTitle: "Tech Mentor", initials: "GP", council: "Senior", linkedin: "https://www.linkedin.com/in/janmanjay-verma-64585927b" },
+      { name: "Janmanjay Verma", role: "Tech Mentor", detail: "Tech Mentor", mcuTitle: "Tech Mentor", initials: "JV", council: "Senior", linkedin: "https://www.linkedin.com/in/janmanjay-verma-64585927b" },
       { name: "Chirayu Marathe", role: "Tech Mentor", detail: "Tech Mentor", mcuTitle: "Tech Mentor", initials: "CM", council: "Senior", linkedin: "https://www.linkedin.com/in/chirayu-marathe69/" },
       { name: "Aditya Sharma", role: "Tech Mentor", detail: "Tech Mentor", mcuTitle: "Tech Mentor", initials: "AS", council: "Senior", linkedin: "https://www.linkedin.com/in/aditya-sharma-3625732a8" },
       { name: "Dakshata Dalvi", role: "Technical Head", detail: "Technical Head", mcuTitle: "Technical Head", initials: "DD", council: "Junior", linkedin: "https://www.linkedin.com/in/dakshata-dalvi-475864344" },
@@ -414,8 +517,8 @@ export const TEAM: TeamGroup[] = [
     ]
   }
 ];
+
 export const EVENT_STATS = [
-  { value: "₹1.5L+", label: "Prize Pool" },
   { value: "1500+", label: "Participants" },
   { value: "04", label: "Heroic Domains" },
   { value: "48hrs", label: "Non-Stop Action" }

@@ -32,6 +32,7 @@ export default function CinematicCanvas() {
   return (
     <Canvas
       className="canvas-layer"
+      style={{ pointerEvents: "none" }}
       gl={{
         antialias: false,
         alpha: true,

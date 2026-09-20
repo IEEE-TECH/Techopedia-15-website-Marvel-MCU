@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { sound } from "@/lib/audio";
 import { EASE_OUT } from "@/lib/motion";
-import { EVENT_STATS, EVENT_INFO } from "@/lib/eventData";
+import { EVENT_STATS, EVENT_INFO, getDefaultEvent, getEventRegistrationPath } from "@/lib/eventData";
 import styles from "./footer.module.css";
 
 /**
@@ -19,7 +20,6 @@ const EXPLORE = [
   { label: "Schedule", href: "/schedule" },
   { label: "Leaderboard", href: "/leaderboard" },
   { label: "Team", href: "/team" },
-  { label: "Sponsors", href: "/sponsors" },
 ];
 const SOCIAL = ["Instagram", "LinkedIn", "X (Twitter)", "YouTube"];
 
@@ -30,7 +30,16 @@ export default function SiteFooter({
 }: {
   onRegisterClick?: () => void;
 }) {
+  const router = useRouter();
   const ref = useRef<HTMLElement>(null);
+
+  const handleRegister = () => {
+    if (onRegisterClick) {
+      onRegisterClick();
+      return;
+    }
+    router.push(getEventRegistrationPath(getDefaultEvent()));
+  };
 
   // cursor parallax — drives the wordmark tilt and the grid's vanishing point
   const mx = useMotionValue(0.5);
@@ -109,12 +118,9 @@ export default function SiteFooter({
         <div className={styles.panel}>
           <div className={styles.colHead}>Get Involved</div>
           <div className={styles.links}>
-            <button type="button" onClick={() => onRegisterClick?.()}>
+            <button type="button" onClick={handleRegister}>
               Register Now
             </button>
-            <a href={`mailto:${EVENT_INFO.sponsorEmail}?subject=Sponsorship%20Inquiry`}>
-              Become a Sponsor
-            </a>
             <Link href="/team">Join the Organizing Team</Link>
           </div>
         </div>

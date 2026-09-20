@@ -151,19 +151,22 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Asynchronously dispatch to Google Sheets webhook (non-blocking)
+    // Asynchronously dispatch to Google Sheets webhook in real time
     syncToGoogleSheets({
       action: "register",
       agentId,
       name: newParticipant.name,
       prn: newParticipant.prn,
       email: newParticipant.email,
-      phone: newParticipant.phone,
-      college: newParticipant.college,
-      teamName: newParticipant.teamName,
-      teamSize: newParticipant.teamSize,
+      phone: newParticipant.phone || "",
+      college: newParticipant.college || "SIES Graduate School of Technology",
+      teamName: newParticipant.teamName || "Avengers Initiative",
+      teamSize: newParticipant.teamSize || "1",
       domain: newParticipant.domain,
       points: newParticipant.points,
+      checkedIn: false,
+      checkedInAt: null,
+      checkedInBy: null,
       dashboardUrl,
     }).catch((err) => console.error("Sheets sync error:", err));
 

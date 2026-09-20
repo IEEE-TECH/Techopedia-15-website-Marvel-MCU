@@ -7,11 +7,12 @@
   position: absolute;
   inset: 0;
   z-index: auto;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .card {
   position: absolute;
+  pointer-events: auto;
   top: 50%;
   left: 50%;
   width: clamp(300px, 32vw, 480px);
@@ -147,18 +148,43 @@
 }
 
 .ctaRow {
-  margin-top: 0.5rem;
+  margin-top: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.orbitRegisterBtn {
+  cursor: pointer;
+  background: linear-gradient(135deg, #ed1d24, #990a0f);
+  border: 1px solid rgba(255, 215, 0, 0.6);
+  color: #ffffff;
+  font-family: var(--font-ui);
+  font-weight: 800;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.65rem;
+  border-radius: 3px;
+  box-shadow: 0 0 14px rgba(237, 29, 36, 0.6);
+  transition: all 0.2s ease;
+}
+
+.orbitRegisterBtn:hover {
+  background: #ed1d24;
+  box-shadow: 0 0 20px rgba(237, 29, 36, 0.9);
+  transform: translateY(-1px);
 }
 
 .ctaPrompt {
-  font-size: 0.65rem;
-  letter-spacing: 0.15em;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
   color: #ffd700;
   text-transform: uppercase;
   font-weight: 700;
   display: inline-block;
-  background: rgba(237, 29, 36, 0.18);
-  padding: 0.2rem 0.6rem;
+  background: rgba(14, 17, 24, 0.8);
+  padding: 0.25rem 0.55rem;
   border-radius: 3px;
-  border: 1px solid rgba(237, 29, 36, 0.45);
+  border: 1px solid rgba(255, 215, 0, 0.35);
 }

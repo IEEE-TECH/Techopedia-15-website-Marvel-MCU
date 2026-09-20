@@ -27,12 +27,10 @@ interface ParticipantItem {
 
 const DOMAINS = [
   "ALL",
-  "Squabble",
-  "Inquisitive",
-  "Eureka",
-  "Vanguard",
-  "Paper & Project Expo",
-  "E-Sports Arena",
+  "Debate Competition",
+  "Quiz Competition",
+  "Gun Game",
+  "National Symposium",
 ];
 
 export default function ParticipantsPage() {
@@ -458,15 +456,13 @@ export default function ParticipantsPage() {
                   <label className={styles.formLabel}>Event Domain</label>
                   <select
                     className={styles.select}
-                    value={editFormData.domain || "Squabble"}
+                    value={editFormData.domain || "Debate Competition"}
                     onChange={(e) => setEditFormData({ ...editFormData, domain: e.target.value })}
                   >
-                    <option value="Squabble">Squabble</option>
-                    <option value="Inquisitive">Inquisitive</option>
-                    <option value="Eureka">Eureka</option>
-                    <option value="Vanguard">Vanguard</option>
-                    <option value="Paper & Project Expo">Paper & Project Expo</option>
-                    <option value="E-Sports Arena">E-Sports Arena</option>
+                    <option value="Debate Competition">Debate Competition</option>
+                    <option value="Quiz Competition">Quiz Competition</option>
+                    <option value="Gun Game">Gun Game</option>
+                    <option value="National Symposium">National Symposium</option>
                   </select>
                 </div>
 

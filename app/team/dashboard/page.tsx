@@ -44,6 +44,10 @@ interface DashboardData {
 }
 
 const DOMAIN_COLORS: Record<string, string> = {
+  "Debate Competition": "#ed1d24",
+  "Quiz Competition": "#ffd700",
+  "Gun Game": "#00e5ff",
+  "National Symposium": "#22c55e",
   Squabble: "#ed1d24",
   Inquisitive: "#ffd700",
   Eureka: "#ff4d4d",
@@ -134,7 +138,7 @@ export default function TeamDashboardPage() {
                 <span className={styles.kpiIconWrap} style={{ color: "#ff4d4d" }}>🛡️</span>
               </div>
               <div className={styles.kpiValue}>{data.metrics.totalRegistrations}</div>
-              <div className={styles.kpiSub}>Across all 6 event domains</div>
+              <div className={styles.kpiSub}>Across all event competitions</div>
             </div>
 
             <div className={styles.kpiCard}>

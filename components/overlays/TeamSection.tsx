@@ -2,20 +2,44 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { TEAM } from "@/lib/eventData";
+import { TEAM, TeamMember } from "@/lib/eventData";
 import TiltCard from "@/components/ui/TiltCard";
 import { sound } from "@/lib/audio";
 import { EASE_OUT, TAB_SPRING } from "@/lib/motion";
 import styles from "./teamSection.module.css";
 
-export default function TeamSection() {
-  const [active, setActive] = useState(TEAM[0].dept);
-  const group = TEAM.find((g) => g.dept === active) ?? TEAM[0];
+type CouncilTab = "Senior" | "Junior";
 
-  const handleTabChange = (dept: string) => {
-    if (dept !== active) {
+interface CouncilOption {
+  id: CouncilTab;
+  label: string;
+  blurb: string;
+}
+
+const COUNCILS: CouncilOption[] = [
+  {
+    id: "Senior",
+    label: "SENIOR COUNCIL",
+    blurb: "The senior council brings experience, strategic guidance, and steady leadership to every moving part of the event.",
+  },
+  {
+    id: "Junior",
+    label: "JUNIOR COUNCIL",
+    blurb: "The junior council powers the event’s execution across development, design, media, and operations with energy and ownership.",
+  },
+];
+
+export default function TeamSection() {
+  const [active, setActive] = useState<CouncilTab>("Senior");
+  const currentCouncil = COUNCILS.find((c) => c.id === active) ?? COUNCILS[0];
+  const members: TeamMember[] = TEAM.flatMap((g) =>
+    g.members.filter((m) => m.council === active)
+  );
+
+  const handleTabChange = (councilId: CouncilTab) => {
+    if (councilId !== active) {
       sound.playBlip(780, 0.03);
-      setActive(dept);
+      setActive(councilId);
     }
   };
 
@@ -36,38 +60,38 @@ export default function TeamSection() {
 
         {/* High-tech holographic filter tabs */}
         <div className={styles.tabs}>
-          {TEAM.map((g) => (
+          {COUNCILS.map((c) => (
             <button
-              key={g.dept}
+              key={c.id}
               type="button"
               className={styles.tab}
-              onClick={() => handleTabChange(g.dept)}
+              onClick={() => handleTabChange(c.id)}
               onMouseEnter={() => sound.playBlip(520, 0.02)}
             >
-              {g.dept === active && (
+              {c.id === active && (
                 <motion.span
                   layoutId="team-tab-pill"
                   className={styles.tabPill}
                   transition={TAB_SPRING}
                 />
               )}
-              <span className={styles.tabLabel}>{g.dept}</span>
+              <span className={styles.tabLabel}>{c.label}</span>
             </button>
           ))}
         </div>
 
-        <p className={styles.deptBlurb}>{group.blurb}</p>
+        <p className={styles.deptBlurb}>{currentCouncil.blurb}</p>
 
         <AnimatePresence mode="wait">
           <motion.div
-            key={group.dept}
+            key={active}
             className={styles.grid}
             initial={{ opacity: 0, y: 22, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -22, scale: 0.98 }}
             transition={{ duration: 0.35, ease: EASE_OUT }}
           >
-            {group.members.map((m, idx) => (
+            {members.map((m, idx) => (
               <TiltCard key={m.name} className={`${styles.card} hud-panel`} maxTilt={14} glow glowColor="0, 229, 255">
                 {/* 3D Sci-Fi HUD Corner Brackets */}
                 <span className={styles.cardCornerTL} aria-hidden />
@@ -77,7 +101,7 @@ export default function TeamSection() {
 
                 {/* Telemetry Header Row */}
                 <div className={styles.cardHeaderRow}>
-                  <span className={styles.cardTelemetry}>[SYS: 0{idx + 1}]</span>
+                  <span className={styles.cardTelemetry}>[SYS: {String(idx + 1).padStart(2, "0")}]</span>
                   <span className={styles.councilBadge}>
                     {m.council ? `${m.council.toUpperCase()} COUNCIL` : "ORGANIZER"}
                   </span>

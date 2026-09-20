@@ -1,9 +1,5 @@
 /* ============================================================
-   Section 3 — Cinematic Story Stack (uploaded poster images)
-   Six fullscreen chapters rise from the bottom and stack over one
-   another (animation unchanged — .panel transform / .dim / .edge).
-   Each panel is a real cover image with a bottom-right title +
-   description themed by a per-panel accent (--accent/--accent2/--title).
+   Section 3 — Cinematic Story Stack
    ============================================================ */
 
 .panel {
@@ -12,233 +8,656 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+
   transform: translate3d(0, 100%, 0);
   will-change: transform;
   backface-visibility: hidden;
+
   background: #02100b;
-  /* the leading (top) edge casts a soft shadow up onto the previous panel */
+
+  /* IMPORTANT: panel must be able to receive interaction */
+  pointer-events: auto;
+
+  /* leading edge shadow */
   box-shadow: 0 -34px 90px -8px rgba(0, 0, 0, 0.85);
 }
 
-/* the uploaded artwork — fills the whole panel, no bars, subtle living zoom */
+
+/* ============================================================
+   BACKGROUND IMAGE
+   ============================================================ */
+
 .bg {
   position: absolute;
   inset: 0;
+
   width: 100%;
   height: 100%;
+
   object-fit: cover;
   object-position: var(--pos, center);
+
   transform: scale(1.03);
   animation: kenburns 30s ease-in-out infinite alternate;
+
   will-change: transform;
-}
-@keyframes kenburns {
-  from { transform: scale(1.03); }
-  to { transform: scale(1.1); }
+
+  /* Never block buttons */
+  pointer-events: none;
 }
 
-/* legibility scrim — darkens the bottom + right so the artwork's subject
-   (usually centred/left) stays clear while the corner text stays readable */
+@keyframes kenburns {
+  from {
+    transform: scale(1.03);
+  }
+
+  to {
+    transform: scale(1.1);
+  }
+}
+
+
+/* ============================================================
+   SCRIM
+   ============================================================ */
+
 .scrim {
   position: absolute;
   inset: 0;
+
   pointer-events: none;
+
   background:
-    linear-gradient(to top, rgba(2, 8, 6, 0.92) 0%, rgba(2, 8, 6, 0.42) 22%, transparent 48%),
-    linear-gradient(to left, rgba(2, 8, 6, 0.66) 0%, rgba(2, 8, 6, 0.14) 28%, transparent 50%);
+    linear-gradient(
+      to top,
+      rgba(2, 8, 6, 0.92) 0%,
+      rgba(2, 8, 6, 0.42) 22%,
+      transparent 48%
+    ),
+    linear-gradient(
+      to left,
+      rgba(2, 8, 6, 0.66) 0%,
+      rgba(2, 8, 6, 0.14) 28%,
+      transparent 50%
+    );
 }
 
-/* accent glow pooled in the bottom-right behind the text */
+
+/* ============================================================
+   ACCENT GLOW
+   ============================================================ */
+
 .glow {
   position: absolute;
+
   right: -12vw;
   bottom: -16vh;
+
   width: 72vw;
   height: 64vh;
+
   pointer-events: none;
-  background: radial-gradient(circle at 68% 70%, color-mix(in srgb, var(--accent) 34%, transparent), transparent 60%);
+
+  background:
+    radial-gradient(
+      circle at 68% 70%,
+      color-mix(
+        in srgb,
+        var(--accent) 34%,
+        transparent
+      ),
+      transparent 60%
+    );
+
   filter: blur(30px);
   opacity: 0.5;
+
   mix-blend-mode: screen;
 }
 
-/* cinematic vignette */
+
+/* ============================================================
+   CINEMATIC VIGNETTE
+   ============================================================ */
+
 .vignette {
   position: absolute;
   inset: 0;
+
   pointer-events: none;
-  background: radial-gradient(132% 112% at 50% 40%, transparent 55%, rgba(0, 0, 0, 0.5) 100%);
+
+  background:
+    radial-gradient(
+      132% 112% at 50% 40%,
+      transparent 55%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
 }
 
-/* accent hairline along the leading edge (part of the reveal) */
+
+/* ============================================================
+   LEADING EDGE
+   ============================================================ */
+
 .edge {
   position: absolute;
+
   top: 0;
   left: 0;
   right: 0;
+
   height: 1px;
-  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 85%, transparent) 50%, transparent);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      color-mix(
+        in srgb,
+        var(--accent) 85%,
+        transparent
+      ) 50%,
+      transparent
+    );
+
   opacity: 0.85;
+
   pointer-events: none;
 }
 
-/* small chapter counter, top-right */
+
+/* ============================================================
+   CHAPTER COUNTER
+   ============================================================ */
+
 .counter {
   position: absolute;
+
   right: clamp(22px, 6vw, 110px);
   top: clamp(18px, 4vh, 46px);
-  z-index: 2;
+
+  z-index: 5;
+
   font-family: var(--font-ui);
+
   font-size: 12px;
   letter-spacing: 0.3em;
-  color: color-mix(in srgb, var(--accent) 74%, #eafff6);
-  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.8);
+
+  color:
+    color-mix(
+      in srgb,
+      var(--accent) 74%,
+      #eafff6
+    );
+
+  text-shadow:
+    0 1px 12px rgba(0, 0, 0, 0.8);
+
+  pointer-events: none;
 }
 
-/* ── bottom-right title block ── */
+
+/* ============================================================
+   CONTENT
+   ============================================================ */
+
 .content {
   position: absolute;
-  right: clamp(24px, 6vw, 112px);
-  bottom: clamp(28px, 8vh, 92px);
-  z-index: 2;
-  max-width: min(52ch, 66vw);
+
+  right: clamp(20px, 5vw, 90px);
+  bottom: clamp(24px, 5vh, 65px);
+
+  /*
+   * IMPORTANT
+   * Content must remain above .dim
+   */
+  z-index: 10;
+
+  max-width: min(54ch, 75vw);
+
   display: flex;
   flex-direction: column;
+
   align-items: flex-end;
   text-align: right;
+
   will-change: transform, opacity;
+
+  pointer-events: auto;
 }
+
+
+/*
+ * Make sure everything inside the content
+ * can receive mouse/touch events.
+ */
+
+.content * {
+  pointer-events: auto;
+}
+
+
+/* ============================================================
+   KICKER
+   ============================================================ */
 
 .kicker {
   display: flex;
+
   align-items: center;
   gap: 0.7em;
+
   font-family: var(--font-ui);
-  font-size: clamp(11px, 1vw, 14px);
-  letter-spacing: 0.42em;
+
+  font-size: clamp(10px, 0.9vw, 13px);
+  letter-spacing: 0.28em;
+
   text-transform: uppercase;
+
   color: var(--accent);
-  margin-bottom: clamp(0.7rem, 1.4vw, 1.2rem);
-  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.7);
+
+  margin-bottom: clamp(0.5rem, 1vw, 0.85rem);
+
+  text-shadow:
+    0 1px 12px rgba(0, 0, 0, 0.7);
+
+  line-height: 1.3;
 }
+
 .kicker::before {
   content: "";
-  width: clamp(26px, 3vw, 56px);
+
+  width: clamp(20px, 2.5vw, 48px);
   height: 2px;
-  background: linear-gradient(90deg, transparent, var(--accent));
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--accent)
+    );
+
+  flex-shrink: 0;
 }
+
+
+/* ============================================================
+   TITLE
+   ============================================================ */
 
 .title {
   display: flex;
+
   flex-direction: column;
   align-items: flex-end;
-  gap: 0.01em;
+
+  gap: 0.05em;
+
   font-family: var(--font-display);
+
   font-weight: 400;
-  font-size: clamp(2.8rem, 8vw, 7.2rem);
-  line-height: 0.9;
-  letter-spacing: 0.01em;
+
+  font-size: clamp(2.2rem, 5.2vw, 4.4rem);
+
+  line-height: 1.05;
+
+  letter-spacing: 0.02em;
+
   text-transform: uppercase;
+
   color: var(--title, #f2fff9);
+
   text-shadow:
     0 3px 26px rgba(0, 0, 0, 0.72),
-    0 0 46px color-mix(in srgb, var(--accent) 45%, transparent);
+    0 0 46px
+      color-mix(
+        in srgb,
+        var(--accent) 45%,
+        transparent
+      );
+
+  margin: 0;
+  padding: 0.05em 0;
 }
+
 .titleLine {
   display: block;
 }
 
-/* themed accent divider */
+
+/* ============================================================
+   DIVIDER
+   ============================================================ */
+
 .rule {
-  margin-top: clamp(0.7rem, 1.1vw, 1rem);
-  width: clamp(120px, 15vw, 250px);
+  margin-top: clamp(0.5rem, 0.8vw, 0.85rem);
+
+  width: clamp(100px, 12vw, 220px);
   height: 2px;
-  background: linear-gradient(90deg, transparent, var(--accent2, var(--accent)) 42%, var(--accent));
-  box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 60%, transparent);
-}
 
-.desc {
-  margin-top: clamp(0.75rem, 1.2vw, 1.15rem);
-  max-width: 46ch;
-  font-family: var(--font-ui);
-  font-size: clamp(12.5px, 1.05vw, 15px);
-  letter-spacing: 0.05em;
-  line-height: 1.7;
-  color: rgba(240, 248, 244, 0.92);
-  text-shadow: 0 1px 16px rgba(0, 0, 0, 0.88);
-}
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--accent2, var(--accent)) 42%,
+      var(--accent)
+    );
 
-/* dark veil as the next panel rises over this one (recede into shadow) */
-.dim {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  background: #000;
-  opacity: 0;
+  box-shadow:
+    0 0 14px
+      color-mix(
+        in srgb,
+        var(--accent) 60%,
+        transparent
+      );
+
   pointer-events: none;
 }
 
-@media (max-width: 640px) {
-  .content {
-    left: clamp(20px, 7vw, 40px);
-    max-width: none;
-  }
-  .title {
-    font-size: clamp(2.4rem, 13vw, 4rem);
-  }
+
+/* ============================================================
+   DESCRIPTION
+   ============================================================ */
+
+.desc {
+  margin-top: clamp(0.5rem, 0.8vw, 0.85rem);
+
+  max-width: 44ch;
+
+  font-family: var(--font-ui);
+
+  font-size: clamp(12px, 0.95vw, 14.5px);
+
+  letter-spacing: 0.04em;
+
+  line-height: 1.6;
+
+  color: rgba(240, 248, 244, 0.92);
+
+  text-shadow:
+    0 1px 16px rgba(0, 0, 0, 0.88);
 }
+
+
+/* ============================================================
+   META ROW
+   ============================================================ */
 
 .metaRow {
   display: flex;
+
   gap: 0.6rem;
+
   margin-top: 0.6rem;
 }
 
+
+/* ============================================================
+   PRIZE TAG
+   ============================================================ */
+
 .prizeTag {
   font-family: var(--font-ui);
+
   font-size: 0.72rem;
   font-weight: 700;
+
   color: #ffd700;
-  background: rgba(255, 215, 0, 0.12);
-  border: 1px solid rgba(255, 215, 0, 0.4);
+
+  background:
+    rgba(255, 215, 0, 0.12);
+
+  border:
+    1px solid rgba(255, 215, 0, 0.4);
+
   padding: 0.2rem 0.6rem;
+
   border-radius: 4px;
+
   letter-spacing: 0.05em;
 }
+
+
+/* ============================================================
+   TEAM TAG
+   ============================================================ */
 
 .teamTag {
   font-family: var(--font-ui);
+
   font-size: 0.72rem;
   font-weight: 600;
+
   color: #ffd700;
-  background: rgba(255, 215, 0, 0.12);
-  border: 1px solid rgba(255, 215, 0, 0.35);
+
+  background:
+    rgba(255, 215, 0, 0.12);
+
+  border:
+    1px solid rgba(255, 215, 0, 0.35);
+
   padding: 0.2rem 0.6rem;
+
   border-radius: 4px;
+
   letter-spacing: 0.05em;
 }
 
-.exploreBtn {
-  cursor: pointer;
+
+/* ============================================================
+   BUTTON ROW
+   ============================================================ */
+
+.buttonRow {
+  position: relative;
+
+  /*
+   * IMPORTANT
+   * Keep the controls above every decorative layer.
+   */
+  z-index: 20;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.8rem;
+
   margin-top: 1.25rem;
-  background: linear-gradient(135deg, #ed1d24, #b31016);
-  border: 1px solid rgba(255, 215, 0, 0.4);
-  color: #ffffff;
-  font-family: var(--font-ui);
-  font-weight: 700;
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  padding: 0.75rem 1.4rem;
-  border-radius: 4px;
-  box-shadow: 0 0 20px rgba(237, 29, 36, 0.5);
-  transition: all 0.25s ease;
+
+  flex-wrap: wrap;
+
+  justify-content: flex-end;
+
+  pointer-events: auto;
 }
 
-.exploreBtn:hover {
-  background: #ed1d24;
+
+/* ============================================================
+   REGISTER BUTTON
+   ============================================================ */
+
+.registerBtn {
+  position: relative;
+
+  z-index: 21;
+
+  pointer-events: auto;
+
+  cursor: pointer;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ed1d24,
+      #990a0f
+    );
+
+  border:
+    1px solid rgba(255, 215, 0, 0.6);
+
   color: #ffffff;
-  box-shadow: 0 0 32px rgba(237, 29, 36, 0.85);
+
+  font-family: var(--font-ui);
+
+  font-weight: 800;
+
+  font-size: 0.78rem;
+
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+
+  padding: 0.75rem 1.4rem;
+
+  border-radius: 4px;
+
+  box-shadow:
+    0 0 24px rgba(237, 29, 36, 0.65);
+
+  transition:
+    all 0.25s ease;
+}
+
+.registerBtn:hover {
+  background: #ed1d24;
+
+  color: #ffffff;
+
+  box-shadow:
+    0 0 36px rgba(237, 29, 36, 0.95);
+
   transform: translateY(-2px);
 }
 
+
+/* ============================================================
+   DOSSIER BUTTON
+   ============================================================ */
+
+.exploreBtn {
+  position: relative;
+
+  z-index: 21;
+
+  pointer-events: auto;
+
+  cursor: pointer;
+
+  background:
+    rgba(14, 17, 24, 0.85);
+
+  border:
+    1px solid rgba(255, 255, 255, 0.25);
+
+  color:
+    rgba(240, 248, 244, 0.9);
+
+  font-family: var(--font-ui);
+
+  font-weight: 700;
+
+  font-size: 0.75rem;
+
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+
+  padding: 0.75rem 1.2rem;
+
+  border-radius: 4px;
+
+  backdrop-filter: blur(8px);
+
+  transition:
+    all 0.25s ease;
+}
+
+.exploreBtn:hover {
+  background:
+    rgba(237, 29, 36, 0.25);
+
+  border-color:
+    rgba(237, 29, 36, 0.6);
+
+  color: #ffffff;
+
+  box-shadow:
+    0 0 20px rgba(237, 29, 36, 0.4);
+
+  transform: translateY(-2px);
+}
+
+
+/* ============================================================
+   DIM / RECEDING PANEL
+   ============================================================ */
+
+.dim {
+  position: absolute;
+
+  inset: 0;
+
+  /*
+   * Keep dim visually above artwork,
+   * but BELOW the interactive content.
+   */
+  z-index: 3;
+
+  background: #000;
+
+  opacity: 0;
+
+  /*
+   * CRITICAL:
+   * The dim layer must NEVER intercept clicks.
+   */
+  pointer-events: none;
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 640px) {
+  .content {
+    left: clamp(16px, 5vw, 32px);
+    right: clamp(16px, 5vw, 32px);
+
+    max-width: none;
+
+    bottom: clamp(20px, 4vh, 40px);
+
+    z-index: 10;
+  }
+
+  .title {
+    font-size: clamp(1.8rem, 8vw, 2.8rem);
+
+    line-height: 1.1;
+  }
+
+  .desc {
+    font-size: 0.8rem;
+
+    line-height: 1.5;
+  }
+
+  .buttonRow {
+    position: relative;
+
+    z-index: 20;
+
+    pointer-events: auto;
+  }
+
+  .registerBtn,
+  .exploreBtn {
+    position: relative;
+
+    z-index: 21;
+
+    pointer-events: auto;
+  }
+}

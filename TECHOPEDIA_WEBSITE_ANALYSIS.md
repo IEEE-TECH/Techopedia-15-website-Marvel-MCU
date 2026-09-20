@@ -75,7 +75,7 @@ A dedicated corporate partnership portal highlighting event reach and sponsor ti
   - **Vibranium Tier (`.lg`)**: 3-column gold partner showcase.
   - **Pym Tech Tier (`.md`)**: Silver platform and tooling sponsors.
   - **Community & Media (`.sm`)**: Student chapter and media network cards.
-- **Key Metrics**: Live animated stats counter (`CountUp.tsx`) showcasing 1,500+ attendees, ₹1.5L+ prize pool, and 48 hours of competition.
+- **Key Metrics**: Live animated stats counter (`CountUp.tsx`) showcasing 1,500+ attendees and 48 hours of competition.
 
 ![Sponsors Page](public/screenshots/sponsors_page.png)
 *Figure 5: Sponsors page with tier-scaled logo pedestals and partnership deliverables.*

@@ -5,9 +5,12 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import TiltCard from "@/components/ui/TiltCard";
 import { TEAM } from "@/lib/eventData";
+import { sound } from "@/lib/audio";
 import { EASE_OUT, TAB_SPRING } from "@/lib/motion";
 
 import styles from "./team.module.css";
+
+type CouncilTab = "Senior" | "Junior";
 
 function initials(name: string) {
   return name
@@ -19,27 +22,30 @@ function initials(name: string) {
     .join("");
 }
 
-export default function TeamPageClient() {
-  const [active, setActive] = useState<"All" | "Senior" | "Junior">("All");
+export default function TeamPageClient({ initialActive = "Senior" }: { initialActive?: CouncilTab }) {
+  const [active, setActive] = useState<CouncilTab>(initialActive);
 
-  const groups = TEAM.map((g) => ({
-    ...g,
-    members:
-      active === "All"
-        ? g.members
-        : g.members.filter((m) => m.council === active),
-  })).filter((g) => g.members.length > 0);
+  const members = TEAM.flatMap((g) =>
+    g.members.filter((m) => m.council === active),
+  );
+
+  const handleTabChange = (tab: CouncilTab) => {
+    if (tab !== active) {
+      sound.playBlip(780, 0.03);
+      setActive(tab);
+    }
+  };
 
   return (
     <>
-      {/* TABS */}
       <div className={styles.tabs}>
-        {(["All", "Senior", "Junior"] as const).map((tab) => (
+        {(["Senior", "Junior"] as const).map((tab) => (
           <button
             key={tab}
             type="button"
             className={styles.tab}
-            onClick={() => setActive(tab)}
+            onClick={() => handleTabChange(tab)}
+            onMouseEnter={() => sound.playBlip(520, 0.02)}
           >
             {active === tab && (
               <motion.span
@@ -50,17 +56,12 @@ export default function TeamPageClient() {
             )}
 
             <span className={styles.tabLabel}>
-              {tab === "All"
-                ? "All Departments"
-                : tab === "Senior"
-                  ? "Senior Council"
-                  : "Junior Council"}
+              {tab === "Senior" ? "SENIOR COUNCIL" : "JUNIOR COUNCIL"}
             </span>
           </button>
         ))}
       </div>
 
-      {/* TEAM DOMAINS */}
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={active}
@@ -72,96 +73,92 @@ export default function TeamPageClient() {
             ease: EASE_OUT,
           }}
         >
-          {groups.map((group) => (
-            <section key={group.dept} className={styles.group}>
-              <div className={styles.groupHead}>
-                <h2 className={styles.dept}>{group.dept}</h2>
+          {members.length > 0 ? (
+            <div className={styles.grid}>
+              {members.map((m) => (
+                <TiltCard
+                  key={m.name}
+                  className={`${styles.card} hud-panel`}
+                  maxTilt={8}
+                  glow
+                >
+                  <div className={styles.photoWrap}>
+                    <span
+                      className={styles.radarRing}
+                      aria-hidden
+                    />
 
-                <p className={styles.blurb}>{group.blurb}</p>
-              </div>
-
-              <div className={styles.grid}>
-                {group.members.map((m) => (
-                  <TiltCard
-                    key={m.name}
-                    className={`${styles.card} hud-panel`}
-                    maxTilt={8}
-                    glow
-                  >
-                    <div className={styles.photoWrap}>
-                      <span
-                        className={styles.radarRing}
-                        aria-hidden
+                    {m.photo ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={m.photo}
+                        alt={m.name}
+                        className={styles.photo}
                       />
+                    ) : (
+                      <span
+                        className={styles.initials}
+                        aria-hidden
+                      >
+                        {initials(m.name)}
+                      </span>
+                    )}
 
-                      {m.photo ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={m.photo}
-                          alt={m.name}
-                          className={styles.photo}
-                        />
-                      ) : (
-                        <span
-                          className={styles.initials}
-                          aria-hidden
+                    <span
+                      className={styles.ring}
+                      aria-hidden
+                    />
+                  </div>
+
+                  <h3 className={styles.name}>{m.name}</h3>
+
+                  <div className={styles.role}>{m.role}</div>
+
+                  {m.detail && m.detail.toLowerCase() !== m.role.toLowerCase() && (
+                    <div className={styles.detail}>{m.detail}</div>
+                  )}
+
+                  {(m.instagram || m.linkedin || m.github) && (
+                    <div className={styles.links}>
+                      {m.linkedin && (
+                        <a
+                          href={m.linkedin}
+                          target="_blank"
+                          rel="noreferrer noopener"
                         >
-                          {initials(m.name)}
-                        </span>
+                          LinkedIn
+                        </a>
                       )}
 
-                      <span
-                        className={styles.ring}
-                        aria-hidden
-                      />
+                      {m.instagram && (
+                        <a
+                          href={m.instagram}
+                          target="_blank"
+                          rel="noreferrer noopener"
+                        >
+                          Instagram
+                        </a>
+                      )}
+
+                      {m.github && (
+                        <a
+                          href={m.github}
+                          target="_blank"
+                          rel="noreferrer noopener"
+                        >
+                          GitHub
+                        </a>
+                      )}
                     </div>
-
-                    <h3 className={styles.name}>{m.name}</h3>
-
-                    <div className={styles.role}>{m.role}</div>
-
-                    {m.detail && m.detail.toLowerCase() !== m.role.toLowerCase() && (
-                      <div className={styles.detail}>{m.detail}</div>
-                    )}
-
-                    {(m.instagram || m.linkedin || m.github) && (
-                      <div className={styles.links}>
-                        {m.linkedin && (
-                          <a
-                            href={m.linkedin}
-                            target="_blank"
-                            rel="noreferrer noopener"
-                          >
-                            LinkedIn
-                          </a>
-                        )}
-
-                        {m.instagram && (
-                          <a
-                            href={m.instagram}
-                            target="_blank"
-                            rel="noreferrer noopener"
-                          >
-                            Instagram
-                          </a>
-                        )}
-
-                        {m.github && (
-                          <a
-                            href={m.github}
-                            target="_blank"
-                            rel="noreferrer noopener"
-                          >
-                            GitHub
-                          </a>
-                        )}
-                      </div>
-                    )}
-                  </TiltCard>
-                ))}
-              </div>
-            </section>
-          ))}
+                  )}
+                </TiltCard>
+              ))}
+            </div>
+          ) : (
+            <div style={{ color: "rgba(255,255,255,0.7)", textAlign: "center", padding: "2rem 0" }}>
+              No members found in this council.
+            </div>
+          )}
         </motion.div>
       </AnimatePresence>
 

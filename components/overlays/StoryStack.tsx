@@ -1,9 +1,15 @@
 "use client";
 
 import { useRef } from "react";
+import { useRouter } from "next/navigation";
 import { signals } from "@/lib/signals";
 import { useRaf } from "@/lib/useRaf";
-import { DOMAINS, EventDomain } from "@/lib/eventData";
+import {
+  DOMAINS,
+  EventDomain,
+  getEventDossierPath,
+  getEventRegistrationPath,
+} from "@/lib/eventData";
 import styles from "./story.module.css";
 
 interface Panel {
@@ -24,20 +30,20 @@ const CHAPTERS: Panel[] = [
     n: "01",
     img: "/story/panel-1.jpg",
     domainId: "squabble",
-    kicker: "Flagship Hackathon · Project Doomsday",
-    title: ["Squabble", "Duel"],
-    desc: "24-Hour Hackathon & Algorithmic Duel. Build futuristic AI apps, smart software, and web3 innovations.",
+    kicker: "Debate Competition · Topic Swap Showdowns",
+    title: ["Squabble"],
+    desc: "A fast-paced face-to-face debate competition where teams battle through rapid arguments, rebuttals, and the ultimate Topic Swap challenge.",
     accent: "#ed1d24",
     titleColor: "#ffffff",
     pos: "center",
   },
   {
     n: "02",
-    img: "/story/panel-3.jpg",
+    img: "/story/panel-2.jpg",
     domainId: "inquisitive",
-    kicker: "Hardware Colosseum · Stark Bot Wars",
-    title: ["Inquisitive", "Arena"],
-    desc: "High-voltage combat bot deathmatches, autonomous line followers, and precision drone obstacle race.",
+    kicker: "Quiz Competition · Multiverse Quiz Showdown",
+    title: ["Inquisitive"],
+    desc: "A high-energy Marvel-themed quiz where teams battle through three rounds of questions, characters, images, Infinity Stone powers, and Chaos Cards.",
     accent: "#ffd700",
     accent2: "#ff9a3c",
     titleColor: "#eafff4",
@@ -45,23 +51,22 @@ const CHAPTERS: Panel[] = [
   },
   {
     n: "03",
-    img: "/story/panel-2.jpg",
+    img: "/story/panel-3.jpg",
     domainId: "eureka",
-    kicker: "Offensive Cyber Siege · Wakanda Firewall",
-    title: ["Eureka", "CTF"],
-    desc: "Test your ethical hacking in web security, reverse engineering, cryptography, and network defense.",
-    accent: "#ff5a3c",
-    accent2: "#ffd15a",
-    titleColor: "#fff3e4",
+    kicker: "PPT Presentation Competition",
+    title: ["Eureka"],
+    desc: "Eureka is the PPT Presentation Competition at Techopedia 15.",
+    accent: "#ff4d4d",
+    titleColor: "#ffffff",
     pos: "center",
   },
   {
     n: "04",
     img: "/story/panel-4.jpg",
     domainId: "vanguard",
-    kicker: "Spatial UI/UX · Quantum Reality",
-    title: ["Vanguard", "Sprint"],
-    desc: "Futuristic interface design jam & live interactive 3D WebGL development sprint.",
+    kicker: "IR-Based Laser Tag · Gun Game",
+    title: ["Vanguard"],
+    desc: "Vanguard is the IR-based Laser Tag (Gun Game) competition at Techopedia 15.",
     accent: "#00e5ff",
     titleColor: "#ffffff",
     pos: "center",
@@ -87,9 +92,11 @@ const cssVars = (c: Panel) =>
 
 interface StoryStackProps {
   onSelectEvent?: (event: EventDomain) => void;
+  onRegisterDomain?: (domainName: string) => void;
 }
 
-export default function StoryStack({ onSelectEvent }: StoryStackProps) {
+export default function StoryStack({ onSelectEvent, onRegisterDomain }: StoryStackProps) {
+  const router = useRouter();
   const layerRef = useRef<HTMLDivElement>(null);
   const panelRefs = useRef<(HTMLElement | null)[]>([]);
   const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -141,7 +148,12 @@ export default function StoryStack({ onSelectEvent }: StoryStackProps) {
         content.style.opacity = (appear * (1 - cove * 0.9)).toFixed(3);
         const cy = (1 - appear) * 42 - cove * 26;
         content.style.transform = `translate3d(0, ${cy.toFixed(2)}px, 0)`;
-        content.style.pointerEvents = appear > 0.6 && cov < 0.3 ? "auto" : "none";
+
+        // The active story panel must remain interactive while visible.
+        // Preventing pointer events on the content wrapper makes the buttons
+        // look clickable without actually being clickable, which is why the
+        // browser never shows cursor pointer on the controls.
+        content.style.pointerEvents = appear > 0.12 ? "auto" : "none";
       }
     }
   });
@@ -176,7 +188,7 @@ export default function StoryStack({ onSelectEvent }: StoryStackProps) {
             <span className={styles.glow} />
             <span className={styles.vignette} />
             <span className={styles.edge} />
-            <span className={styles.counter}>{c.n} / 04</span>
+            <span className={styles.counter}>{c.n} / 0{CHAPTERS.length}</span>
 
             <div
               className={styles.content}
@@ -187,7 +199,7 @@ export default function StoryStack({ onSelectEvent }: StoryStackProps) {
             >
               <span className={styles.kicker}>{c.kicker}</span>
               <h2 className={styles.title}>
-                {c.title.map((line, li) => (
+                {c.title.filter(Boolean).map((line, li) => (
                   <span key={li} className={styles.titleLine}>
                     {line}
                   </span>
@@ -195,20 +207,28 @@ export default function StoryStack({ onSelectEvent }: StoryStackProps) {
               </h2>
 
               <div className={styles.metaRow}>
-                <span className={styles.prizeTag}>PRIZE // {matchedDomain.prizePool}</span>
                 <span className={styles.teamTag}>TEAM // {matchedDomain.teamSize}</span>
               </div>
 
               <span className={styles.rule} />
               <p className={styles.desc}>{c.desc}</p>
 
-              <button
-                className={styles.exploreBtn}
-                type="button"
-                onClick={() => onSelectEvent?.(matchedDomain)}
-              >
-                ▸ Inspect Mission Dossier &amp; Rules
-              </button>
+              <div className={styles.buttonRow}>
+                <button
+                  className={styles.registerBtn}
+                  type="button"
+                  onClick={() => router.push(getEventRegistrationPath(matchedDomain))}
+                >
+                  ⚡ Register for {matchedDomain.name}
+                </button>
+                <button
+                  className={styles.exploreBtn}
+                  type="button"
+                  onClick={() => router.push(getEventDossierPath(matchedDomain))}
+                >
+                  ▸ Mission Dossier
+                </button>
+              </div>
             </div>
 
             <span

@@ -387,8 +387,11 @@
   justify-content: space-between;
   gap: 1.5rem;
   padding: clamp(1.2rem, 4vw, 3rem) clamp(1.1rem, 4vw, 3rem) clamp(1.6rem, 4vw, 3rem);
-  pointer-events: none;
+  pointer-events: auto;
   will-change: opacity;
+}
+.heroUi * {
+  pointer-events: auto;
 }
 .heroText {
   display: flex;
@@ -423,15 +426,19 @@
   font-family: var(--font-avengers);
   text-transform: uppercase;
   font-size: clamp(2rem, 5vw, 4.2rem);
-  line-height: 1.1;
+  line-height: 1.15;
   letter-spacing: 0.04em;
-  padding: 0.08em 0 0.04em;
+  padding: 0.08em 0.35em 0.08em 0.02em;
   background: linear-gradient(180deg, #ffffff 0%, #ffe4e6 30%, #ed1d24 75%, #990000 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 28px rgba(237, 29, 36, 0.6));
   text-shadow: 0 0 28px rgba(237, 29, 36, 0.6);
   margin: 0;
+  display: inline-block;
+  overflow: visible;
+  max-width: 100%;
 }
 .heroSubText {
   font-size: clamp(0.78rem, 1vw, 0.9rem);
