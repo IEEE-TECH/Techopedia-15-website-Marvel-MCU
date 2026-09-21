@@ -158,39 +158,65 @@ export const DOMAINS: EventDomain[] = [
       { name: "Sakshi", contact: "+91 7738113784" }
     ]
   },
-  {
-    id: "eureka",
-    slug: "eureka",
-    name: "Eureka",
-    mcuCodename: "Wakanda Firewall Siege",
-    tagline: "Offensive Security, Cryptography & Live Jeopardy CTF",
-    shortDesc: "Crack cryptographic ciphers, reverse engineer binaries, bypass web defenses, and conquer the live leaderboard.",
-    fullDesc: "Step into the cyber battlefield. Participants face realistic cybersecurity challenges spanning Web Exploitation, Reverse Engineering, Cryptography, Forensics, and OSINT. Race against time as points dynamically adjust on the live big-screen scoreboard.",
-    teamSize: "1 - 2 Members",
-    venue: "Cyber Defense Arena / Hall B",
-    time: "Day 01 · 12:00 PM (8 Hours)",
-    rounds: [
-      { title: "Phase 1: Recon & Web Exploitation", description: "Discover hidden endpoints, SQL injections, and auth bypasses.", duration: "2.5 Hours" },
-      { title: "Phase 2: Reverse Engineering & Binary Exploits", description: "Disassemble ELF binaries, analyze heap overflows, and decrypt payloads.", duration: "3 Hours" },
-      { title: "Phase 3: Final Matrix Siege", description: "Live king-of-the-hill attack/defense challenge for the top 5 finalists.", duration: "2.5 Hours" }
-    ],
-    rules: [
-      "Attacking the scoring infrastructure or other teams' machines is strictly forbidden.",
-      "Flag sharing or collusion between teams leads to immediate disqualification.",
-      "All captured flags follow standard format: TECH15{...}.",
-      "Brute-forcing challenge servers is prohibited unless explicitly stated."
-    ],
-    judgingCriteria: [
-      "Total Valid Flags Captured (50%)",
-      "Time of Flag Submission / Speed (30%)",
-      "Clean Exploit Write-Up Verification (20%)"
-    ],
-    accentColor: "#ff4d4d",
-    glowColor: "rgba(255, 77, 77, 0.4)",
-    coordinators: [
-      { name: "Shankilya", contact: "+91 9326214923" }
-    ]
-  },
+{
+  id: "eureka",
+  slug: "eureka",
+  name: "Eureka",
+  mcuCodename: "Wakanda Firewall Siege",
+  tagline: "Marvel Quiz, Problem Solving & PPT Presentation",
+  shortDesc: "Battle through a Marvel-themed buzzer quiz, earn presentation advantages, and solve IEEE GRSS problem statements in a live PPT challenge.",
+  fullDesc: "Eureka is a two-stage competition combining a Marvel-themed advantage round with an on-the-spot PPT presentation challenge. Teams first compete in a buzzer quiz based solely on the MCU, with the top three teams earning strategic rewards. Teams then prepare and present a PPT based on an IEEE GRSS problem statement, with the best teams advancing to the final decider round.",
+
+  teamSize: "1 - 2 Members",
+
+  venue: "Cyber Defense Arena / Hall B",
+
+  time: "24th Sept · Morning & Afternoon",
+
+  rounds: [
+    {
+      title: "Round 1: Advantage Round",
+      description: "A buzzer-based quiz covering the Techopedia Marvel theme, based solely on the MCU. The top three teams earn rewards that give them an advantage in the PPT round.",
+      duration: "Morning"
+    },
+    {
+      title: "Round 2: PPT Presentation",
+      description: "Teams receive IEEE GRSS-based problem statements and create a PPT during the event using a layout similar to SIH. Teams present their solutions to faculty judges, who select the top three teams for the final round.",
+      duration: "Morning / Afternoon"
+    },
+    {
+      title: "Final Round: The Decider Round",
+      description: "The finalists face a similar PPT presentation challenge with a significantly more difficult problem statement. The winning team earns the opportunity to compete in the final Techopedia game.",
+      duration: "Afternoon"
+    }
+  ],
+
+  rules: [
+    "Round 1 is a buzzer-based quiz based solely on the Marvel Cinematic Universe (MCU).",
+    "The top three teams in the Advantage Round receive rewards.",
+    "The first-place team chooses their problem statement and receives an additional 5 minutes for PPT preparation.",
+    "The second- and third-place teams may choose either additional preparation time or their preferred problem statement.",
+    "Teams must prepare their PPT during the event based on the assigned IEEE GRSS problem statement.",
+    "The PPT layout will follow a format similar to the Smart India Hackathon (SIH).",
+    "Teams must present their completed PPT to the faculty judges at the end of the round.",
+    "The judges will select the top three teams to advance to the Final Round.",
+    "The Final Round uses a more difficult problem statement than the previous presentation round.",
+    "The winner of the Final Round advances to the final Techopedia game."
+  ],
+
+  judgingCriteria: [
+    "PPT Presentation & Solution Evaluation by Faculty Judges",
+    "Quality of the Proposed Solution",
+    "Final Round Performance"
+  ],
+
+  accentColor: "#ff4d4d",
+  glowColor: "rgba(255, 77, 77, 0.4)",
+
+  coordinators: [
+    { name: "Shankilya", contact: "+91 9326214923" }
+  ]
+}
   {
     id: "vanguard",
     slug: "vanguard",
