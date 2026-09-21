@@ -216,7 +216,7 @@ export const DOMAINS: EventDomain[] = [
   coordinators: [
     { name: "Shankilya", contact: "+91 9326214923" }
   ]
-}
+},
   {
     id: "vanguard",
     slug: "vanguard",
